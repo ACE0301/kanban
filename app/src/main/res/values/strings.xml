@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Доски</string>
+    <string name="board_name">Название доски</string>
+    <string name="create_board">Создать доску</string>
+    <string name="empty_name">Название доски не может быть пустым</string>
+    <string name="create_btn">СОЗДАТЬ</string>
+    <string name="cancel_btn">ОТМЕНА</string>
+    <string name="empty_name_in_dialog">Название не может быть пустым</string>
+    <string name="custom_view">CustomView</string>
+    <string name="empty_board_name">Название не может быть пустым</string>
+    <string name="boards">Доски</string>
+    <string name="create_btn_dialog">СОЗДАТЬ</string>
+    <string name="cancel_btn_dialog">ОТМЕНА</string>
+    <string name="personal_boards">Personal boards</string>
+    <string name="work_boards">Work boards</string>
+    <string name="other_boards">Other boards</string>
+    <string name="auth_error">Ошибка авторизации</string>
+
+    //Rest Client Template
+    <string name="login_label">Log in</string>
+    <string name="intent_scheme">https</string>
+    <string name="intent_host">androidtfs</string>
+    <string name="auth_btn">Авторизация</string>
+
+    // <!-- Snackbars -->
+    <string name="created_card">Карточка создана</string>
+    <string name="updated_card">Карточка изменена</string>
+    <string name="add_card">Добавить карточку</string>
+
+</resources>

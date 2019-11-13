@@ -1,0 +1,75 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+    defaultConfig {
+        applicationId "com.ace.homework2"
+        minSdkVersion 23
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro', "-keep class com.woxthebox.draglistview.** { *; }"
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "androidx.appcompat:appcompat:$version_appcompat"
+    implementation "androidx.fragment:fragment:$version_fragment"
+    implementation "androidx.core:core-ktx:$version_core_ktx"
+    implementation "androidx.constraintlayout:constraintlayout:$version_constraintlayout"
+    implementation "androidx.recyclerview:recyclerview:$version_recyclerview"
+    implementation "com.google.android.material:material:$version_material"
+    implementation "androidx.gridlayout:gridlayout:$version_gridlayout"
+
+    //rxJava
+    implementation "io.reactivex.rxjava2:rxjava:$version_rxjava"
+    implementation "io.reactivex.rxjava2:rxandroid:$version_rxandroid"
+
+    //OAuth Handler
+    implementation "com.github.scribejava:scribejava-apis:$version_scribejava_apis"
+    implementation "com.github.scribejava:scribejava-httpclient-okhttp:$version_scribejava_httpclient_okhttp"
+
+    //Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
+    implementation "com.squareup.retrofit2:converter-gson:$version_converter_gson"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$version_adapter_rxjava2"
+
+    //okhttp
+    implementation 'com.squareup.okhttp3:okhttp:4.2.2'
+
+    //Stetho
+    implementation "com.facebook.stetho:stetho-okhttp3:$version_stetho_okhttp3"
+
+    //lifecycle
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$version_lifecycle_viewmodel_ktx"
+    implementation "androidx.lifecycle:lifecycle-extensions:$version_lifecycle_extensions"
+    implementation "androidx.lifecycle:lifecycle-livedata:$version_lifecycle_livedata"
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$version_lifecycle_compiler"
+
+    //https://github.com/woxblom/DragListView
+    implementation "com.github.woxthebox:draglistview:$version_draglistview"
+
+    // debugImplementation because LeakCanary should only run in debug builds.
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$version_leakcanary_android"
+
+    androidTestImplementation "androidx.test:runner:$version_runner"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$version_espresso_core"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$version_espresso_contrib"
+    androidTestImplementation "androidx.test:rules:$version_rules"
+    androidTestImplementation "androidx.test:core:$version_core"
+    androidTestImplementation "androidx.test.espresso:espresso-web:$version_espresso_web"
+    testImplementation "junit:junit:$version_junit"
+}

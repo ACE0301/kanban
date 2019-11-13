@@ -1,0 +1,369 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:2:1-34:12
+INJECTED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:2:1-34:12
+INJECTED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:2:1-34:12
+INJECTED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:2:1-34:12
+MERGED from [com.squareup.leakcanary:leakcanary-android:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/26b24bf08bd503ab1b0ee50d683edf98/AndroidManifest.xml:17:1-32:12
+MERGED from [androidx.constraintlayout:constraintlayout:2.0.0-beta3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/9fa1b4bf323dc80b434b1055bbc0e325/AndroidManifest.xml:2:1-11:12
+MERGED from [com.google.android.material:material:1.2.0-alpha01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/87e17fd4ba835f64a7898c83451f8b8f/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.appcompat:appcompat:1.1.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/31ec75ed23809b9444114d6ef9bd04ef/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.lifecycle:lifecycle-extensions:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/37923be007f8c2b50068ddaa78cd2e18/AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.viewpager2:viewpager2:1.0.0-beta05] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/ecbcbbcd28b4813c46dcbd2adbc35ebc/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.fragment:fragment:1.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/4a5e23ef80b76613bfac77f1ec32a0e4/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.core:core-ktx:1.2.0-beta02] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/ffd377c4d84c0c5925794c7196cdd43c/AndroidManifest.xml:2:1-9:12
+MERGED from [com.github.woxthebox:draglistview:1.6.6] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/d0904dde95c82957231fa6b8b4c5e132/AndroidManifest.xml:17:1-26:12
+MERGED from [androidx.recyclerview:recyclerview:1.1.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/627a15ac04e4c7e540268f2f8a8de5e9/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.gridlayout:gridlayout:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/75c95c66997db71aad604fd735d8fc49/AndroidManifest.xml:17:1-22:12
+MERGED from [io.reactivex.rxjava2:rxandroid:2.1.1] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/c8804478fae0b88e5bf852f5022a096b/AndroidManifest.xml:15:1-20:12
+MERGED from [com.facebook.stetho:stetho-okhttp3:1.5.1] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/4bf466bb7b944dff6f8306a9e13fb7eb/AndroidManifest.xml:2:1-13:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/20aa1fe1cf1c949260a4e04c3492f52a/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/51e1cb8c78691db1d8fbe7f613c0a882/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/d489ff5740a413473e8c7724ff6fc8da/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/b20ad0365563273b215bc63fd3d4a5e2/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/201b9cf93b69e0262bd83687ce3bb453/AndroidManifest.xml:17:1-24:12
+MERGED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:17:1-72:12
+MERGED from [com.squareup.leakcanary:leakcanary-object-watcher-android-androidx:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/7cc9e78168f34294ee83d97704703a7b/AndroidManifest.xml:2:1-7:12
+MERGED from [com.squareup.leakcanary:leakcanary-object-watcher-android:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/d8d71fde16ad9b3d677b158956004537/AndroidManifest.xml:2:1-14:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/e3e1ee2047c21d1b62c05bb2055688f7/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.appcompat:appcompat-resources:1.1.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/f4c46fb617bf4aba2c70aa028d7cb98d/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/409b96c118fa2379da9c0350f9d334e3/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/559deef4b57a01fa1fc1284be771ec13/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.activity:activity:1.1.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/85e4924b5f14a58c896acb309f2dd1f9/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0-beta01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/bfb0b423ef712f059b325c7dc40a31da/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/e9193e5e5fd2a26d7fb96d606bb7001c/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/f739b47e29b8ac9ce3d55cf6714065f5/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.transition:transition:1.2.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/3b127349cd611154336a19c92d680f5e/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/d1f052bd898578baaad93426e778cf49/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/8f04aa2d17576575ec284de6bfe2679e/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/999bdcb15289058e4cd71750248a8a8c/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/47f7c035b4f75ece376969953df3e187/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.core:core:1.2.0-beta02] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/1f5e15ea14ddfb249932fff6126431a8/AndroidManifest.xml:17:1-26:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/8122143575bd7a08bfc7c5df38c3791c/AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:1.0.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/6274cce28126be615ce3eecb9f69ca43/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/d0ad8effce75e2879ebec89702a45706/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.cardview:cardview:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/6352ed2974ef3d1cd900032c8bdbc4c5/AndroidManifest.xml:17:1-22:12
+MERGED from [com.facebook.stetho:stetho:1.5.1] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/ce3c91eb605fc901b8b630da26bb6d4d/AndroidManifest.xml:2:1-13:12
+MERGED from [androidx.lifecycle:lifecycle-process:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/c07d81bb2327700520aa75cff62d3512/AndroidManifest.xml:17:1-32:12
+MERGED from [androidx.lifecycle:lifecycle-service:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/79cfa56bbfd3a63ab043b3bf811ebdbb/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/55a1933a2c7cf953703a24d1362ae275/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/90a291c8f68e605207063c6221f4e2ee/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.arch.core:core-runtime:2.1.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/b39ca0f1f3485bcb46d2d577d53a38b8/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.savedstate:savedstate:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/749e21050879de22617581100601a0f6/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/0d682c059b7fde2728ed9be1137d95cc/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.documentfile:documentfile:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/7012829ce99bcca83ebbb90b103e6349/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/30a9b1cb1a56d6ddb94cb6cf07d5c41e/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.print:print:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/9142aea880bf8dee38d9801afd90f498/AndroidManifest.xml:17:1-22:12
+INJECTED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:2:1-34:12
+INJECTED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:2:1-34:12
+INJECTED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:2:1-34:12
+	package
+		ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:3:11-38
+		INJECTED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml
+		INJECTED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml
+		ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:2:1-34:12
+		INJECTED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml
+	android:versionCode
+		INJECTED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml
+		ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:2:1-34:12
+		INJECTED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:2:11-69
+uses-permission#android.permission.INTERNET
+ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:5:5-66
+	android:name
+		ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:5:22-64
+application
+ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:7:5-32:19
+MERGED from [com.squareup.leakcanary:leakcanary-android:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/26b24bf08bd503ab1b0ee50d683edf98/AndroidManifest.xml:22:5-30:19
+MERGED from [com.squareup.leakcanary:leakcanary-android:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/26b24bf08bd503ab1b0ee50d683edf98/AndroidManifest.xml:22:5-30:19
+MERGED from [androidx.constraintlayout:constraintlayout:2.0.0-beta3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/9fa1b4bf323dc80b434b1055bbc0e325/AndroidManifest.xml:9:5-20
+MERGED from [androidx.constraintlayout:constraintlayout:2.0.0-beta3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/9fa1b4bf323dc80b434b1055bbc0e325/AndroidManifest.xml:9:5-20
+MERGED from [com.google.android.material:material:1.2.0-alpha01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/87e17fd4ba835f64a7898c83451f8b8f/AndroidManifest.xml:22:5-20
+MERGED from [com.google.android.material:material:1.2.0-alpha01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/87e17fd4ba835f64a7898c83451f8b8f/AndroidManifest.xml:22:5-20
+MERGED from [androidx.lifecycle:lifecycle-extensions:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/37923be007f8c2b50068ddaa78cd2e18/AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.lifecycle:lifecycle-extensions:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/37923be007f8c2b50068ddaa78cd2e18/AndroidManifest.xml:24:5-25:19
+MERGED from [com.facebook.stetho:stetho-okhttp3:1.5.1] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/4bf466bb7b944dff6f8306a9e13fb7eb/AndroidManifest.xml:11:5-20
+MERGED from [com.facebook.stetho:stetho-okhttp3:1.5.1] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/4bf466bb7b944dff6f8306a9e13fb7eb/AndroidManifest.xml:11:5-20
+MERGED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:28:5-70:19
+MERGED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:28:5-70:19
+MERGED from [com.squareup.leakcanary:leakcanary-object-watcher-android:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/d8d71fde16ad9b3d677b158956004537/AndroidManifest.xml:7:5-12:19
+MERGED from [com.squareup.leakcanary:leakcanary-object-watcher-android:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/d8d71fde16ad9b3d677b158956004537/AndroidManifest.xml:7:5-12:19
+MERGED from [androidx.core:core:1.2.0-beta02] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/1f5e15ea14ddfb249932fff6126431a8/AndroidManifest.xml:24:5-89
+MERGED from [androidx.core:core:1.2.0-beta02] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/1f5e15ea14ddfb249932fff6126431a8/AndroidManifest.xml:24:5-89
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/8122143575bd7a08bfc7c5df38c3791c/AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/8122143575bd7a08bfc7c5df38c3791c/AndroidManifest.xml:24:5-25:19
+MERGED from [com.facebook.stetho:stetho:1.5.1] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/ce3c91eb605fc901b8b630da26bb6d4d/AndroidManifest.xml:11:5-20
+MERGED from [com.facebook.stetho:stetho:1.5.1] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/ce3c91eb605fc901b8b630da26bb6d4d/AndroidManifest.xml:11:5-20
+MERGED from [androidx.lifecycle:lifecycle-process:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/c07d81bb2327700520aa75cff62d3512/AndroidManifest.xml:24:5-30:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/c07d81bb2327700520aa75cff62d3512/AndroidManifest.xml:24:5-30:19
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.2.0-beta02] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/1f5e15ea14ddfb249932fff6126431a8/AndroidManifest.xml:24:18-86
+	android:supportsRtl
+		ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:13:13-39
+	android:label
+		ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:11:13-34
+	android:roundIcon
+		ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:12:13-58
+	android:icon
+		ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:10:13-47
+	android:allowBackup
+		ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:9:13-39
+	android:theme
+		ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:14:13-44
+	android:name
+		ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:8:13-43
+activity#com.ace.homework2.MainActivity
+ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:15:9-31:20
+	android:name
+		ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:15:19-47
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:16:13-20:29
+action#android.intent.action.MAIN
+ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:17:17-68
+	android:name
+		ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:17:25-66
+category#android.intent.category.LAUNCHER
+ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:19:17-76
+	android:name
+		ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:19:27-74
+intent-filter#action:name:android.intent.action.VIEW+category:name:android.intent.category.BROWSABLE+category:name:android.intent.category.DEFAULT+data:host:@string/intent_host+data:scheme:@string/intent_scheme
+ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:21:13-30:29
+action#android.intent.action.VIEW
+ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:22:17-68
+	android:name
+		ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:22:25-66
+category#android.intent.category.DEFAULT
+ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:24:17-75
+	android:name
+		ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:24:27-73
+category#android.intent.category.BROWSABLE
+ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:25:17-77
+	android:name
+		ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:25:27-75
+data
+ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:27:17-29:65
+	android:host
+		ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:28:25-59
+	android:scheme
+		ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml:29:25-63
+uses-sdk
+INJECTED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml
+INJECTED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml
+MERGED from [com.squareup.leakcanary:leakcanary-android:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/26b24bf08bd503ab1b0ee50d683edf98/AndroidManifest.xml:20:5-44
+MERGED from [com.squareup.leakcanary:leakcanary-android:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/26b24bf08bd503ab1b0ee50d683edf98/AndroidManifest.xml:20:5-44
+MERGED from [androidx.constraintlayout:constraintlayout:2.0.0-beta3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/9fa1b4bf323dc80b434b1055bbc0e325/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.constraintlayout:constraintlayout:2.0.0-beta3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/9fa1b4bf323dc80b434b1055bbc0e325/AndroidManifest.xml:5:5-7:41
+MERGED from [com.google.android.material:material:1.2.0-alpha01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/87e17fd4ba835f64a7898c83451f8b8f/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.material:material:1.2.0-alpha01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/87e17fd4ba835f64a7898c83451f8b8f/AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat:1.1.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/31ec75ed23809b9444114d6ef9bd04ef/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat:1.1.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/31ec75ed23809b9444114d6ef9bd04ef/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-extensions:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/37923be007f8c2b50068ddaa78cd2e18/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-extensions:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/37923be007f8c2b50068ddaa78cd2e18/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.viewpager2:viewpager2:1.0.0-beta05] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/ecbcbbcd28b4813c46dcbd2adbc35ebc/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.viewpager2:viewpager2:1.0.0-beta05] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/ecbcbbcd28b4813c46dcbd2adbc35ebc/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/4a5e23ef80b76613bfac77f1ec32a0e4/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/4a5e23ef80b76613bfac77f1ec32a0e4/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core-ktx:1.2.0-beta02] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/ffd377c4d84c0c5925794c7196cdd43c/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.core:core-ktx:1.2.0-beta02] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/ffd377c4d84c0c5925794c7196cdd43c/AndroidManifest.xml:5:5-7:41
+MERGED from [com.github.woxthebox:draglistview:1.6.6] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/d0904dde95c82957231fa6b8b4c5e132/AndroidManifest.xml:22:5-24:41
+MERGED from [com.github.woxthebox:draglistview:1.6.6] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/d0904dde95c82957231fa6b8b4c5e132/AndroidManifest.xml:22:5-24:41
+MERGED from [androidx.recyclerview:recyclerview:1.1.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/627a15ac04e4c7e540268f2f8a8de5e9/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.recyclerview:recyclerview:1.1.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/627a15ac04e4c7e540268f2f8a8de5e9/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.gridlayout:gridlayout:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/75c95c66997db71aad604fd735d8fc49/AndroidManifest.xml:20:5-44
+MERGED from [androidx.gridlayout:gridlayout:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/75c95c66997db71aad604fd735d8fc49/AndroidManifest.xml:20:5-44
+MERGED from [io.reactivex.rxjava2:rxandroid:2.1.1] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/c8804478fae0b88e5bf852f5022a096b/AndroidManifest.xml:18:5-43
+MERGED from [io.reactivex.rxjava2:rxandroid:2.1.1] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/c8804478fae0b88e5bf852f5022a096b/AndroidManifest.xml:18:5-43
+MERGED from [com.facebook.stetho:stetho-okhttp3:1.5.1] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/4bf466bb7b944dff6f8306a9e13fb7eb/AndroidManifest.xml:7:5-9:41
+MERGED from [com.facebook.stetho:stetho-okhttp3:1.5.1] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/4bf466bb7b944dff6f8306a9e13fb7eb/AndroidManifest.xml:7:5-9:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/20aa1fe1cf1c949260a4e04c3492f52a/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/20aa1fe1cf1c949260a4e04c3492f52a/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/51e1cb8c78691db1d8fbe7f613c0a882/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/51e1cb8c78691db1d8fbe7f613c0a882/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/d489ff5740a413473e8c7724ff6fc8da/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/d489ff5740a413473e8c7724ff6fc8da/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/b20ad0365563273b215bc63fd3d4a5e2/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/b20ad0365563273b215bc63fd3d4a5e2/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/201b9cf93b69e0262bd83687ce3bb453/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/201b9cf93b69e0262bd83687ce3bb453/AndroidManifest.xml:20:5-22:41
+MERGED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:20:5-44
+MERGED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:20:5-44
+MERGED from [com.squareup.leakcanary:leakcanary-object-watcher-android-androidx:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/7cc9e78168f34294ee83d97704703a7b/AndroidManifest.xml:5:5-44
+MERGED from [com.squareup.leakcanary:leakcanary-object-watcher-android-androidx:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/7cc9e78168f34294ee83d97704703a7b/AndroidManifest.xml:5:5-44
+MERGED from [com.squareup.leakcanary:leakcanary-object-watcher-android:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/d8d71fde16ad9b3d677b158956004537/AndroidManifest.xml:5:5-44
+MERGED from [com.squareup.leakcanary:leakcanary-object-watcher-android:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/d8d71fde16ad9b3d677b158956004537/AndroidManifest.xml:5:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/e3e1ee2047c21d1b62c05bb2055688f7/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/e3e1ee2047c21d1b62c05bb2055688f7/AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat-resources:1.1.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/f4c46fb617bf4aba2c70aa028d7cb98d/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat-resources:1.1.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/f4c46fb617bf4aba2c70aa028d7cb98d/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/409b96c118fa2379da9c0350f9d334e3/AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/409b96c118fa2379da9c0350f9d334e3/AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/559deef4b57a01fa1fc1284be771ec13/AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/559deef4b57a01fa1fc1284be771ec13/AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity:1.1.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/85e4924b5f14a58c896acb309f2dd1f9/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity:1.1.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/85e4924b5f14a58c896acb309f2dd1f9/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0-beta01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/bfb0b423ef712f059b325c7dc40a31da/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0-beta01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/bfb0b423ef712f059b325c7dc40a31da/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/e9193e5e5fd2a26d7fb96d606bb7001c/AndroidManifest.xml:20:5-44
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/e9193e5e5fd2a26d7fb96d606bb7001c/AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/f739b47e29b8ac9ce3d55cf6714065f5/AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/f739b47e29b8ac9ce3d55cf6714065f5/AndroidManifest.xml:20:5-44
+MERGED from [androidx.transition:transition:1.2.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/3b127349cd611154336a19c92d680f5e/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.transition:transition:1.2.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/3b127349cd611154336a19c92d680f5e/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/d1f052bd898578baaad93426e778cf49/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/d1f052bd898578baaad93426e778cf49/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/8f04aa2d17576575ec284de6bfe2679e/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/8f04aa2d17576575ec284de6bfe2679e/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/999bdcb15289058e4cd71750248a8a8c/AndroidManifest.xml:20:5-44
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/999bdcb15289058e4cd71750248a8a8c/AndroidManifest.xml:20:5-44
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/47f7c035b4f75ece376969953df3e187/AndroidManifest.xml:20:5-44
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/47f7c035b4f75ece376969953df3e187/AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.2.0-beta02] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/1f5e15ea14ddfb249932fff6126431a8/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core:1.2.0-beta02] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/1f5e15ea14ddfb249932fff6126431a8/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/8122143575bd7a08bfc7c5df38c3791c/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/8122143575bd7a08bfc7c5df38c3791c/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:1.0.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/6274cce28126be615ce3eecb9f69ca43/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:1.0.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/6274cce28126be615ce3eecb9f69ca43/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/d0ad8effce75e2879ebec89702a45706/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/d0ad8effce75e2879ebec89702a45706/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.cardview:cardview:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/6352ed2974ef3d1cd900032c8bdbc4c5/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cardview:cardview:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/6352ed2974ef3d1cd900032c8bdbc4c5/AndroidManifest.xml:20:5-44
+MERGED from [com.facebook.stetho:stetho:1.5.1] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/ce3c91eb605fc901b8b630da26bb6d4d/AndroidManifest.xml:7:5-9:41
+MERGED from [com.facebook.stetho:stetho:1.5.1] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/ce3c91eb605fc901b8b630da26bb6d4d/AndroidManifest.xml:7:5-9:41
+MERGED from [androidx.lifecycle:lifecycle-process:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/c07d81bb2327700520aa75cff62d3512/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-process:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/c07d81bb2327700520aa75cff62d3512/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-service:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/79cfa56bbfd3a63ab043b3bf811ebdbb/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-service:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/79cfa56bbfd3a63ab043b3bf811ebdbb/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/55a1933a2c7cf953703a24d1362ae275/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/55a1933a2c7cf953703a24d1362ae275/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/90a291c8f68e605207063c6221f4e2ee/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/90a291c8f68e605207063c6221f4e2ee/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.arch.core:core-runtime:2.1.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/b39ca0f1f3485bcb46d2d577d53a38b8/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.arch.core:core-runtime:2.1.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/b39ca0f1f3485bcb46d2d577d53a38b8/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.savedstate:savedstate:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/749e21050879de22617581100601a0f6/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.savedstate:savedstate:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/749e21050879de22617581100601a0f6/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.interpolator:interpolator:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/0d682c059b7fde2728ed9be1137d95cc/AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/0d682c059b7fde2728ed9be1137d95cc/AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/7012829ce99bcca83ebbb90b103e6349/AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/7012829ce99bcca83ebbb90b103e6349/AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/30a9b1cb1a56d6ddb94cb6cf07d5c41e/AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/30a9b1cb1a56d6ddb94cb6cf07d5c41e/AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/9142aea880bf8dee38d9801afd90f498/AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/9142aea880bf8dee38d9801afd90f498/AndroidManifest.xml:20:5-44
+INJECTED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml
+INJECTED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml
+		ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml
+		INJECTED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml
+		ADDED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml
+		INJECTED from /home/aleksandr-efremov/AndroidStudioProjects/kanban/app/src/main/AndroidManifest.xml
+service#leakcanary.internal.HeapAnalyzerService
+ADDED from [com.squareup.leakcanary:leakcanary-android:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/26b24bf08bd503ab1b0ee50d683edf98/AndroidManifest.xml:23:9-29:19
+	android:exported
+		ADDED from [com.squareup.leakcanary:leakcanary-android:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/26b24bf08bd503ab1b0ee50d683edf98/AndroidManifest.xml:25:13-37
+	android:name
+		ADDED from [com.squareup.leakcanary:leakcanary-android:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/26b24bf08bd503ab1b0ee50d683edf98/AndroidManifest.xml:24:13-67
+intent-filter#action:name:leakcanary.ANALYSIS_ACTION
+ADDED from [com.squareup.leakcanary:leakcanary-android:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/26b24bf08bd503ab1b0ee50d683edf98/AndroidManifest.xml:26:13-28:29
+action#leakcanary.ANALYSIS_ACTION
+ADDED from [com.squareup.leakcanary:leakcanary-android:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/26b24bf08bd503ab1b0ee50d683edf98/AndroidManifest.xml:27:17-69
+	android:name
+		ADDED from [com.squareup.leakcanary:leakcanary-android:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/26b24bf08bd503ab1b0ee50d683edf98/AndroidManifest.xml:27:25-66
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:23:5-80
+	android:name
+		ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:23:22-77
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:24:5-81
+	android:name
+		ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:24:22-78
+uses-permission#android.permission.FOREGROUND_SERVICE
+ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:26:5-77
+	android:name
+		ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:26:22-74
+provider#leakcanary.internal.LeakCanaryFileProvider
+ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:29:9-37:20
+	android:grantUriPermissions
+		ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:33:13-47
+	android:authorities
+		ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:31:13-88
+	android:exported
+		ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:32:13-37
+	android:name
+		ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:30:13-70
+meta-data#android.support.FILE_PROVIDER_PATHS
+ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:34:13-36:66
+	android:resource
+		ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:36:17-63
+	android:name
+		ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:35:17-67
+activity#leakcanary.internal.activity.LeakActivity
+ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:39:9-44:66
+	android:label
+		ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:42:13-71
+	android:icon
+		ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:41:13-52
+	android:theme
+		ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:44:13-63
+	android:taskAffinity
+		ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:43:13-76
+	android:name
+		ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:40:13-69
+activity-alias#leakcanary.internal.activity.LeakLauncherActivity
+ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:46:9-59:26
+	android:enabled
+		ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:48:13-66
+	android:label
+		ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:50:13-71
+	android:targetActivity
+		ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:51:13-79
+	android:icon
+		ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:49:13-52
+	android:theme
+		ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:53:13-63
+	android:taskAffinity
+		ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:52:13-76
+	android:name
+		ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:47:13-77
+activity#leakcanary.internal.RequestStoragePermissionActivity
+ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:61:9-67:68
+	android:label
+		ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:65:13-82
+	android:excludeFromRecents
+		ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:63:13-46
+	android:icon
+		ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:64:13-52
+	android:theme
+		ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:67:13-65
+	android:taskAffinity
+		ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:66:13-76
+	android:name
+		ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:62:13-80
+receiver#leakcanary.internal.NotificationReceiver
+ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:69:9-77
+	android:name
+		ADDED from [com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/89081994f05f89dd74afbebb2c1a67dc/AndroidManifest.xml:69:19-74
+provider#leakcanary.internal.AppWatcherInstaller
+ADDED from [com.squareup.leakcanary:leakcanary-object-watcher-android:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/d8d71fde16ad9b3d677b158956004537/AndroidManifest.xml:8:9-11:40
+	android:authorities
+		ADDED from [com.squareup.leakcanary:leakcanary-object-watcher-android:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/d8d71fde16ad9b3d677b158956004537/AndroidManifest.xml:10:13-72
+	android:exported
+		ADDED from [com.squareup.leakcanary:leakcanary-object-watcher-android:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/d8d71fde16ad9b3d677b158956004537/AndroidManifest.xml:11:13-37
+	android:name
+		ADDED from [com.squareup.leakcanary:leakcanary-object-watcher-android:2.0-beta-3] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/d8d71fde16ad9b3d677b158956004537/AndroidManifest.xml:9:13-67
+provider#androidx.lifecycle.ProcessLifecycleOwnerInitializer
+ADDED from [androidx.lifecycle:lifecycle-process:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/c07d81bb2327700520aa75cff62d3512/AndroidManifest.xml:25:9-29:43
+	android:authorities
+		ADDED from [androidx.lifecycle:lifecycle-process:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/c07d81bb2327700520aa75cff62d3512/AndroidManifest.xml:27:13-69
+	android:multiprocess
+		ADDED from [androidx.lifecycle:lifecycle-process:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/c07d81bb2327700520aa75cff62d3512/AndroidManifest.xml:29:13-40
+	android:exported
+		ADDED from [androidx.lifecycle:lifecycle-process:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/c07d81bb2327700520aa75cff62d3512/AndroidManifest.xml:28:13-37
+	android:name
+		ADDED from [androidx.lifecycle:lifecycle-process:2.2.0-rc01] /home/aleksandr-efremov/.gradle/caches/transforms-2/files-2.1/c07d81bb2327700520aa75cff62d3512/AndroidManifest.xml:26:13-79

@@ -1,0 +1,64 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+
+    ext {
+        kotlin_version = '1.3.50'
+        version_coroutine = '1.1.0'
+        version_appcompat = '1.1.0'
+        version_fragment = '1.2.0-rc01'
+        version_core_ktx = '1.2.0-beta02'
+        version_constraintlayout = '2.0.0-beta3'
+        version_junit = '4.13-rc-1'
+        version_runner = '1.2.0'
+        version_espresso_core = '3.2.0'
+        version_recyclerview = '1.1.0-rc01'
+        version_material = '1.2.0-alpha01'
+        version_rxjava = '2.2.11'
+        version_rxandroid = '2.1.1'
+        version_scribejava_apis = '6.9.0'
+        version_scribejava_httpclient_okhttp = '6.9.0'
+        version_retrofit = '2.6.2'
+        version_converter_gson = '2.6.2'
+        version_adapter_rxjava2 = '2.6.2'
+        version_stetho_okhttp3 = '1.5.1'
+        version_lifecycle_viewmodel_ktx = '2.2.0-rc01'
+        version_lifecycle_extensions = '2.2.0-rc01'
+        version_lifecycle_livedata = '2.2.0-rc01'
+        version_lifecycle_compiler = '2.2.0-rc01'
+        version_draglistview = '1.6.6'
+        version_leakcanary_android = '2.0-beta-3'
+        version_runner = '1.3.0-alpha02'
+        version_espresso_core = '3.3.0-alpha02'
+        version_espresso_contrib = '3.3.0-alpha02'
+        version_rules = '1.3.0-alpha02'
+        version_core = '1.2.1-alpha02'
+        version_gridlayout = '1.0.0'
+        version_gradle = '3.4.2'
+        version_espresso_web = '3.1.0'
+    }
+
+    repositories {
+        google()
+        jcenter()
+
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:$version_gradle"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

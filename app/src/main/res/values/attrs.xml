@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CircleImageView">
+
+        <attr name="backgColor" format="color"/>
+        <attr name="txt" format="string"/>
+        <attr name="textColor" format="color"/>
+
+    </declare-styleable>
+
+    <attr name="colorAccentedSurface" format="reference"/>
+    <attr name="colorDivider" format="reference"/>
+    <attr name="colorIcon" format="reference"/>
+
+</resources>
