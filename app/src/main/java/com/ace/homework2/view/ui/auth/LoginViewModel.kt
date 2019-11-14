@@ -9,9 +9,11 @@ import com.ace.homework2.model.prefs.PreferencesHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class LoginViewModel(
+class LoginViewModel @Inject constructor(
     private val repository: PreferencesHelper
+
 ) : ViewModel() {
     private var disposableSaveToken: Disposable? = null
 
@@ -35,6 +37,12 @@ class LoginViewModel(
                     _successAuthorization.value = false
                 }
             )
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        disposableSaveToken?.dispose()
+
     }
 }
 

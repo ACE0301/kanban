@@ -15,9 +15,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ace.homework2.R
-import com.ace.homework2.base.context.ContextDelegateFactory
+import com.ace.homework2.TFSApplication.Companion.appComponent
 import com.ace.homework2.model.Card
 import com.ace.homework2.model.SpecificBoard
+import com.ace.homework2.model.network.ApiHelper
 import com.ace.homework2.model.prefs.AppPreferencesHelper
 import com.github.scribejava.core.model.OAuthConstants.TOKEN
 import com.google.android.material.snackbar.Snackbar
@@ -25,9 +26,15 @@ import com.woxthebox.draglistview.BoardView
 import kotlinx.android.synthetic.main.column_header.view.*
 import kotlinx.android.synthetic.main.footer_item.view.*
 import java.util.*
+import javax.inject.Inject
 
 
 class DetailFragment : Fragment() {
+
+    @Inject
+    lateinit var apiHelper: ApiHelper
+    @Inject
+    lateinit var appPreferencesHelper: AppPreferencesHelper
 
     companion object {
         const val TAG = "DetailFragment"
@@ -45,10 +52,14 @@ class DetailFragment : Fragment() {
     private var board: SpecificBoard? = null
     private lateinit var detailViewModel: DetailViewModel
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        appComponent.inject(this)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.board_layout, container, false)
-        val repository = AppPreferencesHelper(ContextDelegateFactory.create(context))
-        val detailViewModelFactory = DetailViewModelFactory(repository)
+        val detailViewModelFactory = DetailViewModelFactory(appPreferencesHelper, apiHelper)
 
         detailViewModel = ViewModelProvider(this, detailViewModelFactory)
             .get(DetailViewModel::class.java)
@@ -163,7 +174,7 @@ class DetailFragment : Fragment() {
                     newListId ?: "",
                     context?.getSharedPreferences(TOKEN, MODE_PRIVATE)?.getString(TOKEN, "") ?: ""
                 )
-                //Toast.makeText(context, "cardId1 $cardId1 cardId2 $cardId2", Toast.LENGTH_SHORT).show()
+                // Toast.makeText(context, "cardId1 $cardId1 cardId2 $cardId2", Toast.LENGTH_SHORT).show()
             }
 
             override fun onItemChangedColumn(oldColumn: Int, newColumn: Int) {}

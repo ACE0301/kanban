@@ -9,22 +9,28 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.ace.homework2.base.context.ContextDelegateFactory
+import com.ace.homework2.TFSApplication.Companion.appComponent
 import com.ace.homework2.model.*
+import com.ace.homework2.model.network.ApiHelper
 import com.ace.homework2.model.prefs.AppPreferencesHelper
 import com.ace.homework2.view.custom.CustomViewFragment
 import com.ace.homework2.view.ui.details.DetailView
 import com.ace.homework2.view.ui.dialog.NewBoardDialogFragment
 import kotlinx.android.synthetic.main.fragment_boards.*
+import javax.inject.Inject
 
 interface OnDialogResult {
     fun onNewBoardAdded(name: String, category: Category)
 }
 
-class BoardsFragment : Fragment(), OnDialogResult {
+open class BoardsFragment : Fragment(), OnDialogResult {
+
+    @Inject
+    lateinit var apiHelper: ApiHelper
+    @Inject
+    lateinit var appPreferencesHelper: AppPreferencesHelper
 
     companion object {
         const val TAG = "BoardsFragment"
@@ -39,9 +45,13 @@ class BoardsFragment : Fragment(), OnDialogResult {
     private var items: MutableList<Item> = mutableListOf()
     private var token: String? = null
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
+        appComponent.inject(this)
+
+        //appPreferencesHelper = TFSApplication.getComponent()?.getDatabaseHelper()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
@@ -54,8 +64,7 @@ class BoardsFragment : Fragment(), OnDialogResult {
             adapter = boardsAdapter
         }
 
-        val repository = AppPreferencesHelper(ContextDelegateFactory.create(context))
-        val boardsViewModelFactory = BoardsViewModelFactory(repository)
+        val boardsViewModelFactory = BoardsViewModelFactory(appPreferencesHelper, apiHelper)
         boardsViewModel = ViewModelProvider(this, boardsViewModelFactory)
             .get(BoardsViewModel::class.java)
 

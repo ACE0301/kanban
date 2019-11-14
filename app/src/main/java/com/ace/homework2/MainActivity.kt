@@ -2,12 +2,13 @@ package com.ace.homework2
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.ace.homework2.view.ui.boards.BoardsView
 import com.ace.homework2.view.ui.auth.LoginFragment
 import com.ace.homework2.view.ui.boards.BoardsFragment
+import com.ace.homework2.view.ui.boards.BoardsView
 import com.ace.homework2.view.ui.details.DetailFragment
 import com.ace.homework2.view.ui.details.DetailView
 import com.github.scribejava.core.model.OAuthConstants.TOKEN
+
 
 class MainActivity : AppCompatActivity(), DetailView, BoardsView {
 

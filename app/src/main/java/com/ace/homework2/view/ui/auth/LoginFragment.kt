@@ -13,18 +13,27 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.ace.homework2.R
-import com.ace.homework2.base.context.ContextDelegateFactory
+import com.ace.homework2.TFSApplication.Companion.appComponent
 import com.ace.homework2.model.network.TrelloHolder
 import com.ace.homework2.model.prefs.AppPreferencesHelper
 import com.ace.homework2.view.ui.boards.BoardsView
 import kotlinx.android.synthetic.main.fragment_login.*
+import javax.inject.Inject
 
 
 class LoginFragment : Fragment() {
 
+    @Inject
+    lateinit var appPreferencesHelper: AppPreferencesHelper
+
     companion object {
         const val TAG = "LoginFragment"
         fun newInstance() = LoginFragment()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        appComponent.inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
@@ -39,13 +48,10 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val repository = AppPreferencesHelper(ContextDelegateFactory.create(context))
+        val loginViewModelFactory = LoginViewModelFactory(appPreferencesHelper)
 
-        val loginViewModelFactory = LoginViewModelFactory(repository)
-
-        val viewModel =
-            ViewModelProvider(this, loginViewModelFactory)
-                .get(LoginViewModel::class.java)
+        val viewModel = ViewModelProvider(this, loginViewModelFactory)
+            .get(LoginViewModel::class.java)
 
         btnAuth.setOnClickListener {
             btnAuth.visibility = View.GONE

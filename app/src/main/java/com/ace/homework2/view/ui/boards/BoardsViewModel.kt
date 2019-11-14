@@ -5,15 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ace.homework2.model.Board
 import com.ace.homework2.model.Category
-import com.ace.homework2.model.network.ApiHolder
+import com.ace.homework2.model.network.ApiHelper
 import com.ace.homework2.model.network.TrelloHolder
+import com.ace.homework2.model.prefs.AppPreferencesHelper
 import com.ace.homework2.model.prefs.PreferencesHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 class BoardsViewModel(
-    private val repository: PreferencesHelper
+    private val repository: PreferencesHelper,
+    private val apiHelper: ApiHelper
 ) : ViewModel() {
 
     private val _items = MutableLiveData<MutableList<Board>>()
@@ -46,7 +48,7 @@ class BoardsViewModel(
     fun loadBoards(token: String) {
         disposableGetBoards?.dispose()
         disposableGetBoards =
-            ApiHolder.service.getBoards(true, "id,name,organization", TrelloHolder.REST_CONSUMER_KEY, token)
+            apiHelper.service.getBoards(true, "id,name,organization", TrelloHolder.REST_CONSUMER_KEY, token)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -68,7 +70,7 @@ class BoardsViewModel(
     fun createBoard(name: String, organizationName: String, token: String) {
         disposablePostNewBoard?.dispose()
         disposablePostNewBoard =
-            ApiHolder.service.postBoard(name, organizationName, true, TrelloHolder.REST_CONSUMER_KEY, token)
+            apiHelper.service.postBoard(name, organizationName, true, TrelloHolder.REST_CONSUMER_KEY, token)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -78,6 +80,12 @@ class BoardsViewModel(
 
                     }
                 )
+    }
+
+    override fun onCleared() {
+        disposableGetToken?.dispose()
+        disposableGetBoards?.dispose()
+        disposablePostNewBoard?.dispose()
     }
 
 }

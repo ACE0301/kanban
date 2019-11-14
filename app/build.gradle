@@ -1,8 +1,7 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 29
@@ -72,4 +71,7 @@ dependencies {
     androidTestImplementation "androidx.test:core:$version_core"
     androidTestImplementation "androidx.test.espresso:espresso-web:$version_espresso_web"
     testImplementation "junit:junit:$version_junit"
+
+    implementation "com.google.dagger:dagger:$version_dagger"
+    kapt "com.google.dagger:dagger-compiler:$version_dagger_compiler"
 }
