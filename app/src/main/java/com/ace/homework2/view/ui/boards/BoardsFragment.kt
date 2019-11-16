@@ -1,9 +1,11 @@
 package com.ace.homework2.view.ui.boards
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -11,26 +13,19 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.ace.homework2.TFSApplication.Companion.appComponent
 import com.ace.homework2.model.*
-import com.ace.homework2.model.network.ApiHelper
-import com.ace.homework2.model.prefs.AppPreferencesHelper
 import com.ace.homework2.view.custom.CustomViewFragment
 import com.ace.homework2.view.ui.details.DetailView
 import com.ace.homework2.view.ui.dialog.NewBoardDialogFragment
 import kotlinx.android.synthetic.main.fragment_boards.*
-import javax.inject.Inject
+import kotlinx.android.synthetic.main.include_progress_overlay.*
+
 
 interface OnDialogResult {
     fun onNewBoardAdded(name: String, category: Category)
 }
 
-open class BoardsFragment : Fragment(), OnDialogResult {
-
-    @Inject
-    lateinit var apiHelper: ApiHelper
-    @Inject
-    lateinit var appPreferencesHelper: AppPreferencesHelper
+class BoardsFragment : Fragment(), OnDialogResult {
 
     companion object {
         const val TAG = "BoardsFragment"
@@ -44,14 +39,12 @@ open class BoardsFragment : Fragment(), OnDialogResult {
     private val mapper: MapToListMapper = MapToListMapperImpl()
     private var items: MutableList<Item> = mutableListOf()
     private var token: String? = null
-
+    private lateinit var inAnimation: AlphaAnimation
+    private lateinit var outAnimation: AlphaAnimation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        retainInstance = true
-        appComponent.inject(this)
-
-        //appPreferencesHelper = TFSApplication.getComponent()?.getDatabaseHelper()
+        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
@@ -63,9 +56,7 @@ open class BoardsFragment : Fragment(), OnDialogResult {
             layoutManager = LinearLayoutManager(activity)
             adapter = boardsAdapter
         }
-
-        val boardsViewModelFactory = BoardsViewModelFactory(appPreferencesHelper, apiHelper)
-        boardsViewModel = ViewModelProvider(this, boardsViewModelFactory)
+        boardsViewModel = ViewModelProvider(this)
             .get(BoardsViewModel::class.java)
 
         boardsViewModel.getToken()
@@ -73,6 +64,19 @@ open class BoardsFragment : Fragment(), OnDialogResult {
             token = it
             boardsViewModel.loadBoards(token ?: "")
 
+        })
+        boardsViewModel.loading.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            if (it == true) {
+                inAnimation = AlphaAnimation(0f, 1f)
+                inAnimation.duration = 200
+                progress_overlay.animation = inAnimation
+                progress_overlay.visibility = View.VISIBLE
+            } else {
+                outAnimation = AlphaAnimation(1f, 0f)
+                outAnimation.duration = 200
+                progress_overlay.animation = outAnimation
+                progress_overlay.visibility = View.GONE
+            }
         })
         boardsViewModel.items.observe(viewLifecycleOwner, Observer { it ->
             hashMap = it.groupBy {

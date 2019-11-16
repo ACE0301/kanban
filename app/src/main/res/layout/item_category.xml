@@ -4,8 +4,11 @@
               android:id="@+id/llItem"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:orientation="horizontal"
-              android:padding="@dimen/spacing_small_8">
+              android:orientation="vertical">
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"/>
     <TextView
             android:id="@+id/tvCategory"
             android:layout_width="wrap_content"
@@ -13,5 +16,11 @@
             android:textColor="@color/black"
             android:layout_gravity="center_vertical"
             android:textSize="@dimen/font_normal_16"
-            tools:text="some text"/>
+            android:layout_marginVertical="@dimen/spacing_small_8"
+            android:layout_marginStart="@dimen/spacing_small_8"
+            tools:text="category"/>
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"/>
 </LinearLayout>

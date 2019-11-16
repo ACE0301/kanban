@@ -16,13 +16,13 @@
     <string name="other_boards">Other boards</string>
     <string name="auth_error">Ошибка авторизации</string>
 
-    //Rest Client Template
+    <!--Rest Client Template-->
     <string name="login_label">Log in</string>
     <string name="intent_scheme">https</string>
     <string name="intent_host">androidtfs</string>
     <string name="auth_btn">Авторизация</string>
 
-    // <!-- Snackbars -->
+    <!-- Snackbars -->
     <string name="created_card">Карточка создана</string>
     <string name="updated_card">Карточка изменена</string>
     <string name="add_card">Добавить карточку</string>

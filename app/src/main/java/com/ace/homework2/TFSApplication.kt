@@ -18,10 +18,9 @@ class TFSApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        val context = applicationContext
         appComponent = DaggerAppComponent.builder()
             .networkModule(NetworkModule())
-            .storageModule(context?.let { StorageModule(it) })
+            .storageModule(StorageModule(this))
             .build()
 
         Stetho.initializeWithDefaults(this)
@@ -29,4 +28,5 @@ class TFSApplication : Application() {
             .addNetworkInterceptor(StethoInterceptor())
             .build()
     }
+
 }

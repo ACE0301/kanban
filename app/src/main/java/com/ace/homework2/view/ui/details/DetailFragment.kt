@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -14,27 +15,18 @@ import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.ace.homework2.R
-import com.ace.homework2.TFSApplication.Companion.appComponent
 import com.ace.homework2.model.Card
 import com.ace.homework2.model.SpecificBoard
-import com.ace.homework2.model.network.ApiHelper
-import com.ace.homework2.model.prefs.AppPreferencesHelper
 import com.github.scribejava.core.model.OAuthConstants.TOKEN
 import com.google.android.material.snackbar.Snackbar
 import com.woxthebox.draglistview.BoardView
 import kotlinx.android.synthetic.main.column_header.view.*
 import kotlinx.android.synthetic.main.footer_item.view.*
+import kotlinx.android.synthetic.main.include_progress_overlay.*
 import java.util.*
-import javax.inject.Inject
 
 
 class DetailFragment : Fragment() {
-
-    @Inject
-    lateinit var apiHelper: ApiHelper
-    @Inject
-    lateinit var appPreferencesHelper: AppPreferencesHelper
 
     companion object {
         const val TAG = "DetailFragment"
@@ -48,22 +40,19 @@ class DetailFragment : Fragment() {
 
     private var token: String? = null
     private var sCreatedItems = 0
-    lateinit var mBoardView: BoardView
+    private lateinit var mBoardView: BoardView
     private var board: SpecificBoard? = null
     private lateinit var detailViewModel: DetailViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        appComponent.inject(this)
-    }
+    private lateinit var inAnimation: AlphaAnimation
+    private lateinit var outAnimation: AlphaAnimation
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.board_layout, container, false)
-        val detailViewModelFactory = DetailViewModelFactory(appPreferencesHelper, apiHelper)
+        val view = inflater.inflate(com.ace.homework2.R.layout.board_layout, container, false)
+        //val detailViewModelFactory = DetailViewModelFactory(appPreferencesHelper, apiHelper)
 
-        detailViewModel = ViewModelProvider(this, detailViewModelFactory)
+        detailViewModel = ViewModelProvider(this)
             .get(DetailViewModel::class.java)
-        mBoardView = view.findViewById(R.id.board_view)
+        mBoardView = view.findViewById(com.ace.homework2.R.id.board_view)
         mBoardView.setSnapToColumnsWhenScrolling(true)
         mBoardView.setSnapToColumnWhenDragging(true)
         mBoardView.setSnapDragItemToTouch(true)
@@ -198,6 +187,20 @@ class DetailFragment : Fragment() {
             token = it
             detailViewModel.loadCards(token ?: "", arguments?.getString(ARGUMENT_BOARD_ID) ?: "")
         })
+        detailViewModel.loading.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            if (it == true) {
+                inAnimation = AlphaAnimation(0f, 1f)
+                inAnimation.duration = 200
+                progress_overlay.animation = inAnimation
+                progress_overlay.visibility = View.VISIBLE
+            } else {
+                outAnimation = AlphaAnimation(1f, 0f)
+                outAnimation.duration = 200
+                progress_overlay.animation = outAnimation
+                progress_overlay.visibility = View.GONE
+            }
+        })
+
         detailViewModel.board.observe(viewLifecycleOwner, androidx.lifecycle.Observer { it ->
             board = it
             resetBoard()
@@ -241,12 +244,12 @@ class DetailFragment : Fragment() {
         }
         val listAdapter = DetailAdapter(
             mItemArray,
-            R.layout.column_item,
-            R.id.item_layout,
+            com.ace.homework2.R.layout.column_item,
+            com.ace.homework2.R.id.item_layout,
             true
         )
-        val header = View.inflate(activity, R.layout.column_header, null)
-        val footer = View.inflate(activity, R.layout.footer_item, null)
+        val header = View.inflate(activity, com.ace.homework2.R.layout.column_header, null)
+        val footer = View.inflate(activity, com.ace.homework2.R.layout.footer_item, null)
         header.tvHeaderName.text = name
 
         footer.setOnClickListener {
@@ -256,7 +259,7 @@ class DetailFragment : Fragment() {
         footer.btnSaveNewCard.setOnClickListener {
             footer.llAddNewCard.visibility = View.GONE
             footer.tvAddCard.visibility = View.VISIBLE
-            val editText = footer?.findViewById<EditText>(R.id.etNewCardName)
+            val editText = footer?.findViewById<EditText>(com.ace.homework2.R.id.etNewCardName)
             val name = editText?.text.toString()
             //val name = "колонка ${mBoardView.getColumnOfHeader(header)} номер ${mBoardView.itemCount} "
             val id = sCreatedItems++.toLong()

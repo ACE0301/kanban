@@ -4,17 +4,24 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.ace.homework2.TFSApplication.Companion.appComponent
 import com.ace.homework2.model.network.TrelloHolder
-import com.ace.homework2.model.prefs.PreferencesHelper
+import com.ace.homework2.model.prefs.AppPreferencesHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class LoginViewModel @Inject constructor(
-    private val repository: PreferencesHelper
 
-) : ViewModel() {
+class LoginViewModel : ViewModel() {
+
+    init {
+        appComponent.inject(this)
+    }
+
+    @Inject
+    lateinit var appPreferencesHelper: AppPreferencesHelper
+
     private var disposableSaveToken: Disposable? = null
 
     private val _successAuthorization = MutableLiveData<Boolean>()
@@ -27,7 +34,7 @@ class LoginViewModel @Inject constructor(
             TrelloHolder.service.getAccessTokenAsync(TrelloHolder.requestToken.get(), oauthVerifier)
         val token = accessToken.get().token
         disposableSaveToken?.dispose()
-        disposableSaveToken = repository.saveToken(token)
+        disposableSaveToken = appPreferencesHelper.saveToken(token)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -40,10 +47,11 @@ class LoginViewModel @Inject constructor(
     }
 
     override fun onCleared() {
-        super.onCleared()
         disposableSaveToken?.dispose()
+        super.onCleared()
 
     }
+
 }
 
 

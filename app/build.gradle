@@ -33,6 +33,10 @@ dependencies {
     implementation "com.google.android.material:material:$version_material"
     implementation "androidx.gridlayout:gridlayout:$version_gridlayout"
 
+    //Dagger 2
+    implementation "com.google.dagger:dagger:$version_dagger"
+    kapt "com.google.dagger:dagger-compiler:$version_dagger_compiler"
+
     //rxJava
     implementation "io.reactivex.rxjava2:rxjava:$version_rxjava"
     implementation "io.reactivex.rxjava2:rxandroid:$version_rxandroid"
@@ -71,7 +75,4 @@ dependencies {
     androidTestImplementation "androidx.test:core:$version_core"
     androidTestImplementation "androidx.test.espresso:espresso-web:$version_espresso_web"
     testImplementation "junit:junit:$version_junit"
-
-    implementation "com.google.dagger:dagger:$version_dagger"
-    kapt "com.google.dagger:dagger-compiler:$version_dagger_compiler"
 }

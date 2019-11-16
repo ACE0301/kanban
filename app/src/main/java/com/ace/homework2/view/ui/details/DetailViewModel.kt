@@ -3,18 +3,26 @@ package com.ace.homework2.view.ui.details
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.ace.homework2.TFSApplication.Companion.appComponent
 import com.ace.homework2.model.SpecificBoard
-import com.ace.homework2.model.network.ApiHelper
+import com.ace.homework2.model.network.ApiInterface
 import com.ace.homework2.model.network.TrelloHolder.REST_CONSUMER_KEY
-import com.ace.homework2.model.prefs.PreferencesHelper
+import com.ace.homework2.model.prefs.AppPreferencesHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class DetailViewModel(
-    private val repository: PreferencesHelper,
-    private val apiHelper: ApiHelper
-) : ViewModel() {
+class DetailViewModel : ViewModel() {
+
+    init {
+        appComponent.inject(this)
+    }
+
+    @Inject
+    lateinit var apiHelper: ApiInterface
+    @Inject
+    lateinit var appPreferencesHelper: AppPreferencesHelper
 
     private var disposableGetToken: Disposable? = null
     private var disposableLoadCards: Disposable? = null
@@ -23,6 +31,9 @@ class DetailViewModel(
 
     private val _board = MutableLiveData<SpecificBoard>()
     val board: LiveData<SpecificBoard> = _board
+
+    private val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean> = _loading
 
     private var _showCreatedCardEvent = MutableLiveData<Boolean>()
     val showCreatedCardEvent: LiveData<Boolean> = _showCreatedCardEvent
@@ -41,7 +52,7 @@ class DetailViewModel(
 
     fun getToken() {
         disposableGetToken?.dispose()
-        disposableGetToken = repository.getToken()
+        disposableGetToken = appPreferencesHelper.getToken()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -56,7 +67,7 @@ class DetailViewModel(
     fun loadCards(token: String, boardId: String) {
         disposableLoadCards?.dispose()
         disposableLoadCards =
-            apiHelper.service.getBoardDetails(
+            apiHelper.getBoardDetails(
                 boardId,
                 "all",
                 "id,idList,name,pos",
@@ -66,6 +77,8 @@ class DetailViewModel(
             )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { _loading.value = true }
+                .doFinally { _loading.value = false }
                 .subscribe({
                     _board.value = it
                 }, {})
@@ -73,7 +86,7 @@ class DetailViewModel(
 
     fun createCard(name: String, idList: String, token: String) {
         disposableCreateCard?.dispose()
-        disposableCreateCard = apiHelper.service.createCard(name, idList, REST_CONSUMER_KEY, token)
+        disposableCreateCard = apiHelper.createCard(name, idList, REST_CONSUMER_KEY, token)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -83,7 +96,7 @@ class DetailViewModel(
 
     fun updateCard(cardId: String, pos: String, idList: String, token: String) {
         disposableUpdateCard?.dispose()
-        disposableUpdateCard = apiHelper.service.updateCard(cardId, pos, idList, REST_CONSUMER_KEY, token)
+        disposableUpdateCard = apiHelper.updateCard(cardId, pos, idList, REST_CONSUMER_KEY, token)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -97,5 +110,6 @@ class DetailViewModel(
         disposableLoadCards?.dispose()
         disposableCreateCard?.dispose()
         disposableUpdateCard?.dispose()
+        super.onCleared()
     }
 }

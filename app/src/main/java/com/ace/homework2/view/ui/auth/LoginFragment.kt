@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.ace.homework2.R
-import com.ace.homework2.TFSApplication.Companion.appComponent
 import com.ace.homework2.model.network.TrelloHolder
 import com.ace.homework2.model.prefs.AppPreferencesHelper
 import com.ace.homework2.view.ui.boards.BoardsView
@@ -31,11 +30,6 @@ class LoginFragment : Fragment() {
         fun newInstance() = LoginFragment()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        appComponent.inject(this)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
         inflater.inflate(R.layout.fragment_login, container, false)
 
@@ -48,9 +42,7 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val loginViewModelFactory = LoginViewModelFactory(appPreferencesHelper)
-
-        val viewModel = ViewModelProvider(this, loginViewModelFactory)
+        val viewModel = ViewModelProvider(this)
             .get(LoginViewModel::class.java)
 
         btnAuth.setOnClickListener {
@@ -70,7 +62,6 @@ class LoginFragment : Fragment() {
                                 Toast.makeText(context, getString(R.string.auth_error), Toast.LENGTH_SHORT).show()
                             }
                         })
-
                     } else {
                         view?.loadUrl(url)
                     }
