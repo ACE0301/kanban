@@ -20,6 +20,7 @@ import com.ace.homework2.model.SpecificBoard
 import com.github.scribejava.core.model.OAuthConstants.TOKEN
 import com.google.android.material.snackbar.Snackbar
 import com.woxthebox.draglistview.BoardView
+import kotlinx.android.synthetic.main.board_layout.*
 import kotlinx.android.synthetic.main.column_header.view.*
 import kotlinx.android.synthetic.main.footer_item.view.*
 import kotlinx.android.synthetic.main.include_progress_overlay.*
@@ -45,11 +46,14 @@ class DetailFragment : Fragment() {
     private lateinit var detailViewModel: DetailViewModel
     private lateinit var inAnimation: AlphaAnimation
     private lateinit var outAnimation: AlphaAnimation
+    var column = 0
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(com.ace.homework2.R.layout.board_layout, container, false)
-        //val detailViewModelFactory = DetailViewModelFactory(appPreferencesHelper, apiHelper)
-
         detailViewModel = ViewModelProvider(this)
             .get(DetailViewModel::class.java)
         mBoardView = view.findViewById(com.ace.homework2.R.id.board_view)
@@ -60,8 +64,20 @@ class DetailFragment : Fragment() {
         mBoardView.setColumnSnapPosition(BoardView.ColumnSnapPosition.CENTER)
         mBoardView.setBoardListener(object : BoardView.BoardListener {
             override fun onItemDragStarted(column: Int, row: Int) {}
-            override fun onItemDragEnded(fromColumn: Int, fromRow: Int, toColumn: Int, toRow: Int) {}
-            override fun onItemChangedPosition(oldColumn: Int, oldRow: Int, newColumn: Int, newRow: Int) {
+            override fun onItemDragEnded(
+                fromColumn: Int,
+                fromRow: Int,
+                toColumn: Int,
+                toRow: Int
+            ) {
+            }
+
+            override fun onItemChangedPosition(
+                oldColumn: Int,
+                oldRow: Int,
+                newColumn: Int,
+                newRow: Int
+            ) {
                 //TODO пофиксить все баги с перетаскиванием
 //                Toast.makeText(context, "Position changed - newColumn: $newColumn newRow: $newRow", Toast.LENGTH_SHORT)
 //                    .show()//проверяю куда перенес карточку
@@ -101,12 +117,20 @@ class DetailFragment : Fragment() {
                     } else {
                         if (oldRow > newRow) {
                             newCardPos =
-                                ((map[newListId]?.get(newRow - 1)?.pos)?.toFloat()?.plus(map[newListId]?.get(newRow)?.pos?.toFloat()!!))?.div(
+                                ((map[newListId]?.get(newRow - 1)?.pos)?.toFloat()?.plus(
+                                    map[newListId]?.get(
+                                        newRow
+                                    )?.pos?.toFloat()!!
+                                ))?.div(
                                     2
                                 )
                         } else {
                             newCardPos =
-                                ((map[newListId]?.get(newRow)?.pos)?.toFloat()?.plus(map[newListId]?.get(newRow + 1)?.pos?.toFloat()!!))?.div(
+                                ((map[newListId]?.get(newRow)?.pos)?.toFloat()?.plus(
+                                    map[newListId]?.get(
+                                        newRow + 1
+                                    )?.pos?.toFloat()!!
+                                ))?.div(
                                     2
                                 )
                         }
@@ -127,12 +151,20 @@ class DetailFragment : Fragment() {
                     } else {
                         if (oldColumn > newColumn) {
                             newCardPos =
-                                ((map[newListId]?.get(newRow - 1)?.pos)?.toFloat()?.plus(map[newListId]?.get(newRow)?.pos?.toFloat()!!))?.div(
+                                ((map[newListId]?.get(newRow - 1)?.pos)?.toFloat()?.plus(
+                                    map[newListId]?.get(
+                                        newRow
+                                    )?.pos?.toFloat()!!
+                                ))?.div(
                                     2
                                 )
                         } else {
                             newCardPos =
-                                ((map[newListId]?.get(newRow - 1)?.pos)?.toFloat()?.plus(map[newListId]?.get(newRow)?.pos?.toFloat()!!))?.div(
+                                ((map[newListId]?.get(newRow - 1)?.pos)?.toFloat()?.plus(
+                                    map[newListId]?.get(
+                                        newRow
+                                    )?.pos?.toFloat()!!
+                                ))?.div(
                                     2
                                 )
                         }
@@ -174,14 +206,19 @@ class DetailFragment : Fragment() {
         })
         mBoardView.setBoardCallback(object : BoardView.BoardCallback {
             override fun canDragItemAtPosition(column: Int, dragPosition: Int) = true
-            override fun canDropItemAtPosition(oldColumn: Int, oldRow: Int, newColumn: Int, newRow: Int) = true
+            override fun canDropItemAtPosition(
+                oldColumn: Int,
+                oldRow: Int,
+                newColumn: Int,
+                newRow: Int
+            ) = true
         })
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        toolbar.title = board?.name
         detailViewModel.getToken()
         detailViewModel.token.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             token = it
@@ -204,27 +241,32 @@ class DetailFragment : Fragment() {
         detailViewModel.board.observe(viewLifecycleOwner, androidx.lifecycle.Observer { it ->
             board = it
             resetBoard()
+            toolbar.title = board?.name
         })
-        detailViewModel.showCreatedCardEvent.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            if (it == true) { // Observed state is true.
-                Snackbar.make(
-                    activity!!.findViewById(android.R.id.content),
-                    getString(com.ace.homework2.R.string.created_card),
-                    Snackbar.LENGTH_SHORT // How long to display the message.
-                ).show()
-                detailViewModel.doneShowingSnackbar()// Reset state to make sure the snackbar is only shown once, even if the device has a configuration change.
-            }
-        })
-        detailViewModel.showUpdatedCardEvent.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            if (it == true) { // Observed state is true.
-                Snackbar.make(
-                    activity!!.findViewById(android.R.id.content),
-                    getString(com.ace.homework2.R.string.updated_card),
-                    Snackbar.LENGTH_SHORT // How long to display the message.
-                ).show()
-                detailViewModel.doneShowingSnackbar()// Reset state to make sure the snackbar is only shown once, even if the device has a configuration change.
-            }
-        })
+        detailViewModel.showCreatedCardEvent.observe(
+            viewLifecycleOwner,
+            androidx.lifecycle.Observer {
+                if (it == true) { // Observed state is true.
+                    Snackbar.make(
+                        activity!!.findViewById(android.R.id.content),
+                        getString(com.ace.homework2.R.string.created_card),
+                        Snackbar.LENGTH_SHORT // How long to display the message.
+                    ).show()
+                    detailViewModel.doneShowingSnackbar()// Reset state to make sure the snackbar is only shown once, even if the device has a configuration change.
+                }
+            })
+        detailViewModel.showUpdatedCardEvent.observe(
+            viewLifecycleOwner,
+            androidx.lifecycle.Observer {
+                if (it == true) { // Observed state is true.
+                    Snackbar.make(
+                        activity!!.findViewById(android.R.id.content),
+                        getString(com.ace.homework2.R.string.updated_card),
+                        Snackbar.LENGTH_SHORT // How long to display the message.
+                    ).show()
+                    detailViewModel.doneShowingSnackbar()// Reset state to make sure the snackbar is only shown once, even if the device has a configuration change.
+                }
+            })
     }
 
     private fun resetBoard() {
@@ -254,6 +296,8 @@ class DetailFragment : Fragment() {
 
         footer.setOnClickListener {
             footer.tvAddCard.visibility = View.GONE
+            toolbar.visibility = View.GONE
+            rlCustomToolBar.visibility = View.VISIBLE
             footer.llAddNewCard.visibility = View.VISIBLE
         }
         footer.btnSaveNewCard.setOnClickListener {
@@ -273,7 +317,8 @@ class DetailFragment : Fragment() {
             )
         }
         mBoardView.addColumn(listAdapter, header, null, false, LinearLayoutManager(context))
-        val parent = mBoardView.getRecyclerView(mBoardView.getColumnOfHeader(header)).parent as LinearLayout
+        val parent =
+            mBoardView.getRecyclerView(mBoardView.getColumnOfHeader(header)).parent as LinearLayout
         val recyclerView = mBoardView.getRecyclerView(mBoardView.getColumnOfHeader(header))
         var parentParams = parent.layoutParams as LinearLayout.LayoutParams
         parentParams.weight = 1f

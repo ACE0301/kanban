@@ -13,10 +13,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ace.homework2.R
 import com.ace.homework2.model.*
-import com.ace.homework2.view.custom.CustomViewFragment
 import com.ace.homework2.view.ui.details.DetailView
 import com.ace.homework2.view.ui.dialog.NewBoardDialogFragment
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_boards.*
 import kotlinx.android.synthetic.main.include_progress_overlay.*
 
@@ -38,7 +39,6 @@ class BoardsFragment : Fragment(), OnDialogResult {
     private val boardsAdapter = BoardsAdapter()
     private val mapper: MapToListMapper = MapToListMapperImpl()
     private var items: MutableList<Item> = mutableListOf()
-    private var token: String? = null
     private lateinit var inAnimation: AlphaAnimation
     private lateinit var outAnimation: AlphaAnimation
 
@@ -47,11 +47,16 @@ class BoardsFragment : Fragment(), OnDialogResult {
         activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        inflater.inflate(com.ace.homework2.R.layout.fragment_boards, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? =
+        inflater.inflate(R.layout.fragment_boards, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        toolbar.title = resources.getString(R.string.boards)
         rvList.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = boardsAdapter
@@ -60,10 +65,10 @@ class BoardsFragment : Fragment(), OnDialogResult {
             .get(BoardsViewModel::class.java)
 
         boardsViewModel.getToken()
-        boardsViewModel.token.observe(viewLifecycleOwner, Observer {
-            token = it
-            boardsViewModel.loadBoards(token ?: "")
-
+        boardsViewModel.hasToken.observe(viewLifecycleOwner, Observer {
+            if (it == true) {
+                boardsViewModel.loadBoards()
+            }
         })
         boardsViewModel.loading.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             if (it == true) {
@@ -93,37 +98,45 @@ class BoardsFragment : Fragment(), OnDialogResult {
         fab.setOnClickListener {
             val fragment: DialogFragment = NewBoardDialogFragment()
             fragment.setTargetFragment(this, REQUEST_BOARD_NAME)
-            fragment.show(fragmentManager!!, fragment.javaClass.name)
-        }
-
-        btnOpenCustom.setOnClickListener {
-            openCustomViewFragment()
+            fragment.show(parentFragmentManager, fragment.javaClass.name)
         }
 
         boardsAdapter.onItemClickListener = {
             (activity as? DetailView)?.openDetailFragment(it)
         }
+        boardsAdapter.onItemSwipe = {
+            if (it is Board) {
+                boardsViewModel.removeBoard(it.id)
+            }
+        }
+        boardsViewModel.showRemovedCardEvent.observe(viewLifecycleOwner, Observer {
+            if (it == true) { // Observed state is true.
+                Snackbar.make(
+                    activity!!.findViewById(android.R.id.content),
+                    getString(R.string.board_is_removed_snackbar),
+                    Snackbar.LENGTH_SHORT // How long to display the message.
+                ).show()
+                boardsViewModel.doneShowingSnackbar()// Reset state to make sure the snackbar is only shown once, even if the device has a configuration change.
+            }
+        })
     }
 
     override fun onNewBoardAdded(name: String, category: Category) {
         if (name.isEmpty()) {
-            Toast.makeText(context, getString(com.ace.homework2.R.string.empty_name_in_dialog), Toast.LENGTH_SHORT)
+            Toast.makeText(
+                context,
+                getString(R.string.empty_name_in_dialog),
+                Toast.LENGTH_SHORT
+            )
                 .show()
         } else {
             boardsViewModel.createBoard(
-                name, category.name, token ?: ""
+                name, category.name
             )
             boardsViewModel.board.observe(this, Observer {
                 (activity as? DetailView)?.openDetailFragment(it.id)
             })
         }
-    }
-
-    private fun openCustomViewFragment() {
-        fragmentManager?.beginTransaction()
-            ?.replace(com.ace.homework2.R.id.container, CustomViewFragment.newInstance(), CustomViewFragment.TAG)
-            ?.addToBackStack(CustomViewFragment.TAG)
-            ?.commit()
     }
 
     override fun onDestroyView() {

@@ -20,7 +20,9 @@ import javax.inject.Singleton
 @Module
 class StorageModule(private val appContext: Context) {
 
+
     @Provides
+    @Singleton
     fun provideDatabaseHelper(): AppPreferencesHelper {
         return AppPreferencesHelper(appContext)
     }
@@ -29,7 +31,9 @@ class StorageModule(private val appContext: Context) {
 @Module
 class NetworkModule {
 
+
     @Provides
+    @Singleton
     fun provideApiHelper(): ApiInterface {
         return Retrofit.Builder()
             .baseUrl(TrelloHolder.REST_URL)

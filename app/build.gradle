@@ -5,7 +5,7 @@ apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    buildToolsVersion '29.0.2'
     defaultConfig {
         applicationId "com.ace.homework2"
         minSdkVersion 23
@@ -75,4 +75,5 @@ dependencies {
     androidTestImplementation "androidx.test:core:$version_core"
     androidTestImplementation "androidx.test.espresso:espresso-web:$version_espresso_web"
     testImplementation "junit:junit:$version_junit"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 }

@@ -21,6 +21,7 @@ class BoardsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
     ItemTouchHelperAdapter {
 
     var onItemClickListener: ((String) -> Unit) = {}
+    var onItemSwipe: ((Item) -> Unit) = {}
 
     var data: MutableList<Item> = mutableListOf()
         set(value) {
@@ -30,6 +31,7 @@ class BoardsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
         }
 
     override fun onItemDismiss(position: Int) {
+        onItemSwipe.invoke(data[position])
         data.removeAt(position)
         notifyItemRemoved(position)
     }
@@ -51,11 +53,13 @@ class BoardsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             TYPE_HEADER -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_category, parent, false)
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_category, parent, false)
                 HeaderViewHolder(view)
             }
             TYPE_BOARD -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_board, parent, false)
+                val view =
+                    LayoutInflater.from(parent.context).inflate(R.layout.item_board, parent, false)
                 BoardViewHolder(view, onItemClickListener)
             }
             else -> throw IllegalArgumentException("Invalid view type")

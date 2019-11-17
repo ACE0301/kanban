@@ -51,4 +51,11 @@ interface ApiInterface {
         @Query("key") key: String,
         @Query("token") token: String
     ): Completable
+
+    @DELETE("1/boards/{id}")
+    fun removeBoard(
+        @Path("id") boardId: String,
+        @Query("key") key: String,
+        @Query("token") token: String
+    ): Completable
 }

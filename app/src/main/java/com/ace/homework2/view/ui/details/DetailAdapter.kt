@@ -41,7 +41,7 @@ class DetailAdapter(
         val mText: TextView = itemView.findViewById(R.id.text)
 
         override fun onItemClicked(view: View?) {
-            Toast.makeText(view?.context, "Item clicked", Toast.LENGTH_SHORT).show()
+            Toast.makeText(view?.context, "Карточка выбрана", Toast.LENGTH_SHORT).show()
         }
 
         override fun onItemLongClicked(view: View?): Boolean {

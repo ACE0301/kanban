@@ -7,7 +7,7 @@ import com.ace.homework2.TFSApplication.Companion.appComponent
 import com.ace.homework2.model.Board
 import com.ace.homework2.model.Category
 import com.ace.homework2.model.network.ApiInterface
-import com.ace.homework2.model.network.TrelloHolder
+import com.ace.homework2.model.network.TrelloHolder.REST_CONSUMER_KEY
 import com.ace.homework2.model.prefs.AppPreferencesHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -20,6 +20,8 @@ class BoardsViewModel : ViewModel() {
         appComponent.inject(this)
     }
 
+    private var token: String? = null
+
     @Inject
     lateinit var apiHelper: ApiInterface
     @Inject
@@ -28,18 +30,26 @@ class BoardsViewModel : ViewModel() {
     private val _items = MutableLiveData<MutableList<Board>>()
     val items: LiveData<MutableList<Board>> = _items
 
-    private val _token = MutableLiveData<String>()
-    val token: LiveData<String> = _token
-
     private val _board = MutableLiveData<Board>()
     val board: LiveData<Board> = _board
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading
 
+    private var _hasToken = MutableLiveData<Boolean>()
+    val hasToken: LiveData<Boolean> = _hasToken
+
+    private var _showRemovedCardEvent = MutableLiveData<Boolean>()
+    val showRemovedCardEvent: LiveData<Boolean> = _showRemovedCardEvent
+
     private var disposableGetToken: Disposable? = null
     private var disposableGetBoards: Disposable? = null
     private var disposablePostNewBoard: Disposable? = null
+    private var disposableRemoveBoard: Disposable? = null
+
+    fun doneShowingSnackbar() {
+        _showRemovedCardEvent.value = false
+    }
 
     fun getToken() {
         disposableGetToken?.dispose()
@@ -48,17 +58,18 @@ class BoardsViewModel : ViewModel() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    _token.value = it
+                    token = it
+                    _hasToken.value = true
                 }, {
-
+                    _hasToken.value = false
                 }
             )
     }
 
-    fun loadBoards(token: String) {
+    fun loadBoards() {
         disposableGetBoards?.dispose()
         disposableGetBoards =
-            apiHelper.getBoards(true, "id,name,organization", TrelloHolder.REST_CONSUMER_KEY, token)
+            apiHelper.getBoards(true, "id,name,organization", REST_CONSUMER_KEY, token ?: "")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { _loading.value = true }
@@ -67,7 +78,8 @@ class BoardsViewModel : ViewModel() {
                     { it ->
                         it.map {
                             if (it.organization == null) {
-                                it.organization = Category(displayName = "Персональные доски", name = "")
+                                it.organization =
+                                    Category(displayName = "Персональные доски", name = "")
                             }
                         }
                         it.sortBy {
@@ -79,10 +91,10 @@ class BoardsViewModel : ViewModel() {
                     })
     }
 
-    fun createBoard(name: String, organizationName: String, token: String) {
+    fun createBoard(name: String, organizationName: String) {
         disposablePostNewBoard?.dispose()
         disposablePostNewBoard =
-            apiHelper.postBoard(name, organizationName, true, TrelloHolder.REST_CONSUMER_KEY, token)
+            apiHelper.postBoard(name, organizationName, true, REST_CONSUMER_KEY, token ?: "")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -94,11 +106,27 @@ class BoardsViewModel : ViewModel() {
                 )
     }
 
+    fun removeBoard(idBoard: String) {
+        disposableRemoveBoard?.dispose()
+        disposableRemoveBoard =
+            apiHelper.removeBoard(idBoard, REST_CONSUMER_KEY, token ?: "")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    {
+                        _showRemovedCardEvent.value = true
+                    }, {
+                        _showRemovedCardEvent.value = false
+                    }
+                )
+
+    }
+
     override fun onCleared() {
         disposableGetToken?.dispose()
         disposableGetBoards?.dispose()
         disposablePostNewBoard?.dispose()
+        disposableRemoveBoard?.dispose()
         super.onCleared()
     }
-
 }
