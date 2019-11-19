@@ -1,26 +1,20 @@
 package com.ace.homework2
 
-import android.app.Application
-import com.ace.homework2.di.AppComponent
 import com.ace.homework2.di.DaggerAppComponent
-import com.ace.homework2.di.StorageModule
 import com.facebook.stetho.Stetho
 import com.facebook.stetho.okhttp3.StethoInterceptor
+import dagger.android.AndroidInjector
+import dagger.android.DaggerApplication
 import okhttp3.OkHttpClient
 
 
-class TFSApplication : Application() {
-
-    companion object {
-        lateinit var appComponent: AppComponent
+class TFSApplication : DaggerApplication() {
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+        return DaggerAppComponent.builder().application(this).build()
     }
 
     override fun onCreate() {
         super.onCreate()
-        appComponent = DaggerAppComponent.builder()
-            .storageModule(StorageModule(this))
-            .build()
-
         Stetho.initializeWithDefaults(this)
         OkHttpClient.Builder()
             .addNetworkInterceptor(StethoInterceptor())

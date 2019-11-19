@@ -4,7 +4,6 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.ace.homework2.TFSApplication.Companion.appComponent
 import com.ace.homework2.model.network.TrelloHolder
 import com.ace.homework2.model.prefs.AppPreferencesHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -13,14 +12,9 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 
-class LoginViewModel : ViewModel() {
-
-    init {
-        appComponent.inject(this)
-    }
-
-    @Inject
-    lateinit var appPreferencesHelper: AppPreferencesHelper
+class AuthViewModel @Inject constructor(
+    val appPreferencesHelper: AppPreferencesHelper
+) : ViewModel() {
 
     private var disposableSaveToken: Disposable? = null
 

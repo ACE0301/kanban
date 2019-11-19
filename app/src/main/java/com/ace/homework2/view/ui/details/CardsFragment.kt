@@ -1,6 +1,5 @@
-package com.ace.homework2.view.ui.details
+package com.ace.homework2.view.ui.cards
 
-import android.content.Context.MODE_PRIVATE
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -12,38 +11,41 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.util.Pair
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ace.homework2.model.Card
 import com.ace.homework2.model.SpecificBoard
-import com.github.scribejava.core.model.OAuthConstants.TOKEN
 import com.google.android.material.snackbar.Snackbar
 import com.woxthebox.draglistview.BoardView
+import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.board_layout.*
 import kotlinx.android.synthetic.main.column_header.view.*
 import kotlinx.android.synthetic.main.footer_item.view.*
 import kotlinx.android.synthetic.main.include_progress_overlay.*
 import java.util.*
+import javax.inject.Inject
 
 
-class DetailFragment : Fragment() {
+class CardsFragment : DaggerFragment() {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    lateinit var cardsViewModel: CardsViewModel
 
     companion object {
-        const val TAG = "DetailFragment"
+        const val TAG = "CardsFragment"
         private const val ARGUMENT_BOARD_ID = "ARGUMENT_BOARD_ID"
-        fun newInstance(boardId: String?) = DetailFragment().apply {
+        fun newInstance(boardId: String?) = CardsFragment().apply {
             arguments = Bundle().apply {
                 putString(ARGUMENT_BOARD_ID, boardId)
             }
         }
     }
 
-    private var token: String? = null
     private var sCreatedItems = 0
     private lateinit var mBoardView: BoardView
     private var board: SpecificBoard? = null
-    private lateinit var detailViewModel: DetailViewModel
     private lateinit var inAnimation: AlphaAnimation
     private lateinit var outAnimation: AlphaAnimation
     var column = 0
@@ -54,8 +56,7 @@ class DetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(com.ace.homework2.R.layout.board_layout, container, false)
-        detailViewModel = ViewModelProvider(this)
-            .get(DetailViewModel::class.java)
+        cardsViewModel = ViewModelProvider(this, viewModelFactory)[CardsViewModel::class.java]
         mBoardView = view.findViewById(com.ace.homework2.R.id.board_view)
         mBoardView.setSnapToColumnsWhenScrolling(true)
         mBoardView.setSnapToColumnWhenDragging(true)
@@ -189,11 +190,10 @@ class DetailFragment : Fragment() {
                     "карточка ${cardId?.toUpperCase()} из колонки $oldColumn и позиции $oldRow переехала в колонку $newColumn на позицию $newRow" +
                             "newCardPos $newCardPos  newListId $newListId newColumn $newColumn"
                 )
-                detailViewModel.updateCard(
+                cardsViewModel.updateCard(
                     cardId!!,
                     "$newCardPos",
-                    newListId ?: "",
-                    context?.getSharedPreferences(TOKEN, MODE_PRIVATE)?.getString(TOKEN, "") ?: ""
+                    newListId ?: ""
                 )
                 // Toast.makeText(context, "cardId1 $cardId1 cardId2 $cardId2", Toast.LENGTH_SHORT).show()
             }
@@ -219,12 +219,14 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         toolbar.title = board?.name
-        detailViewModel.getToken()
-        detailViewModel.token.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            token = it
-            detailViewModel.loadCards(token ?: "", arguments?.getString(ARGUMENT_BOARD_ID) ?: "")
+        cardsViewModel.getToken()
+        cardsViewModel.token.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            if (it.isNotEmpty()) {
+                cardsViewModel.loadCards(arguments?.getString(ARGUMENT_BOARD_ID) ?: "")
+            }
+
         })
-        detailViewModel.loading.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+        cardsViewModel.loading.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             if (it == true) {
                 inAnimation = AlphaAnimation(0f, 1f)
                 inAnimation.duration = 200
@@ -238,12 +240,12 @@ class DetailFragment : Fragment() {
             }
         })
 
-        detailViewModel.board.observe(viewLifecycleOwner, androidx.lifecycle.Observer { it ->
+        cardsViewModel.board.observe(viewLifecycleOwner, androidx.lifecycle.Observer { it ->
             board = it
             resetBoard()
             toolbar.title = board?.name
         })
-        detailViewModel.showCreatedCardEvent.observe(
+        cardsViewModel.showCreatedCardEvent.observe(
             viewLifecycleOwner,
             androidx.lifecycle.Observer {
                 if (it == true) { // Observed state is true.
@@ -252,10 +254,10 @@ class DetailFragment : Fragment() {
                         getString(com.ace.homework2.R.string.created_card),
                         Snackbar.LENGTH_SHORT // How long to display the message.
                     ).show()
-                    detailViewModel.doneShowingSnackbar()// Reset state to make sure the snackbar is only shown once, even if the device has a configuration change.
+                    cardsViewModel.doneShowingSnackbar()// Reset state to make sure the snackbar is only shown once, even if the device has a configuration change.
                 }
             })
-        detailViewModel.showUpdatedCardEvent.observe(
+        cardsViewModel.showUpdatedCardEvent.observe(
             viewLifecycleOwner,
             androidx.lifecycle.Observer {
                 if (it == true) { // Observed state is true.
@@ -264,9 +266,12 @@ class DetailFragment : Fragment() {
                         getString(com.ace.homework2.R.string.updated_card),
                         Snackbar.LENGTH_SHORT // How long to display the message.
                     ).show()
-                    detailViewModel.doneShowingSnackbar()// Reset state to make sure the snackbar is only shown once, even if the device has a configuration change.
+                    cardsViewModel.doneShowingSnackbar()// Reset state to make sure the snackbar is only shown once, even if the device has a configuration change.
                 }
             })
+        cardsViewModel.errorMessage.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+        })
     }
 
     private fun resetBoard() {
@@ -284,7 +289,7 @@ class DetailFragment : Fragment() {
                 mItemArray.add(Pair(id, it.name))
             }
         }
-        val listAdapter = DetailAdapter(
+        val listAdapter = CardsAdapter(
             mItemArray,
             com.ace.homework2.R.layout.column_item,
             com.ace.homework2.R.id.item_layout,
@@ -308,7 +313,7 @@ class DetailFragment : Fragment() {
             //val name = "колонка ${mBoardView.getColumnOfHeader(header)} номер ${mBoardView.itemCount} "
             val id = sCreatedItems++.toLong()
             val item = Pair(id, name)
-            detailViewModel.createCard(name, idList, token ?: "")
+            cardsViewModel.createCard(name, idList)
             mBoardView.addItem(
                 mBoardView.getColumnOfHeader(header),
                 mBoardView.getItemCount(mBoardView.getColumnOfHeader(header)),

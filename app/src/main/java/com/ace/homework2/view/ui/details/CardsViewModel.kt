@@ -1,9 +1,8 @@
-package com.ace.homework2.view.ui.details
+package com.ace.homework2.view.ui.cards
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.ace.homework2.TFSApplication.Companion.appComponent
 import com.ace.homework2.model.SpecificBoard
 import com.ace.homework2.model.network.ApiInterface
 import com.ace.homework2.model.network.TrelloHolder.REST_CONSUMER_KEY
@@ -13,27 +12,27 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class DetailViewModel : ViewModel() {
-
-    init {
-        appComponent.inject(this)
-    }
-
-    @Inject
-    lateinit var apiHelper: ApiInterface
-    @Inject
-    lateinit var appPreferencesHelper: AppPreferencesHelper
+class CardsViewModel @Inject constructor(
+    val apiHelper: ApiInterface,
+    val appPreferencesHelper: AppPreferencesHelper
+) : ViewModel() {
 
     private var disposableGetToken: Disposable? = null
     private var disposableLoadCards: Disposable? = null
     private var disposableCreateCard: Disposable? = null
     private var disposableUpdateCard: Disposable? = null
 
+    private var _token = MutableLiveData<String>()
+    val token: LiveData<String> = _token
+
     private val _board = MutableLiveData<SpecificBoard>()
     val board: LiveData<SpecificBoard> = _board
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading
+
+    private val _errorMessage = MutableLiveData<String>()
+    val errorMessage: LiveData<String> = _errorMessage
 
     private var _showCreatedCardEvent = MutableLiveData<Boolean>()
     val showCreatedCardEvent: LiveData<Boolean> = _showCreatedCardEvent
@@ -46,10 +45,6 @@ class DetailViewModel : ViewModel() {
         _showUpdatedCardEvent.value = false
     }
 
-    private val _token = MutableLiveData<String>()
-    val token: LiveData<String>
-        get() = _token
-
     fun getToken() {
         disposableGetToken?.dispose()
         disposableGetToken = appPreferencesHelper.getToken()
@@ -59,12 +54,12 @@ class DetailViewModel : ViewModel() {
                 {
                     _token.value = it
                 }, {
-
+                    _errorMessage.value = it.message
                 }
             )
     }
 
-    fun loadCards(token: String, boardId: String) {
+    fun loadCards(boardId: String) {
         disposableLoadCards?.dispose()
         disposableLoadCards =
             apiHelper.getBoardDetails(
@@ -73,7 +68,7 @@ class DetailViewModel : ViewModel() {
                 "id,idList,name,pos",
                 "all",
                 REST_CONSUMER_KEY,
-                token
+                token.value ?: ""
             )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -81,28 +76,36 @@ class DetailViewModel : ViewModel() {
                 .doFinally { _loading.value = false }
                 .subscribe({
                     _board.value = it
-                }, {})
+                }, {
+                    _errorMessage.value = it.message
+                })
     }
 
-    fun createCard(name: String, idList: String, token: String) {
+    fun createCard(name: String, idList: String) {
         disposableCreateCard?.dispose()
-        disposableCreateCard = apiHelper.createCard(name, idList, REST_CONSUMER_KEY, token)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                _showCreatedCardEvent.value = true
-            }, {})
+        disposableCreateCard =
+            apiHelper.createCard(name, idList, REST_CONSUMER_KEY, token.value ?: "")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    _showCreatedCardEvent.value = true
+                }, {
+                    _errorMessage.value = it.message
+                })
     }
 
-    fun updateCard(cardId: String, pos: String, idList: String, token: String) {
+    fun updateCard(cardId: String, pos: String, idList: String) {
         disposableUpdateCard?.dispose()
-        disposableUpdateCard = apiHelper.updateCard(cardId, pos, idList, REST_CONSUMER_KEY, token)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                _showUpdatedCardEvent.value = true
-            }, {}
-            )
+        disposableUpdateCard =
+            apiHelper.updateCard(cardId, pos, idList, REST_CONSUMER_KEY, token.value ?: "")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    _showUpdatedCardEvent.value = true
+                }, {
+                    _errorMessage.value = it.message
+                }
+                )
     }
 
     override fun onCleared() {

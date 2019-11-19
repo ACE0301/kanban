@@ -14,23 +14,29 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.ace.homework2.R
 import com.ace.homework2.model.network.TrelloHolder
-import com.ace.homework2.model.prefs.AppPreferencesHelper
 import com.ace.homework2.view.ui.boards.BoardsView
+import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_login.*
 import javax.inject.Inject
 
 
-class LoginFragment : Fragment() {
+class AuthFragment : DaggerFragment() {
 
     @Inject
-    lateinit var appPreferencesHelper: AppPreferencesHelper
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    lateinit var authViewModel: AuthViewModel
 
     companion object {
-        const val TAG = "LoginFragment"
-        fun newInstance() = LoginFragment()
+        const val TAG = "AuthFragment"
+        fun newInstance() = AuthFragment()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View =
         inflater.inflate(R.layout.fragment_login, container, false)
 
     override fun onResume() {
@@ -41,9 +47,7 @@ class LoginFragment : Fragment() {
     @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val viewModel = ViewModelProvider(this)
-            .get(LoginViewModel::class.java)
+        authViewModel = ViewModelProvider(this, viewModelFactory)[AuthViewModel::class.java]
 
         btnAuth.setOnClickListener {
             btnAuth.visibility = View.GONE
@@ -54,12 +58,16 @@ class LoginFragment : Fragment() {
                 @SuppressLint("FragmentLiveDataObserve")
                 override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
                     if (url!!.startsWith(TrelloHolder.REST_CALLBACK_URL)) {
-                        viewModel.authorization(url)
-                        viewModel.successAuthorization.observe(this@LoginFragment, Observer {
+                        authViewModel.authorization(url)
+                        authViewModel.successAuthorization.observe(this@AuthFragment, Observer {
                             if (it == true) {
                                 (activity as? BoardsView)?.showBoards()
                             } else {
-                                Toast.makeText(context, getString(R.string.auth_error), Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    context,
+                                    getString(R.string.auth_error),
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                         })
                     } else {

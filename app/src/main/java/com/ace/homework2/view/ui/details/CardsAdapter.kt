@@ -1,4 +1,4 @@
-package com.ace.homework2.view.ui.details
+package com.ace.homework2.view.ui.cards
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,12 +10,12 @@ import com.ace.homework2.R
 import com.woxthebox.draglistview.DragItemAdapter
 
 
-class DetailAdapter(
+class CardsAdapter(
     list: ArrayList<Pair<Long, String>>,
     private val layoutId: Int,
     private val grabHandleId: Int,
     private val dragOnLongPress: Boolean
-) : DragItemAdapter<Pair<Long, String>, DetailAdapter.ViewHolder>() {
+) : DragItemAdapter<Pair<Long, String>, CardsAdapter.ViewHolder>() {
 
     init {
         itemList = list

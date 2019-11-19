@@ -3,7 +3,6 @@ package com.ace.homework2.view.ui.boards
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.ace.homework2.TFSApplication.Companion.appComponent
 import com.ace.homework2.model.Board
 import com.ace.homework2.model.Category
 import com.ace.homework2.model.network.ApiInterface
@@ -14,18 +13,13 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class BoardsViewModel : ViewModel() {
+class BoardsViewModel @Inject constructor(
+    val apiHelper: ApiInterface,
+    val appPreferencesHelper: AppPreferencesHelper
+) : ViewModel() {
 
-    init {
-        appComponent.inject(this)
-    }
-
-    private var token: String? = null
-
-    @Inject
-    lateinit var apiHelper: ApiInterface
-    @Inject
-    lateinit var appPreferencesHelper: AppPreferencesHelper
+    private var _token = MutableLiveData<String>()
+    val token: LiveData<String> = _token
 
     private val _items = MutableLiveData<MutableList<Board>>()
     val items: LiveData<MutableList<Board>> = _items
@@ -36,11 +30,11 @@ class BoardsViewModel : ViewModel() {
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading
 
-    private var _hasToken = MutableLiveData<Boolean>()
-    val hasToken: LiveData<Boolean> = _hasToken
-
     private var _showRemovedCardEvent = MutableLiveData<Boolean>()
     val showRemovedCardEvent: LiveData<Boolean> = _showRemovedCardEvent
+
+    private val _errorMessage = MutableLiveData<String>()
+    val errorMessage: LiveData<String> = _errorMessage
 
     private var disposableGetToken: Disposable? = null
     private var disposableGetBoards: Disposable? = null
@@ -58,10 +52,9 @@ class BoardsViewModel : ViewModel() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    token = it
-                    _hasToken.value = true
+                    _token.value = it
                 }, {
-                    _hasToken.value = false
+                    _errorMessage.value = it.message
                 }
             )
     }
@@ -69,7 +62,7 @@ class BoardsViewModel : ViewModel() {
     fun loadBoards() {
         disposableGetBoards?.dispose()
         disposableGetBoards =
-            apiHelper.getBoards(true, "id,name,organization", REST_CONSUMER_KEY, token ?: "")
+            apiHelper.getBoards(true, "id,name,organization", REST_CONSUMER_KEY, token.value ?: "")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { _loading.value = true }
@@ -87,21 +80,21 @@ class BoardsViewModel : ViewModel() {
                         }
                         _items.value = it
                     }, {
-
+                        _errorMessage.value = it.message
                     })
     }
 
     fun createBoard(name: String, organizationName: String) {
         disposablePostNewBoard?.dispose()
         disposablePostNewBoard =
-            apiHelper.postBoard(name, organizationName, true, REST_CONSUMER_KEY, token ?: "")
+            apiHelper.postBoard(name, organizationName, true, REST_CONSUMER_KEY, token.value ?: "")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {
                         _board.value = it
                     }, {
-
+                        _errorMessage.value = it.message
                     }
                 )
     }
@@ -109,14 +102,14 @@ class BoardsViewModel : ViewModel() {
     fun removeBoard(idBoard: String) {
         disposableRemoveBoard?.dispose()
         disposableRemoveBoard =
-            apiHelper.removeBoard(idBoard, REST_CONSUMER_KEY, token ?: "")
+            apiHelper.removeBoard(idBoard, REST_CONSUMER_KEY, token.value ?: "")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {
                         _showRemovedCardEvent.value = true
                     }, {
-                        _showRemovedCardEvent.value = false
+                        _errorMessage.value = it.message
                     }
                 )
 

@@ -2,15 +2,15 @@ package com.ace.homework2
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.ace.homework2.view.ui.auth.LoginFragment
+import com.ace.homework2.view.ui.auth.AuthFragment
 import com.ace.homework2.view.ui.boards.BoardsFragment
 import com.ace.homework2.view.ui.boards.BoardsView
-import com.ace.homework2.view.ui.details.DetailFragment
-import com.ace.homework2.view.ui.details.DetailView
+import com.ace.homework2.view.ui.cards.CardsFragment
+import com.ace.homework2.view.ui.cards.CardsView
 import com.github.scribejava.core.model.OAuthConstants.TOKEN
 
 
-class MainActivity : AppCompatActivity(), DetailView, BoardsView {
+class MainActivity : AppCompatActivity(), CardsView, BoardsView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,14 +29,14 @@ class MainActivity : AppCompatActivity(), DetailView, BoardsView {
 
     private fun showLoginFragment() {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.container, LoginFragment.newInstance(), LoginFragment.TAG)
+            .replace(R.id.container, AuthFragment.newInstance(), AuthFragment.TAG)
             .commit()
     }
 
-    override fun openDetailFragment(boardId: String) {
+    override fun openCardsFragment(boardId: String) {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.container, DetailFragment.newInstance(boardId), DetailFragment.TAG)
-            .addToBackStack(DetailFragment.TAG)
+            .replace(R.id.container, CardsFragment.newInstance(boardId), CardsFragment.TAG)
+            .addToBackStack(CardsFragment.TAG)
             .commit()
     }
 

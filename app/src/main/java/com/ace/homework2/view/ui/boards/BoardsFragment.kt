@@ -15,18 +15,26 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ace.homework2.R
 import com.ace.homework2.model.*
-import com.ace.homework2.view.ui.details.DetailView
+import com.ace.homework2.view.ui.auth.AuthViewModel
+import com.ace.homework2.view.ui.cards.CardsView
 import com.ace.homework2.view.ui.dialog.NewBoardDialogFragment
 import com.google.android.material.snackbar.Snackbar
+import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_boards.*
 import kotlinx.android.synthetic.main.include_progress_overlay.*
+import javax.inject.Inject
 
 
 interface OnDialogResult {
     fun onNewBoardAdded(name: String, category: Category)
 }
 
-class BoardsFragment : Fragment(), OnDialogResult {
+class BoardsFragment : DaggerFragment(), OnDialogResult {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    lateinit var boardsViewModel: BoardsViewModel
 
     companion object {
         const val TAG = "BoardsFragment"
@@ -35,7 +43,6 @@ class BoardsFragment : Fragment(), OnDialogResult {
         var hashMap: MutableMap<Category, List<Board>> = hashMapOf()
     }
 
-    private lateinit var boardsViewModel: BoardsViewModel
     private val boardsAdapter = BoardsAdapter()
     private val mapper: MapToListMapper = MapToListMapperImpl()
     private var items: MutableList<Item> = mutableListOf()
@@ -61,12 +68,11 @@ class BoardsFragment : Fragment(), OnDialogResult {
             layoutManager = LinearLayoutManager(activity)
             adapter = boardsAdapter
         }
-        boardsViewModel = ViewModelProvider(this)
-            .get(BoardsViewModel::class.java)
+        boardsViewModel = ViewModelProvider(this, viewModelFactory)[BoardsViewModel::class.java]
 
         boardsViewModel.getToken()
-        boardsViewModel.hasToken.observe(viewLifecycleOwner, Observer {
-            if (it == true) {
+        boardsViewModel.token.observe(viewLifecycleOwner, Observer {
+            if (it.isNotEmpty()) {
                 boardsViewModel.loadBoards()
             }
         })
@@ -102,7 +108,7 @@ class BoardsFragment : Fragment(), OnDialogResult {
         }
 
         boardsAdapter.onItemClickListener = {
-            (activity as? DetailView)?.openDetailFragment(it)
+            (activity as? CardsView)?.openCardsFragment(it)
         }
         boardsAdapter.onItemSwipe = {
             if (it is Board) {
@@ -134,7 +140,7 @@ class BoardsFragment : Fragment(), OnDialogResult {
                 name, category.name
             )
             boardsViewModel.board.observe(this, Observer {
-                (activity as? DetailView)?.openDetailFragment(it.id)
+                (activity as? CardsView)?.openCardsFragment(it.id)
             })
         }
     }
