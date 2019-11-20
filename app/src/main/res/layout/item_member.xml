@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray" />
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+        <com.ace.homework2.view.custom.CircleImageView
+                android:id="@+id/ivWithImage"
+                android:layout_width="@dimen/avatar_size"
+                android:layout_height="@dimen/avatar_size"
+                android:layout_margin="@dimen/spacing_small_8"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/avatarka1"
+                app:layout_constraintBottom_toBottomOf="@+id/ivNoImage"
+                app:layout_constraintStart_toEndOf="@+id/ivNoImage"
+                app:layout_constraintTop_toTopOf="@+id/ivNoImage" />
+
+        <com.ace.homework2.view.custom.CircleImageView
+                android:id="@+id/ivNoImage"
+                android:layout_width="@dimen/avatar_size"
+                android:layout_height="@dimen/avatar_size"
+                android:layout_margin="@dimen/spacing_small_8"
+                android:layout_marginStart="64dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:gravity="center"
+                app:backgColor="#AAA666"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:textColor="#FFFFFF"
+                app:txt="Aleksandr" />
+
+        <TextView
+                android:id="@+id/tvMemberName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginVertical="@dimen/spacing_small_8"
+                android:layout_marginStart="@dimen/spacing_small_8"
+                android:textColor="@color/black"
+                android:textSize="@dimen/font_normal_16"
+                tools:text="category" />
+    </LinearLayout>
+
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray" />
+</LinearLayout>

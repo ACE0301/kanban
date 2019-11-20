@@ -2,26 +2,29 @@ package com.ace.homework2.view.ui.cards
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
-import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.util.Pair
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ace.homework2.R
 import com.ace.homework2.model.Card
 import com.ace.homework2.model.SpecificBoard
+import com.ace.homework2.view.ui.members.MembersAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.woxthebox.draglistview.BoardView
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.board_layout.*
+import kotlinx.android.synthetic.main.board_layout.view.*
 import kotlinx.android.synthetic.main.column_header.view.*
 import kotlinx.android.synthetic.main.footer_item.view.*
 import kotlinx.android.synthetic.main.include_progress_overlay.*
+import kotlinx.android.synthetic.main.nav_header.*
+import kotlinx.android.synthetic.main.nav_header.view.*
 import java.util.*
 import javax.inject.Inject
 
@@ -35,6 +38,7 @@ class CardsFragment : DaggerFragment() {
 
     companion object {
         const val TAG = "CardsFragment"
+        const val POS_IF_NO_ELEMENTS = 16384.0f
         private const val ARGUMENT_BOARD_ID = "ARGUMENT_BOARD_ID"
         fun newInstance(boardId: String?) = CardsFragment().apply {
             arguments = Bundle().apply {
@@ -48,7 +52,8 @@ class CardsFragment : DaggerFragment() {
     private var board: SpecificBoard? = null
     private lateinit var inAnimation: AlphaAnimation
     private lateinit var outAnimation: AlphaAnimation
-    var column = 0
+    private var isOpenScreen = true //флаг обновления таблицы карточек по открытию экрана
+    private val membersAdapter = MembersAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,153 +70,38 @@ class CardsFragment : DaggerFragment() {
         mBoardView.setColumnSnapPosition(BoardView.ColumnSnapPosition.CENTER)
         mBoardView.setBoardListener(object : BoardView.BoardListener {
             override fun onItemDragStarted(column: Int, row: Int) {}
-            override fun onItemDragEnded(
-                fromColumn: Int,
-                fromRow: Int,
-                toColumn: Int,
-                toRow: Int
-            ) {
-            }
-
-            override fun onItemChangedPosition(
-                oldColumn: Int,
-                oldRow: Int,
-                newColumn: Int,
-                newRow: Int
-            ) {
-                //TODO пофиксить все баги с перетаскиванием
-//                Toast.makeText(context, "Position changed - newColumn: $newColumn newRow: $newRow", Toast.LENGTH_SHORT)
-//                    .show()//проверяю куда перенес карточку
-                //Toast.makeText(context, "oldColumn: $oldColumn oldRow: $oldRow", Toast.LENGTH_SHORT).show()//проверяю откуда перенес карточку
-                var map: MutableMap<String, List<Card>?> = mutableMapOf()
-                board?.lists?.forEach {
-                    map[it.id] = null
-                }
-                val map2 = board?.cards?.groupBy {
-                    it.idList
-                }
+            override fun onItemDragEnded(fromColumn: Int, fromRow: Int, toColumn: Int, toRow: Int) {
+                var map: MutableMap<String, List<Card>?> =
+                    mutableMapOf() //главная мапа с колонками и карточками
+                board?.lists?.forEach { map[it.id] = null }
+                val map2 = board?.cards?.groupBy { it.idList }
                 map.entries.forEach { map ->
                     map2?.entries?.forEach { map2 ->
                         if (map.key == map2.key) {
                             map.setValue(map2.value)
                         }
                     }
-
                 }
-                val oldListId = board?.lists?.get(oldColumn)?.id
-                val newListId = board?.lists?.get(newColumn)?.id
-                var newCardPos: Float? = null
-                //если колонка не изменилась
-                if (oldColumn == newColumn) {
-                    //1 элемент в колонке
-                    if (newColumn == 0 && newRow == 0) {
-                        return
-                    } else if (map[newListId]?.size == 1) {
-                        return
-                        //перетаскиваем в начало колонки
-                    } else if (newRow == 0) {
-                        newCardPos = ((map[newListId]?.get(newRow)?.pos)?.toFloat())?.div(2)
-                        //перетаскиваем в конец колонки
-                    } else if (newRow + 1 == map[newListId]?.size!!) {
-                        newCardPos = ((map[newListId]?.get(newRow)?.pos)?.toFloat())?.times(2)
-                        //перетаскиваем между любых элементов
-                    } else {
-                        if (oldRow > newRow) {
-                            newCardPos =
-                                ((map[newListId]?.get(newRow - 1)?.pos)?.toFloat()?.plus(
-                                    map[newListId]?.get(
-                                        newRow
-                                    )?.pos?.toFloat()!!
-                                ))?.div(
-                                    2
-                                )
-                        } else {
-                            newCardPos =
-                                ((map[newListId]?.get(newRow)?.pos)?.toFloat()?.plus(
-                                    map[newListId]?.get(
-                                        newRow + 1
-                                    )?.pos?.toFloat()!!
-                                ))?.div(
-                                    2
-                                )
-                        }
-                    }
-                    //если колонка изменилась
-                } else {
-                    //если в новой колонке нет элементов
-                    if (map[newListId]?.size == null) {
-                        newCardPos = 16384.0f
-                    }
-                    //перетаскиваем в новую колонку в начало
-                    else if (newRow == 0) {
-                        newCardPos = ((map[newListId]?.get(newRow)?.pos)?.toFloat())?.div(2)
-                    }
-                    //перетаскиваем в новую колонку в конец
-                    else if (newRow == map[newListId]?.size!!) {
-                        newCardPos = ((map[newListId]?.get(newRow - 1)?.pos)?.toFloat())?.times(2)
-                    } else {
-                        if (oldColumn > newColumn) {
-                            newCardPos =
-                                ((map[newListId]?.get(newRow - 1)?.pos)?.toFloat()?.plus(
-                                    map[newListId]?.get(
-                                        newRow
-                                    )?.pos?.toFloat()!!
-                                ))?.div(
-                                    2
-                                )
-                        } else {
-                            newCardPos =
-                                ((map[newListId]?.get(newRow - 1)?.pos)?.toFloat()?.plus(
-                                    map[newListId]?.get(
-                                        newRow
-                                    )?.pos?.toFloat()!!
-                                ))?.div(
-                                    2
-                                )
-                        }
-
-                    }
-                }
-                //Toast.makeText(context, "columnId: $columnId", Toast.LENGTH_SHORT).show()//проверяю id новой колонки
-                //айдишник элемента, который мы перетащили
-                var cardId = map[oldListId]?.get(oldRow)?.id
-                //Toast.makeText(context, "cardId: $cardId", Toast.LENGTH_SHORT).show()//id карты, которую изменяю
-                //Toast.makeText(context, "newCardPos $newCardPos", Toast.LENGTH_SHORT).show()//проверяю новый pos карточки
-                Toast.makeText(
-                    context,
-                    "карточка ${map[oldListId]?.get(oldRow)?.name} " +
-                            "из ${if (oldColumn == 0) "первой" else if (oldColumn == 1) "второй" else "последней"} колонки " +
-                            "и позиции $oldRow переехала в ${if (newColumn == 0) "первую" else if (newColumn == 1) "вторую" else "последнюю"} колонку на позицию $newRow",
-                    Toast.LENGTH_LONG
-                ).show()//проверяю новый pos карточки
-
-                Log.d(
-                    "M_DetailFragment",
-                    "карточка ${cardId?.toUpperCase()} из колонки $oldColumn и позиции $oldRow переехала в колонку $newColumn на позицию $newRow" +
-                            "newCardPos $newCardPos  newListId $newListId newColumn $newColumn"
+                cardsViewModel.onChangeposition(
+                    board,
+                    arguments?.getString(ARGUMENT_BOARD_ID) ?: "",
+                    fromColumn,
+                    fromRow,
+                    toColumn,
+                    toRow
                 )
-                cardsViewModel.updateCard(
-                    cardId!!,
-                    "$newCardPos",
-                    newListId ?: ""
-                )
-                // Toast.makeText(context, "cardId1 $cardId1 cardId2 $cardId2", Toast.LENGTH_SHORT).show()
+
+                isOpenScreen = false
+                Toast.makeText(context, "из ${if (fromColumn == 0) "первой" else if (fromColumn == 1) "второй" else "последней"} колонки " +
+                        "и позиции $fromRow переехала в ${if (toColumn == 0) "первую" else if (toColumn == 1) "вторую" else "последнюю"} колонку на позицию $toRow",
+                    Toast.LENGTH_LONG).show()
             }
-
+            override fun onItemChangedPosition(oldColumn: Int, oldRow: Int, newColumn: Int, newRow: Int) {}
             override fun onItemChangedColumn(oldColumn: Int, newColumn: Int) {}
             override fun onFocusedColumnChanged(oldColumn: Int, newColumn: Int) {}
             override fun onColumnDragStarted(position: Int) {}
             override fun onColumnDragChangedPosition(oldPosition: Int, newPosition: Int) {}
             override fun onColumnDragEnded(position: Int) {}
-        })
-        mBoardView.setBoardCallback(object : BoardView.BoardCallback {
-            override fun canDragItemAtPosition(column: Int, dragPosition: Int) = true
-            override fun canDropItemAtPosition(
-                oldColumn: Int,
-                oldRow: Int,
-                newColumn: Int,
-                newRow: Int
-            ) = true
         })
         return view
     }
@@ -220,6 +110,8 @@ class CardsFragment : DaggerFragment() {
         super.onViewCreated(view, savedInstanceState)
         toolbar.title = board?.name
         cardsViewModel.getToken()
+        navView.rvListMembers?.layoutManager = LinearLayoutManager(activity)
+        navView.rvListMembers?.adapter = membersAdapter
         cardsViewModel.token.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             if (it.isNotEmpty()) {
                 cardsViewModel.loadCards(arguments?.getString(ARGUMENT_BOARD_ID) ?: "")
@@ -242,31 +134,34 @@ class CardsFragment : DaggerFragment() {
 
         cardsViewModel.board.observe(viewLifecycleOwner, androidx.lifecycle.Observer { it ->
             board = it
-            resetBoard()
-            toolbar.title = board?.name
+            if (isOpenScreen == true) {
+                resetBoard()
+                toolbar.title = board?.name
+            }
+            membersAdapter.data = board?.members ?: listOf()
         })
+
+
         cardsViewModel.showCreatedCardEvent.observe(
-            viewLifecycleOwner,
-            androidx.lifecycle.Observer {
+            viewLifecycleOwner, androidx.lifecycle.Observer {
                 if (it == true) { // Observed state is true.
                     Snackbar.make(
                         activity!!.findViewById(android.R.id.content),
                         getString(com.ace.homework2.R.string.created_card),
-                        Snackbar.LENGTH_SHORT // How long to display the message.
+                        Snackbar.LENGTH_SHORT
                     ).show()
                     cardsViewModel.doneShowingSnackbar()// Reset state to make sure the snackbar is only shown once, even if the device has a configuration change.
                 }
             })
         cardsViewModel.showUpdatedCardEvent.observe(
-            viewLifecycleOwner,
-            androidx.lifecycle.Observer {
+            viewLifecycleOwner, androidx.lifecycle.Observer {
                 if (it == true) { // Observed state is true.
                     Snackbar.make(
                         activity!!.findViewById(android.R.id.content),
                         getString(com.ace.homework2.R.string.updated_card),
-                        Snackbar.LENGTH_SHORT // How long to display the message.
+                        Snackbar.LENGTH_SHORT
                     ).show()
-                    cardsViewModel.doneShowingSnackbar()// Reset state to make sure the snackbar is only shown once, even if the device has a configuration change.
+                    cardsViewModel.doneShowingSnackbar()
                 }
             })
         cardsViewModel.errorMessage.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
@@ -282,15 +177,15 @@ class CardsFragment : DaggerFragment() {
     }
 
     private fun addColumn(name: String, idList: String) {
-        val mItemArray = ArrayList<Pair<Long, String>>()
+        val mCardArray = ArrayList<Pair<Long, String>>()
         board?.cards?.forEach {
             val id = sCreatedItems++.toLong()
             if (it.idList == idList) {
-                mItemArray.add(Pair(id, it.name))
+                mCardArray.add(Pair(id, it.name))
             }
         }
         val listAdapter = CardsAdapter(
-            mItemArray,
+            mCardArray,
             com.ace.homework2.R.layout.column_item,
             com.ace.homework2.R.id.item_layout,
             true
@@ -300,27 +195,12 @@ class CardsFragment : DaggerFragment() {
         header.tvHeaderName.text = name
 
         footer.setOnClickListener {
-            footer.tvAddCard.visibility = View.GONE
-            toolbar.visibility = View.GONE
-            rlCustomToolBar.visibility = View.VISIBLE
-            footer.llAddNewCard.visibility = View.VISIBLE
+            onAddCardClicked(it, header, idList)
         }
-        footer.btnSaveNewCard.setOnClickListener {
-            footer.llAddNewCard.visibility = View.GONE
-            footer.tvAddCard.visibility = View.VISIBLE
-            val editText = footer?.findViewById<EditText>(com.ace.homework2.R.id.etNewCardName)
-            val name = editText?.text.toString()
-            //val name = "колонка ${mBoardView.getColumnOfHeader(header)} номер ${mBoardView.itemCount} "
-            val id = sCreatedItems++.toLong()
-            val item = Pair(id, name)
-            cardsViewModel.createCard(name, idList)
-            mBoardView.addItem(
-                mBoardView.getColumnOfHeader(header),
-                mBoardView.getItemCount(mBoardView.getColumnOfHeader(header)),
-                item,
-                true
-            )
+        btnCancel.setOnClickListener {
+            cancelAdding(footer)
         }
+
         mBoardView.addColumn(listAdapter, header, null, false, LinearLayoutManager(context))
         val parent =
             mBoardView.getRecyclerView(mBoardView.getColumnOfHeader(header)).parent as LinearLayout
@@ -331,5 +211,49 @@ class CardsFragment : DaggerFragment() {
         recyclerView.layoutParams = parentParams
         recyclerView.setBackgroundColor(Color.GRAY)
         parent.addView(footer)
+    }
+
+    private fun onAddCardClicked(footer: View, header: View, idList: String) {
+        footer.tvAddCard.visibility = View.GONE
+        toolbar.visibility = View.GONE
+        rlCustomToolBar.visibility = View.VISIBLE
+        footer.llAddNewCard.visibility = View.VISIBLE
+        btnCancel.setOnClickListener {
+            cancelAdding(footer)
+        }
+        btnSave.setOnClickListener {
+            saveNewCard(footer, header, idList)
+        }
+
+    }
+
+    private fun cancelAdding(view: View) {
+        view.tvAddCard.visibility = View.VISIBLE
+        toolbar.visibility = View.VISIBLE
+        rlCustomToolBar.visibility = View.GONE
+        view.llAddNewCard.visibility = View.GONE
+    }
+
+    private fun saveNewCard(footer: View, header: View, idList: String) {
+        footer.tvAddCard.visibility = View.VISIBLE
+        toolbar.visibility = View.VISIBLE
+        rlCustomToolBar.visibility = View.GONE
+        footer.llAddNewCard.visibility = View.GONE
+        val name = footer.etNewCardName?.text.toString()
+        val id = sCreatedItems++.toLong()
+        val item = Pair(id, name)
+        cardsViewModel.createCard(name, idList)
+        mBoardView.addItem(
+            mBoardView.getColumnOfHeader(header),
+            mBoardView.getItemCount(mBoardView.getColumnOfHeader(header)),
+            item,
+            true
+        )
+        footer.etNewCardName?.text?.clear()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        isOpenScreen = false
     }
 }

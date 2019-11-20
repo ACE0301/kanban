@@ -3,6 +3,7 @@ package com.ace.homework2.view.ui.cards
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.ace.homework2.model.Card
 import com.ace.homework2.model.SpecificBoard
 import com.ace.homework2.model.network.ApiInterface
 import com.ace.homework2.model.network.TrelloHolder.REST_CONSUMER_KEY
@@ -68,7 +69,8 @@ class CardsViewModel @Inject constructor(
                 "id,idList,name,pos",
                 "all",
                 REST_CONSUMER_KEY,
-                token.value ?: ""
+                token.value ?: "",
+                "all"
             )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -106,6 +108,99 @@ class CardsViewModel @Inject constructor(
                     _errorMessage.value = it.message
                 }
                 )
+    }
+
+    fun onChangeposition(
+        board: SpecificBoard?,
+        boardId: String,
+        fromColumn: Int,
+        fromRow: Int,
+        toColumn: Int,
+        toRow: Int
+    ) {
+
+        var map: MutableMap<String, List<Card>?> =
+            mutableMapOf() //главная мапа с колонками и карточками
+
+        board?.lists?.forEach { map[it.id] = null }
+        val map2 = board?.cards?.groupBy { it.idList }
+        map.entries.forEach { map ->
+            map2?.entries?.forEach { map2 ->
+                if (map.key == map2.key) {
+                    map.setValue(map2.value)
+                }
+            }
+        }
+        val oldListId = board?.lists?.get(fromColumn)?.id
+        val newListId = board?.lists?.get(toColumn)?.id
+
+        var newCardPos: Float?
+        //если колонка не изменилась
+        if (fromColumn == toColumn) {
+            //если позиция не изменилась, то ничего не возвращаем
+            if (fromColumn == toColumn && fromRow == toRow) {
+                return
+            }
+            //если перетаскиваем в начало колонки, то берем позицию 1-го элемента и делим на 2
+            else if (toRow == 0) {
+                newCardPos = ((map[newListId]?.get(toRow)?.pos)?.toFloat())?.div(2)
+                //если перетаскиваем в конец колонки, то берем позицию последнего элемента и делим на 2
+            } else if (toRow + 1 == map[newListId]?.size!!) {
+                newCardPos = ((map[newListId]?.get(toRow)?.pos)?.toFloat())?.times(2)
+                //если кладем между 2-х элементов, берем сумму этих элементо и делим на 2(доп.проверка куда двигаем элемент вниз/вверх)
+            } else {
+                //если переносим снизу вверх
+                newCardPos = if (fromRow > toRow) {
+                    ((map[newListId]?.get(toRow - 1)?.pos)?.toFloat()?.plus(
+                        map[newListId]?.get(
+                            toRow
+                        )?.pos?.toFloat()!!
+                    ))?.div(
+                        2
+                    )
+                    //если переносим сверху вниз
+                } else {
+                    ((map[newListId]?.get(toRow)?.pos)?.toFloat()?.plus(
+                        map[newListId]?.get(toRow + 1)?.pos?.toFloat()!!
+                    ))?.div(2)
+                }
+            }
+            //если колонка изменилась
+        } else {
+            //если в новой колонке нет элементов
+            when {
+                map[newListId]?.size == null -> newCardPos =
+                    CardsFragment.POS_IF_NO_ELEMENTS
+                //перетаскиваем в новую колонку в начало
+                toRow == 0 -> newCardPos = ((map[newListId]?.get(toRow)?.pos)?.toFloat())?.div(2)
+                //перетаскиваем в новую колонку в конец
+                toRow == map[newListId]?.size!! -> newCardPos =
+                    ((map[newListId]?.get(toRow - 1)?.pos)?.toFloat())?.times(2)
+                else -> //если переносим снизу вверх
+                    newCardPos = if (fromColumn > toColumn) {
+                        ((map[newListId]?.get(toRow - 1)?.pos)?.toFloat()?.plus(
+                            map[newListId]?.get(toRow)?.pos?.toFloat()!!
+                        ))?.div(
+                            2
+                        )
+                        //если переносим сверху вниз
+                    } else {
+                        ((map[newListId]?.get(toRow - 1)?.pos)?.toFloat()?.plus(
+                            map[newListId]?.get(
+                                toRow
+                            )?.pos?.toFloat()!!
+                        ))?.div(2)
+                    }
+            }
+        }
+
+        //айдишник элемента, который мы перетащили
+        var cardId = map[oldListId]?.get(fromRow)?.id
+
+        updateCard(cardId!!, "$newCardPos", newListId ?: "")
+
+        loadCards(boardId)
+
     }
 
     override fun onCleared() {

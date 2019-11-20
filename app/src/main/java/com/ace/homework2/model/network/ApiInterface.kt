@@ -32,7 +32,8 @@ interface ApiInterface {
         @Query("card_fields") cardFields: String,
         @Query("lists") lists: String,
         @Query("key") key: String,
-        @Query("token") token: String
+        @Query("token") token: String,
+        @Query("members") members: String
     ): Single<SpecificBoard>
 
     @POST("1/cards")

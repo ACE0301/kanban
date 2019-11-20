@@ -47,20 +47,12 @@
 
                 <EditText
                         android:id="@+id/etNewCardName"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:ems="10"
                         android:inputType="text"
                         tools:text="type new card name" />
-
-                <Button
-                        android:id="@+id/btnSaveNewCard"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="save" />
-
             </LinearLayout>
 
         </LinearLayout>
