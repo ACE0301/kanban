@@ -18,6 +18,7 @@
     <color name="blue_light">#AFE2F0</color>
     <color name="blue">#56C6E3</color>
     <color name="blue_dark">#388295</color>
+    <color name="blue_toolbar">#0B5388</color>
 
     <color name="list_item_background">#AACCCCCC</color>
     <color name="app_color">#8EAE3C</color>

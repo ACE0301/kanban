@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/drawerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
+        android:background="@color/colorPrimary"
         tools:openDrawer="right">
 
     <LinearLayout
@@ -23,7 +23,7 @@
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:background="@color/colorPrimary"
+                    android:background="@color/blue_toolbar"
                     app:popupTheme="@style/AppTheme.PopupOverlay"
                     app:titleTextColor="@color/white" />
 
@@ -31,7 +31,7 @@
                     android:id="@+id/rlCustomToolBar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:background="@color/colorPrimary"
+                    android:background="@color/blue_toolbar"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:visibility="gone">
@@ -69,8 +69,7 @@
             <com.woxthebox.draglistview.BoardView
                     android:id="@+id/board_view"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/blue" />
+                    android:layout_height="match_parent"/>
 
             <include layout="@layout/include_progress_overlay" />
 
@@ -82,5 +81,5 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="end"
-            app:headerLayout="@layout/nav_header" />
+            app:headerLayout="@layout/nav_layout" />
 </androidx.drawerlayout.widget.DrawerLayout>

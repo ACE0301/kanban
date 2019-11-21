@@ -62,6 +62,9 @@ dependencies {
     //Stetho
     implementation "com.facebook.stetho:stetho-okhttp3:$version_stetho_okhttp3"
 
+    // Glide
+    implementation "com.github.bumptech.glide:glide:$version_glide"
+
     //lifecycle
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$version_lifecycle_viewmodel_ktx"
     implementation "androidx.lifecycle:lifecycle-extensions:$version_lifecycle_extensions"

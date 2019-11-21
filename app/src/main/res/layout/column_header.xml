@@ -7,10 +7,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         card_view:cardBackgroundColor="#ffffff"
-        card_view:cardCornerRadius="0dp"
-        card_view:cardElevation="1dp"
-        card_view:cardPreventCornerOverlap="true"
-        card_view:cardUseCompatPadding="true">
+        card_view:cardElevation="1dp">
 
     <RelativeLayout
             android:layout_width="match_parent"
@@ -25,8 +22,8 @@
                 android:id="@+id/tvHeaderName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/font_big_20"
+                android:textColor="@color/black"
+                android:textSize="@dimen/font_normal_16"
                 tools:text="Test" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
-

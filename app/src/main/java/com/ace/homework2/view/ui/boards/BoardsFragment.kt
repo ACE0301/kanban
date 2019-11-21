@@ -121,6 +121,9 @@ class BoardsFragment : DaggerFragment(), OnDialogResult {
                 boardsViewModel.doneShowingSnackbar()// Reset state to make sure the snackbar is only shown once, even if the device has a configuration change.
             }
         })
+        boardsViewModel.errorMessage.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+        })
     }
 
     override fun onNewBoardAdded(name: String, category: Category) {

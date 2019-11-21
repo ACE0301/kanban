@@ -38,6 +38,7 @@ buildscript {
         version_espresso_web = '3.1.0'
         version_dagger = '2.25.2'
         version_dagger_compiler = '2.25.2'
+        version_glide = '4.10.0'
     }
 
     repositories {

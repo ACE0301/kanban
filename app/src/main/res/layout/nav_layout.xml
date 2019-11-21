@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/navHeader"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+    <TextView
+            android:id="@+id/members"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing_huge_32"
+            android:layout_marginStart="@dimen/spacing_normal_16"
+            android:layout_marginTop="@dimen/spacing_large_24"
+            android:gravity="center_vertical"
+            android:text="@string/members"
+            android:textColor="@color/black" />
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvListMembers"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+</LinearLayout>

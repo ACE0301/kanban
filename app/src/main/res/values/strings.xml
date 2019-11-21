@@ -28,5 +28,7 @@
     <string name="add_card">Добавить карточку</string>
     <string name="add_card_text_toolbar">Добавить карточку...</string>
     <string name="board_is_removed_snackbar">доска удалена!</string>
+    <string name="members">Участники</string>
 
 </resources>
+

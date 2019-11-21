@@ -1,6 +1,7 @@
 package com.ace.homework2.model.network
 
 import com.ace.homework2.model.Board
+import com.ace.homework2.model.Card
 import com.ace.homework2.model.SpecificBoard
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -59,4 +60,12 @@ interface ApiInterface {
         @Query("key") key: String,
         @Query("token") token: String
     ): Completable
+
+    @GET("1/cards/{id}")
+    fun getCardDetails(
+        @Query("id") cardId: String,
+        @Query("key") key: String,
+        @Query("token") token: String,
+        @Query("fields") fields: String
+    ): Single<Card>
 }

@@ -4,18 +4,14 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/item_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/spacing_6dp"
-        android:paddingTop="@dimen/spacing_tiny_2dp"
-        android:paddingRight="@dimen/spacing_6dp"
-        android:paddingBottom="@dimen/spacing_tiny_2dp">
+        android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
             android:id="@+id/card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:duplicateParentState="true"
+            android:layout_marginEnd="@dimen/spacing_small_8"
             android:foreground="@drawable/card_view_selector"
             card_view:cardBackgroundColor="#ffffff"
             card_view:cardCornerRadius="@dimen/corner_radius_cardview"
@@ -24,6 +20,7 @@
             card_view:cardUseCompatPadding="true">
 
         <LinearLayout
+                android:id="@+id/llcard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
@@ -31,7 +28,7 @@
                 android:padding="@dimen/spacing_12">
 
             <TextView
-                    android:id="@+id/text"
+                    android:id="@+id/cardName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/font_normal_16"
