@@ -7,15 +7,14 @@ import com.ace.homework2.model.Card
 import com.ace.homework2.model.SpecificBoard
 import com.ace.homework2.model.network.ApiInterface
 import com.ace.homework2.model.network.TrelloHolder.REST_CONSUMER_KEY
-import com.ace.homework2.model.prefs.AppPreferencesHelper
+import com.ace.homework2.view.ui.boards.token
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class CardsViewModel @Inject constructor(
-    val apiHelper: ApiInterface,
-    val appPreferencesHelper: AppPreferencesHelper
+    val apiHelper: ApiInterface
 ) : ViewModel() {
 
     var map: MutableMap<String, List<Card>?> =
@@ -25,9 +24,6 @@ class CardsViewModel @Inject constructor(
     private var disposableLoadCards: Disposable? = null
     private var disposableCreateCard: Disposable? = null
     private var disposableUpdateCard: Disposable? = null
-
-    private var _token = MutableLiveData<String>()
-    val token: LiveData<String> = _token
 
     private val _board = MutableLiveData<SpecificBoard>()
     val board: LiveData<SpecificBoard> = _board
@@ -49,20 +45,6 @@ class CardsViewModel @Inject constructor(
         _showUpdatedCardEvent.value = false
     }
 
-    fun getToken() {
-        disposableGetToken?.dispose()
-        disposableGetToken = appPreferencesHelper.getToken()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
-                    _token.value = it
-                }, {
-                    _errorMessage.value = it.message
-                }
-            )
-    }
-
     fun loadCards(boardId: String) {
         disposableLoadCards?.dispose()
         disposableLoadCards =
@@ -72,15 +54,15 @@ class CardsViewModel @Inject constructor(
                 "id,idList,name,pos",
                 "all",
                 REST_CONSUMER_KEY,
-                token.value ?: "",
-                "all"
+                token ?: "",
+                "all",
+                "id,name"
             )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { _loading.value = true }
                 .doFinally { _loading.value = false }
                 .subscribe({
-                    _board.value = it
                     it.lists.forEach { map[it.id] = null }
                     val map2 = it.cards.groupBy { it.idList }
                     map.entries.forEach { map ->
@@ -90,6 +72,7 @@ class CardsViewModel @Inject constructor(
                             }
                         }
                     }
+                    _board.value = it
                 }, {
                     _errorMessage.value = it.message
                 })
@@ -98,7 +81,7 @@ class CardsViewModel @Inject constructor(
     fun createCard(name: String, idList: String) {
         disposableCreateCard?.dispose()
         disposableCreateCard =
-            apiHelper.createCard(name, idList, REST_CONSUMER_KEY, token.value ?: "")
+            apiHelper.createCard(name, idList, REST_CONSUMER_KEY, token)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -111,7 +94,7 @@ class CardsViewModel @Inject constructor(
     fun updateCard(cardId: String, pos: String, idList: String) {
         disposableUpdateCard?.dispose()
         disposableUpdateCard =
-            apiHelper.updateCard(cardId, pos, idList, REST_CONSUMER_KEY, token.value ?: "")
+            apiHelper.updateCard(cardId, pos, idList, REST_CONSUMER_KEY, token)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -122,7 +105,7 @@ class CardsViewModel @Inject constructor(
                 )
     }
 
-    fun onChangeposition(
+    fun onChangePosition(
         boardId: String,
         fromColumn: Int,
         fromRow: Int,
@@ -136,6 +119,7 @@ class CardsViewModel @Inject constructor(
         var newCardPos: Float?
         //если колонка не изменилась
         if (fromColumn == toColumn) {
+
             //если позиция не изменилась, то ничего не возвращаем
             if (fromColumn == toColumn && fromRow == toRow) {
                 return

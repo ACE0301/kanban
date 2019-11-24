@@ -5,35 +5,39 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AlphaAnimation
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.util.Pair
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ace.homework2.R
+import com.ace.homework2.base.BaseFragment
 import com.ace.homework2.model.SpecificBoard
-import com.ace.homework2.view.ui.details.DetailsFragment
-import com.ace.homework2.view.ui.members.MembersAdapter
+import com.ace.homework2.view.ui.details.DetailsView
+import com.ace.homework2.view.ui.members.BoardMembersAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.woxthebox.draglistview.BoardView
-import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.board_layout.*
 import kotlinx.android.synthetic.main.column_footer.view.*
 import kotlinx.android.synthetic.main.column_header.view.*
-import kotlinx.android.synthetic.main.include_progress_overlay.*
+import kotlinx.android.synthetic.main.custom_toolbar.*
 import kotlinx.android.synthetic.main.nav_layout.*
 import java.util.*
 import javax.inject.Inject
 
 
-class CardsFragment : DaggerFragment() {
+class CardsFragment : BaseFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     lateinit var cardsViewModel: CardsViewModel
     lateinit var boardId: String
+    private var cardCount = 0
+    private lateinit var mBoardView: BoardView
+    private var board: SpecificBoard? = null //объект доски
+    private var isOpenScreen = true //флаг обновления таблицы карточек по открытию экрана
+    private val membersAdapter = BoardMembersAdapter()
 
     companion object {
         const val POS_IF_NO_ELEMENTS = 16384.0f
@@ -46,14 +50,6 @@ class CardsFragment : DaggerFragment() {
         }
     }
 
-    private var cardCount = 0
-    private lateinit var mBoardView: BoardView
-    private var board: SpecificBoard? = null
-    private lateinit var inAnimation: AlphaAnimation
-    private lateinit var outAnimation: AlphaAnimation
-    private var isOpenScreen = true //флаг обновления таблицы карточек по открытию экрана
-    private val membersAdapter = MembersAdapter()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -62,7 +58,9 @@ class CardsFragment : DaggerFragment() {
         val view = inflater.inflate(R.layout.board_layout, container, false)
         boardId = arguments?.getString(ARGUMENT_BOARD_ID) ?: ""
         cardsViewModel = ViewModelProvider(this, viewModelFactory)[CardsViewModel::class.java]
-
+        savedInstanceState?.getBoolean("isOpenScreen", isOpenScreen == false)
+        isOpenScreen = true
+        cardCount = 0
         mBoardView = view.findViewById(R.id.board_view)
         mBoardView.setSnapToColumnsWhenScrolling(true)
         mBoardView.setSnapToColumnWhenDragging(true)
@@ -72,7 +70,7 @@ class CardsFragment : DaggerFragment() {
         mBoardView.setBoardListener(object : BoardView.BoardListener {
             override fun onItemDragStarted(column: Int, row: Int) {}
             override fun onItemDragEnded(fromColumn: Int, fromRow: Int, toColumn: Int, toRow: Int) {
-                cardsViewModel.onChangeposition(
+                cardsViewModel.onChangePosition(
                     boardId,
                     fromColumn,
                     fromRow,
@@ -108,24 +106,14 @@ class CardsFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        cardsViewModel.getToken()
-        cardsViewModel.token.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            if (it.isNotEmpty()) {
-                cardsViewModel.loadCards(boardId)
-            }
-
-        })
+        if (cardsViewModel.board.value?.id.isNullOrEmpty()) {
+            cardsViewModel.loadCards(boardId)
+        }
         cardsViewModel.loading.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             if (it == true) {
-                inAnimation = AlphaAnimation(0f, 1f)
-                inAnimation.duration = 200
-                progress_overlay.animation = inAnimation
-                progress_overlay.visibility = View.VISIBLE
+                loading()
             } else {
-                outAnimation = AlphaAnimation(1f, 0f)
-                outAnimation.duration = 200
-                progress_overlay.animation = outAnimation
-                progress_overlay.visibility = View.GONE
+                stopLoading()
             }
         })
 
@@ -188,7 +176,7 @@ class CardsFragment : DaggerFragment() {
             R.id.item_layout
         )
         cardsAdapter.onItemClickListener = {
-            openCardDetails(board!!.cards[it.toInt()].id)
+            (activity as? DetailsView)?.openDetailsFragment(board!!.cards[it.toInt()].id)
         }
         val header = View.inflate(activity, R.layout.column_header, null)
         val footer = View.inflate(activity, R.layout.column_footer, null)
@@ -215,16 +203,10 @@ class CardsFragment : DaggerFragment() {
         parent.addView(footer)
     }
 
-    private fun openCardDetails(cardId: String) {
-        fragmentManager?.beginTransaction()
-            ?.replace(R.id.container, DetailsFragment.newInstance(cardId), DetailsFragment.TAG)
-            ?.commit()
-    }
-
     private fun onAddCardClicked(footer: View, header: View, idList: String) {
         footer.tvAddCard.visibility = View.GONE
         toolbar.visibility = View.GONE
-        rlCustomToolBar.visibility = View.VISIBLE
+        llCustomToolBar.visibility = View.VISIBLE
         footer.llAddNewCard.visibility = View.VISIBLE
         btnCancel.setOnClickListener {
             cancelAdding(footer)
@@ -238,14 +220,14 @@ class CardsFragment : DaggerFragment() {
     private fun cancelAdding(view: View) {
         view.tvAddCard.visibility = View.VISIBLE
         toolbar.visibility = View.VISIBLE
-        rlCustomToolBar.visibility = View.GONE
+        llCustomToolBar.visibility = View.GONE
         view.llAddNewCard.visibility = View.GONE
     }
 
     private fun saveNewCard(footer: View, header: View, idList: String) {
         footer.tvAddCard.visibility = View.VISIBLE
         toolbar.visibility = View.VISIBLE
-        rlCustomToolBar.visibility = View.GONE
+        llCustomToolBar.visibility = View.GONE
         footer.llAddNewCard.visibility = View.GONE
         val name = footer.etNewCardName?.text.toString()
         val item = Pair(cardCount++.toLong(), name)
@@ -257,10 +239,5 @@ class CardsFragment : DaggerFragment() {
             true
         )
         footer.etNewCardName?.text?.clear()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        isOpenScreen = false
     }
 }

@@ -56,8 +56,11 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$version_converter_gson"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$version_adapter_rxjava2"
 
+    /* optional: for detailed logging */
+    implementation "com.squareup.okhttp3:logging-interceptor:$version_logging_interceptor"
+
     //okhttp
-    implementation 'com.squareup.okhttp3:okhttp:4.2.2'
+    implementation "com.squareup.okhttp3:okhttp:$version_okhttp"
 
     //Stetho
     implementation "com.facebook.stetho:stetho-okhttp3:$version_stetho_okhttp3"

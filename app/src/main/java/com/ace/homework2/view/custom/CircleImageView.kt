@@ -64,7 +64,7 @@ class CircleImageView @JvmOverloads constructor(
         }
     }
 
-    private fun setText(text: String) {
+    fun setText(text: String) {
         this.text = text.toUpperCase()
     }
 

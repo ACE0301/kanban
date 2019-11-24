@@ -7,10 +7,17 @@ import com.ace.homework2.view.ui.boards.BoardsFragment
 import com.ace.homework2.view.ui.boards.BoardsView
 import com.ace.homework2.view.ui.cards.CardsFragment
 import com.ace.homework2.view.ui.cards.CardsView
+import com.ace.homework2.view.ui.details.DetailsFragment
+import com.ace.homework2.view.ui.details.DetailsView
+import com.ace.homework2.view.ui.history.HistoryFragment
+import com.ace.homework2.view.ui.history.HistoryView
+import com.ace.homework2.view.ui.members.MembersFragment
+import com.ace.homework2.view.ui.members.MembersView
 import com.github.scribejava.core.model.OAuthConstants.TOKEN
 
 
-class MainActivity : AppCompatActivity(), CardsView, BoardsView {
+class MainActivity : AppCompatActivity(), CardsView, BoardsView, DetailsView, MembersView,
+    HistoryView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +40,12 @@ class MainActivity : AppCompatActivity(), CardsView, BoardsView {
             .commit()
     }
 
+    override fun showBoards() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, BoardsFragment.newInstance(), BoardsFragment.TAG)
+            .commit()
+    }
+
     override fun openCardsFragment(boardId: String) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, CardsFragment.newInstance(boardId), CardsFragment.TAG)
@@ -40,9 +53,24 @@ class MainActivity : AppCompatActivity(), CardsView, BoardsView {
             .commit()
     }
 
-    override fun showBoards() {
+    override fun openDetailsFragment(cardId: String) {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.container, BoardsFragment.newInstance(), BoardsFragment.TAG)
+            .replace(R.id.container, DetailsFragment.newInstance(cardId), DetailsFragment.TAG)
+            .addToBackStack(DetailsFragment.TAG)
+            .commit()
+    }
+
+    override fun openMembersFragment(boardId: String) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, MembersFragment.newInstance(boardId), MembersFragment.TAG)
+            .addToBackStack(MembersFragment.TAG)
+            .commit()
+    }
+
+    override fun openHistoryFragment(cardId: String) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, HistoryFragment.newInstance(cardId), HistoryFragment.TAG)
+            .addToBackStack(HistoryFragment.TAG)
             .commit()
     }
 

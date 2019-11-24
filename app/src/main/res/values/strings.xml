@@ -29,6 +29,10 @@
     <string name="add_card_text_toolbar">Добавить карточку...</string>
     <string name="board_is_removed_snackbar">доска удалена!</string>
     <string name="members">Участники</string>
+    <string name="members_text">Участники...</string>
+    <string name="in_list_text">В списке</string>
+    <string name="history_actions">История изменений</string>
+    <string name="card_members">Участники карточки</string>
+    <string name="card_history">История карточки</string>
 
 </resources>
-

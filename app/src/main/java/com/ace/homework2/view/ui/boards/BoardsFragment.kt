@@ -5,31 +5,28 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AlphaAnimation
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ace.homework2.R
+import com.ace.homework2.base.BaseFragment
 import com.ace.homework2.model.*
-import com.ace.homework2.view.ui.auth.AuthViewModel
 import com.ace.homework2.view.ui.cards.CardsView
-import com.ace.homework2.view.ui.dialog.NewBoardDialogFragment
+import com.ace.homework2.view.ui.boards.dialog.NewBoardDialogFragment
 import com.google.android.material.snackbar.Snackbar
-import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_boards.*
-import kotlinx.android.synthetic.main.include_progress_overlay.*
 import javax.inject.Inject
 
+var token = ""
 
 interface OnDialogResult {
     fun onNewBoardAdded(name: String, category: Category)
 }
 
-class BoardsFragment : DaggerFragment(), OnDialogResult {
+class BoardsFragment : BaseFragment(), OnDialogResult {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -46,8 +43,6 @@ class BoardsFragment : DaggerFragment(), OnDialogResult {
     private val boardsAdapter = BoardsAdapter()
     private val mapper: MapToListMapper = MapToListMapperImpl()
     private var items: MutableList<Item> = mutableListOf()
-    private lateinit var inAnimation: AlphaAnimation
-    private lateinit var outAnimation: AlphaAnimation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,19 +65,14 @@ class BoardsFragment : DaggerFragment(), OnDialogResult {
         boardsViewModel.token.observe(viewLifecycleOwner, Observer {
             if (it.isNotEmpty()) {
                 boardsViewModel.loadBoards()
+                token = it
             }
         })
         boardsViewModel.loading.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             if (it == true) {
-                inAnimation = AlphaAnimation(0f, 1f)
-                inAnimation.duration = 200
-                progress_overlay.animation = inAnimation
-                progress_overlay.visibility = View.VISIBLE
+                loading()
             } else {
-                outAnimation = AlphaAnimation(1f, 0f)
-                outAnimation.duration = 200
-                progress_overlay.animation = outAnimation
-                progress_overlay.visibility = View.GONE
+                stopLoading()
             }
         })
         boardsViewModel.items.observe(viewLifecycleOwner, Observer { it ->

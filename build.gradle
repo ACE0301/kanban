@@ -39,6 +39,8 @@ buildscript {
         version_dagger = '2.25.2'
         version_dagger_compiler = '2.25.2'
         version_glide = '4.10.0'
+        version_logging_interceptor = '4.2.2'
+        version_okhttp = '4.2.2'
     }
 
     repositories {

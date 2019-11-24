@@ -1,8 +1,9 @@
 package com.ace.homework2.model.network
 
 import com.ace.homework2.model.Board
-import com.ace.homework2.model.Card
+import com.ace.homework2.model.Member
 import com.ace.homework2.model.SpecificBoard
+import com.ace.homework2.model.SpecificCard
 import io.reactivex.Completable
 import io.reactivex.Single
 import retrofit2.http.*
@@ -26,6 +27,7 @@ interface ApiInterface {
         @Query("token") token: String
     ): Single<Board>
 
+    //Получение деталей конкретной доски
     @GET("1/boards/{id}")
     fun getBoardDetails(
         @Path("id") boardId: String,
@@ -34,7 +36,8 @@ interface ApiInterface {
         @Query("lists") lists: String,
         @Query("key") key: String,
         @Query("token") token: String,
-        @Query("members") members: String
+        @Query("members") members: String,
+        @Query("list_fields") listFields: String
     ): Single<SpecificBoard>
 
     @POST("1/cards")
@@ -45,6 +48,7 @@ interface ApiInterface {
         @Query("token") token: String
     ): Completable
 
+    //Обновление доски
     @PUT("1/cards/{id}")
     fun updateCard(
         @Path("id") cardId: String,
@@ -63,9 +67,24 @@ interface ApiInterface {
 
     @GET("1/cards/{id}")
     fun getCardDetails(
-        @Query("id") cardId: String,
+        @Path("id") cardId: String,
+        @Query("key") key: String,
+        @Query("token") token: String,
+        @Query("fields") fields: String,
+        @Query("board") board: Boolean,
+        @Query("board_fields") board_fields: String,
+        @Query("list") list: Boolean,
+        @Query("list_fields") list_fields: String,
+        @Query("members") members: Boolean,
+        @Query("members_fields") members_fields: String
+    ): Single<SpecificCard>
+
+    //Получаю участников доски
+    @GET("1/boards/{id}/members")
+    fun getBoardMembers(
+        @Path("id") boardId: String,
         @Query("key") key: String,
         @Query("token") token: String,
         @Query("fields") fields: String
-    ): Single<Card>
+    ): Single<List<Member>>
 }
