@@ -3,9 +3,9 @@ package com.ace.homework2.view.ui.boards
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.ace.homework2.model.Board
-import com.ace.homework2.model.Category
-import com.ace.homework2.model.network.ApiInterface
+import com.ace.homework2.model.boards.Board
+import com.ace.homework2.model.boards.Category
+import com.ace.homework2.model.boards.BoardApiInterface
 import com.ace.homework2.model.network.TrelloHolder.REST_CONSUMER_KEY
 import com.ace.homework2.model.prefs.AppPreferencesHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -14,7 +14,7 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class BoardsViewModel @Inject constructor(
-    val apiHelper: ApiInterface,
+    val boardApiHelper: BoardApiInterface,
     val appPreferencesHelper: AppPreferencesHelper
 ) : ViewModel() {
 
@@ -30,9 +30,6 @@ class BoardsViewModel @Inject constructor(
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading
 
-    private var _showRemovedCardEvent = MutableLiveData<Boolean>()
-    val showRemovedCardEvent: LiveData<Boolean> = _showRemovedCardEvent
-
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String> = _errorMessage
 
@@ -40,10 +37,6 @@ class BoardsViewModel @Inject constructor(
     private var disposableGetBoards: Disposable? = null
     private var disposablePostNewBoard: Disposable? = null
     private var disposableRemoveBoard: Disposable? = null
-
-    fun doneShowingSnackbar() {
-        _showRemovedCardEvent.value = false
-    }
 
     fun getToken() {
         disposableGetToken?.dispose()
@@ -62,7 +55,7 @@ class BoardsViewModel @Inject constructor(
     fun loadBoards() {
         disposableGetBoards?.dispose()
         disposableGetBoards =
-            apiHelper.getBoards(true, "id,name,organization", REST_CONSUMER_KEY, token.value ?: "")
+            boardApiHelper.getBoards(true, "id,name,organization", REST_CONSUMER_KEY, token.value ?: "")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { _loading.value = true }
@@ -72,7 +65,11 @@ class BoardsViewModel @Inject constructor(
                         it.map {
                             if (it.organization == null) {
                                 it.organization =
-                                    Category(displayName = "Персональные доски", name = "")
+                                    Category(
+                                        displayName = "Персональные доски",
+                                        name = "",
+                                        id = ""
+                                    )
                             }
                         }
                         it.sortBy {
@@ -87,7 +84,13 @@ class BoardsViewModel @Inject constructor(
     fun createBoard(name: String, organizationName: String) {
         disposablePostNewBoard?.dispose()
         disposablePostNewBoard =
-            apiHelper.postBoard(name, organizationName, true, REST_CONSUMER_KEY, token.value ?: "")
+            boardApiHelper.createBoard(
+                name,
+                organizationName,
+                true,
+                REST_CONSUMER_KEY,
+                token.value ?: ""
+            )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -99,27 +102,10 @@ class BoardsViewModel @Inject constructor(
                 )
     }
 
-    fun removeBoard(idBoard: String) {
-        disposableRemoveBoard?.dispose()
-        disposableRemoveBoard =
-            apiHelper.removeBoard(idBoard, REST_CONSUMER_KEY, token.value ?: "")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    {
-                        _showRemovedCardEvent.value = true
-                    }, {
-                        _errorMessage.value = it.message
-                    }
-                )
-
-    }
-
     override fun onCleared() {
         disposableGetToken?.dispose()
         disposableGetBoards?.dispose()
         disposablePostNewBoard?.dispose()
         disposableRemoveBoard?.dispose()
-        super.onCleared()
     }
 }

@@ -3,8 +3,8 @@ package com.ace.homework2.view.ui.details
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.ace.homework2.model.SpecificCard
-import com.ace.homework2.model.network.ApiInterface
+import com.ace.homework2.model.cards.Card
+import com.ace.homework2.model.detail.DetailsApiInterface
 import com.ace.homework2.model.network.TrelloHolder.REST_CONSUMER_KEY
 import com.ace.homework2.view.ui.boards.token
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -12,12 +12,9 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-
 class DetailsViewModel @Inject constructor(
-    val apiHelper: ApiInterface
-) : ViewModel(
-
-) {
+    val detailsApiInterface: DetailsApiInterface
+) : ViewModel() {
 
     private var disposeLoadDetails: Disposable? = null
 
@@ -27,22 +24,23 @@ class DetailsViewModel @Inject constructor(
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String> = _errorMessage
 
-    private val _card = MutableLiveData<SpecificCard>()
-    val card: LiveData<SpecificCard> = _card
+    private val _card = MutableLiveData<Card>()
+    val card: LiveData<Card> = _card
 
     fun loadDetails(cardId: String) {
         disposeLoadDetails?.dispose()
-        disposeLoadDetails = apiHelper.getCardDetails(
+        disposeLoadDetails = detailsApiInterface.getCardDetails(
             cardId,
             REST_CONSUMER_KEY,
             token,
-            "name",
+            "name,desc",
             true,
             "name",
             true,
             "name",
             true,
-            "fullName,initials,avatarHash,username"
+            "fullName,initials,avatarHash,username",
+            true
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -57,4 +55,7 @@ class DetailsViewModel @Inject constructor(
             )
     }
 
+    override fun onCleared() {
+        disposeLoadDetails?.dispose()
+    }
 }

@@ -2,6 +2,9 @@ package com.ace.homework2
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.ace.homework2.model.cards.Card
+import com.ace.homework2.view.ui.action.ActionFragment
+import com.ace.homework2.view.ui.action.ActionView
 import com.ace.homework2.view.ui.auth.AuthFragment
 import com.ace.homework2.view.ui.boards.BoardsFragment
 import com.ace.homework2.view.ui.boards.BoardsView
@@ -9,15 +12,14 @@ import com.ace.homework2.view.ui.cards.CardsFragment
 import com.ace.homework2.view.ui.cards.CardsView
 import com.ace.homework2.view.ui.details.DetailsFragment
 import com.ace.homework2.view.ui.details.DetailsView
-import com.ace.homework2.view.ui.history.HistoryFragment
-import com.ace.homework2.view.ui.history.HistoryView
 import com.ace.homework2.view.ui.members.MembersFragment
 import com.ace.homework2.view.ui.members.MembersView
+import com.ace.homework2.view.ui.searchcard.SearchCardFragment
+import com.ace.homework2.view.ui.searchcard.SearchCardView
 import com.github.scribejava.core.model.OAuthConstants.TOKEN
 
-
 class MainActivity : AppCompatActivity(), CardsView, BoardsView, DetailsView, MembersView,
-    HistoryView {
+    ActionView, SearchCardView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,19 +62,33 @@ class MainActivity : AppCompatActivity(), CardsView, BoardsView, DetailsView, Me
             .commit()
     }
 
-    override fun openMembersFragment(boardId: String) {
+    override fun openMembersFragment(boardId: String, card: Card) {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.container, MembersFragment.newInstance(boardId), MembersFragment.TAG)
+            .replace(
+                R.id.container,
+                MembersFragment.newInstance(boardId, card),
+                MembersFragment.TAG
+            )
             .addToBackStack(MembersFragment.TAG)
             .commit()
     }
 
     override fun openHistoryFragment(cardId: String) {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.container, HistoryFragment.newInstance(cardId), HistoryFragment.TAG)
-            .addToBackStack(HistoryFragment.TAG)
+            .replace(R.id.container, ActionFragment.newInstance(cardId), ActionFragment.TAG)
+            .addToBackStack(ActionFragment.TAG)
             .commit()
     }
 
+    override fun openSearchCard(boardId: String) {
+        supportFragmentManager.beginTransaction()
+            .replace(
+                R.id.container,
+                SearchCardFragment.newInstance(boardId),
+                SearchCardFragment.TAG
+            )
+            .addToBackStack(SearchCardFragment.TAG)
+            .commit()
+    }
 }
 

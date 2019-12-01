@@ -3,48 +3,42 @@ package com.ace.homework2.view.ui.boards
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
-import com.ace.homework2.R
-import com.ace.homework2.model.Board
-import com.ace.homework2.model.Category
-import com.ace.homework2.model.Item
-import com.ace.homework2.utils.DiffCallback
+import com.ace.homework2.model.boards.Board
+import com.ace.homework2.model.boards.Category
+import com.ace.homework2.model.boards.Item
+import com.osome.stickydecorator.ViewHolderStickyDecoration
 import kotlinx.android.synthetic.main.item_board.view.*
 import kotlinx.android.synthetic.main.item_category.view.*
-import java.util.*
 
 private const val TYPE_HEADER = 0
 private const val TYPE_BOARD = 1
 
 class BoardsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
-    ItemTouchHelperAdapter {
+    ViewHolderStickyDecoration.Condition {
 
     var onItemClickListener: ((String) -> Unit) = {}
-    var onItemSwipe: ((Item) -> Unit) = {}
 
-    var data: MutableList<Item> = mutableListOf()
-        set(value) {
-            val callback = DiffCallback(field, value)
-            field = value
-            DiffUtil.calculateDiff(callback).dispatchUpdatesTo(this)
-        }
+    private val asyncListDiffer = AsyncListDiffer(
+        this,
+        ItemDiffCallback()
+    )
 
-    override fun onItemDismiss(position: Int) {
-        onItemSwipe.invoke(data[position])
-        data.removeAt(position)
-        notifyItemRemoved(position)
+    fun setData(data: List<Item>) {
+        asyncListDiffer.submitList(data)
     }
 
-    override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
-        Collections.swap(data, fromPosition, toPosition)
-        notifyItemMoved(fromPosition, toPosition)
-        return true
+    private fun getItem(position: Int): Item {
+        return asyncListDiffer.currentList[position]
     }
 
+    override fun isHeader(position: Int): Boolean {
+        return getItem(position) is Category
+    }
 
     override fun getItemViewType(position: Int): Int {
-        return when (data[position]) {
+        return when (getItem(position)) {
             is Board -> TYPE_BOARD
             is Category -> TYPE_HEADER
         }
@@ -54,22 +48,23 @@ class BoardsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
         return when (viewType) {
             TYPE_HEADER -> {
                 val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_category, parent, false)
+                    .inflate(com.ace.homework2.R.layout.item_category, parent, false)
                 HeaderViewHolder(view)
             }
             TYPE_BOARD -> {
                 val view =
-                    LayoutInflater.from(parent.context).inflate(R.layout.item_board, parent, false)
+                    LayoutInflater.from(parent.context)
+                        .inflate(com.ace.homework2.R.layout.item_board, parent, false)
                 BoardViewHolder(view, onItemClickListener)
             }
             else -> throw IllegalArgumentException("Invalid view type")
         }
     }
 
-    override fun getItemCount() = data.size
+    override fun getItemCount() = asyncListDiffer.currentList.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val event = data[position]
+        val event = getItem(position)
         when {
             holder is HeaderViewHolder && event is Category -> holder.bindData(event)
             holder is BoardViewHolder && event is Board -> holder.bindData(event)
@@ -91,6 +86,5 @@ class BoardsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
             }
         }
     }
-
 }
 

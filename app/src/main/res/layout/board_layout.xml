@@ -14,21 +14,9 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-        <com.google.android.material.appbar.AppBarLayout
-                style="@style/AppTheme.AppBarOverlay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+        <include layout="@layout/custom_toobar_search_user" />
 
-            <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="@color/blue_toolbar"
-                    app:popupTheme="@style/AppTheme.PopupOverlay"
-                    app:titleTextColor="@color/white" />
-
-            <include layout="@layout/custom_toolbar" />
-        </com.google.android.material.appbar.AppBarLayout>
+        <include layout="@layout/custom_toolbar_add_card" />
 
         <FrameLayout
                 android:id="@+id/container"

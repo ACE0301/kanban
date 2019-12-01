@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical">
+
+    <EditText
+            android:id="@+id/etSearchCardName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_search_white_24dp"
+            android:hint="@string/filter_card_hint"
+            android:textColor="@color/white" />
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSearchCardList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/gray_light" />
+
+    <include layout="@layout/include_progress_overlay" />
+</LinearLayout>

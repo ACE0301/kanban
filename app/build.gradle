@@ -20,6 +20,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro', "-keep class com.woxthebox.draglistview.** { *; }"
         }
     }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
@@ -76,6 +79,9 @@ dependencies {
 
     //https://github.com/woxblom/DragListView
     implementation "com.github.woxthebox:draglistview:$version_draglistview"
+
+    //StickyDecorator https://github.com/OsomePteLtd/StickyDecorator
+    implementation "com.osome.decoration:sticky:$version_sticky"
 
     // debugImplementation because LeakCanary should only run in debug builds.
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$version_leakcanary_android"

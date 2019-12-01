@@ -11,7 +11,6 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-
 class AuthViewModel @Inject constructor(
     val appPreferencesHelper: AppPreferencesHelper
 ) : ViewModel() {
@@ -42,10 +41,7 @@ class AuthViewModel @Inject constructor(
 
     override fun onCleared() {
         disposableSaveToken?.dispose()
-        super.onCleared()
-
     }
-
 }
 
 

@@ -9,14 +9,13 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ace.homework2.R
 import com.ace.homework2.base.BaseFragment
-import com.ace.homework2.model.*
-import com.ace.homework2.view.ui.cards.CardsView
+import com.ace.homework2.model.boards.*
 import com.ace.homework2.view.ui.boards.dialog.NewBoardDialogFragment
-import com.google.android.material.snackbar.Snackbar
+import com.ace.homework2.view.ui.cards.CardsView
+import com.osome.stickydecorator.ViewHolderStickyDecoration
 import kotlinx.android.synthetic.main.fragment_boards.*
 import javax.inject.Inject
 
@@ -31,7 +30,11 @@ class BoardsFragment : BaseFragment(), OnDialogResult {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    lateinit var boardsViewModel: BoardsViewModel
+    private lateinit var boardsViewModel: BoardsViewModel
+    private val boardsAdapter = BoardsAdapter()
+    private val mapper: MapToListMapper =
+        MapToListMapperImpl()
+    private var items: MutableList<Item> = mutableListOf()
 
     companion object {
         const val TAG = "BoardsFragment"
@@ -40,16 +43,13 @@ class BoardsFragment : BaseFragment(), OnDialogResult {
         var hashMap: MutableMap<Category, List<Board>> = hashMapOf()
     }
 
-    private val boardsAdapter = BoardsAdapter()
-    private val mapper: MapToListMapper = MapToListMapperImpl()
-    private var items: MutableList<Item> = mutableListOf()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_boards, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,10 +58,13 @@ class BoardsFragment : BaseFragment(), OnDialogResult {
         rvList.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = boardsAdapter
+            addItemDecoration(ViewHolderStickyDecoration(rvList, boardsAdapter))
         }
         boardsViewModel = ViewModelProvider(this, viewModelFactory)[BoardsViewModel::class.java]
 
-        boardsViewModel.getToken()
+        if (boardsViewModel.token.value.isNullOrEmpty()) {
+            boardsViewModel.getToken()
+        }
         boardsViewModel.token.observe(viewLifecycleOwner, Observer {
             if (it.isNotEmpty()) {
                 boardsViewModel.loadBoards()
@@ -80,12 +83,8 @@ class BoardsFragment : BaseFragment(), OnDialogResult {
                 it.organization
             }.toMutableMap()
             items = mapper.map(hashMap)
-            boardsAdapter.data = items
+            boardsAdapter.setData(items)
         })
-
-        val callback = ItemTouchHelperCallback(boardsAdapter as ItemTouchHelperAdapter)
-        val itemTouchHelper = ItemTouchHelper(callback)
-        itemTouchHelper.attachToRecyclerView(rvList)
 
         fab.setOnClickListener {
             val fragment: DialogFragment = NewBoardDialogFragment()
@@ -96,21 +95,7 @@ class BoardsFragment : BaseFragment(), OnDialogResult {
         boardsAdapter.onItemClickListener = {
             (activity as? CardsView)?.openCardsFragment(it)
         }
-        boardsAdapter.onItemSwipe = {
-            if (it is Board) {
-                boardsViewModel.removeBoard(it.id)
-            }
-        }
-        boardsViewModel.showRemovedCardEvent.observe(viewLifecycleOwner, Observer {
-            if (it == true) { // Observed state is true.
-                Snackbar.make(
-                    activity!!.findViewById(android.R.id.content),
-                    getString(R.string.board_is_removed_snackbar),
-                    Snackbar.LENGTH_SHORT // How long to display the message.
-                ).show()
-                boardsViewModel.doneShowingSnackbar()// Reset state to make sure the snackbar is only shown once, even if the device has a configuration change.
-            }
-        })
+
         boardsViewModel.errorMessage.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             Toast.makeText(context, it, Toast.LENGTH_LONG).show()
         })
@@ -118,15 +103,11 @@ class BoardsFragment : BaseFragment(), OnDialogResult {
 
     override fun onNewBoardAdded(name: String, category: Category) {
         if (name.isEmpty()) {
-            Toast.makeText(
-                context,
-                getString(R.string.empty_name_in_dialog),
-                Toast.LENGTH_SHORT
-            )
+            Toast.makeText(context, getString(R.string.empty_name_in_dialog), Toast.LENGTH_SHORT)
                 .show()
         } else {
             boardsViewModel.createBoard(
-                name, category.name
+                name, category.id
             )
             boardsViewModel.board.observe(this, Observer {
                 (activity as? CardsView)?.openCardsFragment(it.id)

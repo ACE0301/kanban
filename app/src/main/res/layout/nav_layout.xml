@@ -1,20 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/navHeader"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/spacing_large_24"
         android:orientation="vertical"
         android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <TextView
-            android:id="@+id/members"
+    <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/spacing_huge_32"
-            android:layout_marginStart="@dimen/spacing_normal_16"
-            android:layout_marginTop="@dimen/spacing_large_24"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:text="@string/members"
-            android:textColor="@color/black" />
+            android:orientation="horizontal">
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_normal_16"
+                app:srcCompat="@drawable/ic_person_gray_24dp" />
+
+        <TextView
+                android:id="@+id/members"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="@string/members"
+                android:textColor="@color/black" />
+    </LinearLayout>
+
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray" />
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvListMembers"

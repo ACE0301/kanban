@@ -3,45 +3,74 @@ package com.ace.homework2.view.ui.cards
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.core.util.Pair
-import com.ace.homework2.R
+import com.ace.homework2.model.cards.Card
+import com.bumptech.glide.Glide
 import com.woxthebox.draglistview.DragItemAdapter
+import kotlinx.android.synthetic.main.column_item.view.*
 
 
 class CardsAdapter(
-    private val list: ArrayList<Pair<Long, String>>,
+    cards: ArrayList<Pair<Long, Card>>,
     private val layoutId: Int,
     private val grabHandleId: Int
-) : DragItemAdapter<Pair<Long, String>, CardsAdapter.ViewHolder>() {
+) : DragItemAdapter<Pair<Long, Card>, CardsAdapter.ViewHolder>() {
 
     var onItemClickListener: ((Long) -> Unit) = {}
 
     init {
-        itemList = list
+        itemList = cards
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
-        LayoutInflater.from(parent.context).inflate(layoutId, parent, false)
+        LayoutInflater.from(parent.context).inflate(layoutId, parent, false),
+        onItemClickListener,
+        grabHandleId
     )
 
+
     override fun getUniqueItemId(position: Int): Long {
-        return itemList[position].first!!
+        return itemList[position].first
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
-        val text = mItemList[position].second
-        holder.cardName.text = text
+        holder.bind(itemList[position])
     }
 
-    inner class ViewHolder(itemView: View) :
-        DragItemAdapter.ViewHolder(itemView, grabHandleId, true) {
+    class ViewHolder(
+        itemView: View,
+        private val listener: (Long) -> Unit,
+        grabHandleId: Int
+    ) : DragItemAdapter.ViewHolder(itemView, grabHandleId, true) {
 
-        val cardName: TextView = itemView.findViewById(R.id.cardName)
+        fun bind(item: Pair<Long, Card>) {
+            itemView.tvCardName.text = item.second.name
+            if (item.second.attachments.isNotEmpty()) {
+                if (item.second.attachments[item.second.attachments.size - 1].previews.isNotEmpty()) {
+                    Glide.with(itemView)
+                        .load(
+                            item.second.attachments[item.second.attachments.size - 1].previews[1].url
+                        )
+                        .into(itemView.ivCardPreview)
 
-        override fun onItemClicked(view: View?) {
-            itemList[position].first?.let { onItemClickListener.invoke(it) }
+                }
+                itemView.ivCardIconClip.visibility = View.VISIBLE
+                itemView.tvAttachmentQuantity.visibility = View.VISIBLE
+                itemView.tvAttachmentQuantity.text = item.second.attachments.size.toString()
+            } else {
+                Glide.with(itemView).clear(itemView.ivCardPreview)
+                itemView.ivCardIconClip.visibility = View.GONE
+                itemView.tvAttachmentQuantity.visibility = View.GONE
+            }
+            if (item.second.desc.isNotEmpty()) {
+                itemView.ivCardHasDescriptionIcon.visibility = View.VISIBLE
+            } else itemView.ivCardHasDescriptionIcon.visibility = View.GONE
+            if (item.second.idMembers.isNotEmpty()) {
+                itemView.ivCardHasMembersIcon.visibility = View.VISIBLE
+            }
+            itemView.setOnClickListener {
+                listener.invoke(item.first)
+            }
         }
     }
 

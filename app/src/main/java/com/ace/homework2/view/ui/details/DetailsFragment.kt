@@ -10,12 +10,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ace.homework2.R
 import com.ace.homework2.base.BaseFragment
-import com.ace.homework2.model.SpecificCard
-import com.ace.homework2.view.ui.history.HistoryView
-import com.ace.homework2.view.ui.members.CardMembersAdapter
+import com.ace.homework2.model.cards.Card
+import com.ace.homework2.view.ui.action.ActionView
 import com.ace.homework2.view.ui.members.MembersView
+import kotlinx.android.synthetic.main.action_layout.*
+import kotlinx.android.synthetic.main.attachments_layout.*
 import kotlinx.android.synthetic.main.fragment_details.*
+import kotlinx.android.synthetic.main.members_layout.*
 import javax.inject.Inject
+
 
 class DetailsFragment : BaseFragment() {
 
@@ -23,8 +26,9 @@ class DetailsFragment : BaseFragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     lateinit var detailsViewModel: DetailsViewModel
-    lateinit var cardId: String
     private val cardMembersAdapter = CardMembersAdapter()
+    private val attachmentsImageAdapter = AttachmentsImageAdapter()
+    private val attachmentsFileAdapter = AttachmentsFileAdapter()
 
     companion object {
         const val TAG = "DetailsFragment"
@@ -36,6 +40,9 @@ class DetailsFragment : BaseFragment() {
         }
     }
 
+    private val cardId: String
+        get() = arguments?.getString(ARGUMENT_CARD_ID) ?: ""
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,12 +51,19 @@ class DetailsFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        cardId = arguments?.getString(ARGUMENT_CARD_ID) ?: ""
         detailsViewModel = ViewModelProvider(this, viewModelFactory)[DetailsViewModel::class.java]
-        if (detailsViewModel.card.value?.id.isNullOrEmpty()) {
-            detailsViewModel.loadDetails(cardId)
-        }
+        rvCardMembers.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, true)
+        rvCardMembers.adapter = cardMembersAdapter
 
+        rvImageAttachments.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, true)
+        rvImageAttachments.adapter = attachmentsImageAdapter
+
+        rvFileAttachments.layoutManager = LinearLayoutManager(context)
+        rvFileAttachments.adapter = attachmentsFileAdapter
+
+        detailsViewModel.loadDetails(cardId)
         detailsViewModel.loading.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             if (it == true) {
                 loading()
@@ -62,31 +76,50 @@ class DetailsFragment : BaseFragment() {
         })
         detailsViewModel.card.observe(viewLifecycleOwner, Observer {
             loadData(it)
-
         })
 
         fabAddMember.setOnClickListener {
-            detailsViewModel.card.value?.board?.id?.let { id ->
-                (activity as? MembersView)?.openMembersFragment(id)
-            }
+            (activity as? MembersView)?.openMembersFragment(
+                detailsViewModel.card.value?.board?.id ?: "", detailsViewModel.card.value!!
+            )
+
         }
         btnHistory.setOnClickListener {
-            detailsViewModel.card.value?.board?.id?.let { id ->
-                (activity as? HistoryView)?.openHistoryFragment(id)
-            }
+            (activity as? ActionView)?.openHistoryFragment(detailsViewModel.card.value?.id ?: "")
         }
     }
 
-    private fun loadData(card: SpecificCard) {
-        rvCardMembers.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, true)
-        rvCardMembers.adapter = cardMembersAdapter
+    private fun loadData(card: Card) {
         if (card.members.isNotEmpty()) {
             tvMembers.visibility = View.GONE
-            cardMembersAdapter.data = card.members
+            cardMembersAdapter.setData(card.members)
         }
         cardName.text = card.name
-        boardName.text = card.board.name
-        listName.text = card.list.name
+        boardName.text = card.board?.name
+        listName.text = card.list?.name
+        if (card.desc.isEmpty()) {
+            card_description.text = getString(R.string.empty_description_card_text)
+        } else {
+            card_description.text = card.desc
+        }
+
+        if (card.attachments.isNotEmpty()) vLineAttachments.visibility = View.VISIBLE
+        rvImageAttachments.visibility = View.VISIBLE
+        attachmentsImageAdapter.setData(card.attachments.filter {
+            it.previews.isNotEmpty()
+        })
+        rvFileAttachments.visibility = View.VISIBLE
+        attachmentsFileAdapter.setData(card.attachments.filter {
+            it.mimeType != "image/jpeg"
+        })
+
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        rvCardMembers.adapter = null
+        rvImageAttachments.adapter = null
+        rvFileAttachments.adapter = null
+    }
+
 }

@@ -15,7 +15,7 @@
     <!-- typical sizes of views -->
     <dimen name="icon_size_normal_24">24dp</dimen>
     <dimen name="separate_line">1dp</dimen>
-    <dimen name="avatar_size">50dp</dimen>
+    <dimen name="avatar_size">40dp</dimen>
     <dimen name="corner_radius_cardview">4dp</dimen>
     <dimen name="cardview_elevation">2dp</dimen>
     <dimen name="spacing_tiny_2dp">2dp</dimen>

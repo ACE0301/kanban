@@ -5,16 +5,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ace.homework2.R
-import com.ace.homework2.model.Member
+import com.ace.homework2.model.members.Member
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_board_member.view.*
-import kotlinx.android.synthetic.main.item_member.view.*
-import kotlinx.android.synthetic.main.item_member.view.ivNoImage
-import kotlinx.android.synthetic.main.item_member.view.tvMemberName
 
 class BoardMembersAdapter : RecyclerView.Adapter<BoardMembersAdapter.ViewHolder>() {
 
-    var data: List<Member> = emptyList()
+    var onItemClickListener: ((View, Member) -> Unit) = { view, member -> Unit }
+
+    var data: Pair<List<Member>, List<Member>> = Pair(emptyList(), emptyList())
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -26,30 +25,40 @@ class BoardMembersAdapter : RecyclerView.Adapter<BoardMembersAdapter.ViewHolder>
                 R.layout.item_board_member,
                 parent,
                 false
-            )
+            ), onItemClickListener
         )
 
 
-    override fun getItemCount() = data.size
+    override fun getItemCount() = data.first.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindData(data[position])
+        holder.bindData(data.first[position], data.second)
     }
 
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindData(item: Member) {
-            if (item.avatarHash == null) {
-                itemView.ivNoImage.setText(item.initials)
+    class ViewHolder(itemView: View, private val listener: ((View, Member) -> Unit)) :
+        RecyclerView.ViewHolder(itemView) {
+        fun bindData(boardMember: Member, cardMembers: List<Member>) {
+            if (boardMember.avatarHash == null) {
+                itemView.ivAvatar.setInitials(boardMember.initials)
             } else {
                 Glide.with(itemView)
                     .load(
-                        "https://trello-avatars.s3.amazonaws.com/${item.avatarHash}/170.png"
+                        "https://trello-avatars.s3.amazonaws.com/${boardMember.avatarHash}/170.png"
                     )
-                    .into(itemView.ivNoImage)
+                    .into(itemView.ivAvatar)
             }
-            itemView.tvMemberName.text = item.fullName
-            itemView.tvNickName.text = item.username
+            itemView.tvMemberName.text = boardMember.fullName
+            itemView.tvNickName.text = boardMember.username
+            cardMembers.forEach {
+                if (it.id == boardMember.id) {
+                    itemView.ivCheckCardMember.visibility = View.VISIBLE
+                }
+            }
+
+            itemView.setOnClickListener {
+                listener.invoke(itemView, boardMember)
+            }
         }
     }
 }

@@ -10,27 +10,36 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ace.homework2.R
 import com.ace.homework2.base.BaseFragment
+import com.ace.homework2.model.cards.Card
+import com.ace.homework2.model.members.Member
 import kotlinx.android.synthetic.main.fragment_members.*
-import kotlinx.android.synthetic.main.nav_layout.*
+import kotlinx.android.synthetic.main.item_board_member.view.*
 import javax.inject.Inject
 
 class MembersFragment : BaseFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    lateinit var boardId: String
-    lateinit var membersViewModel: MembersViewModel
-    private val membersAdapter = BoardMembersAdapter()
 
     companion object {
         const val TAG = "MembersFragment"
         private const val ARGUMENT_BOARD_ID = "ARGUMENT_BOARD_ID"
-        fun newInstance(boardId: String?) = MembersFragment().apply {
+        private const val ARGUMENT_CARD = "ARGUMENT_CARD"
+        fun newInstance(boardId: String?, card: Card) = MembersFragment().apply {
             arguments = Bundle().apply {
                 putString(ARGUMENT_BOARD_ID, boardId)
+                putSerializable(ARGUMENT_CARD, card)
             }
         }
     }
+
+    private val boardId: String
+        get() = arguments?.getString(ARGUMENT_BOARD_ID) ?: ""
+    private val card: Card
+        get() = arguments?.getSerializable(ARGUMENT_CARD) as Card
+    lateinit var members: List<Member>
+    lateinit var membersViewModel: MembersViewModel
+    private val membersAdapter = BoardMembersAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,19 +49,55 @@ class MembersFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        boardId = arguments?.getString(ARGUMENT_BOARD_ID) ?: ""
+
         membersViewModel = ViewModelProvider(this, viewModelFactory)[MembersViewModel::class.java]
+
         rvBoardMembers.layoutManager = LinearLayoutManager(context)
         rvBoardMembers.adapter = membersAdapter
         if (membersViewModel.boardMembers.value.isNullOrEmpty()) {
             membersViewModel.loadBoardMembers(boardId)
         }
         membersViewModel.boardMembers.observe(viewLifecycleOwner, Observer {
-            membersAdapter.data = it
+            membersAdapter.data = Pair(it, card.members)
         })
         membersViewModel.errorMessage.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             Toast.makeText(context, it, Toast.LENGTH_LONG).show()
         })
+        membersViewModel.memberAddedToCardEvent.observe(viewLifecycleOwner, Observer {
+            if (it == true) Toast.makeText(
+                context,
+                getString(R.string.success_adding_member_to_card_toast),
+                Toast.LENGTH_LONG
+            ).show()
+        })
+        membersViewModel.memberRemovedToCardEvent.observe(viewLifecycleOwner, Observer {
+            if (it == true) Toast.makeText(
+                context, getString(R.string.success_removing_member_from_card_toast),
+                Toast.LENGTH_LONG
+            ).show()
+        })
+        btnOk.setOnClickListener {
+            activity?.onBackPressed()
+        }
+
+        membersAdapter.onItemClickListener = { view: View, member: Member ->
+            if (view.ivCheckCardMember.visibility == View.VISIBLE) {
+                view.ivCheckCardMember.visibility = View.GONE
+                membersViewModel.removeCardMember(card.id, member.id)
+            } else {
+                view.ivCheckCardMember.visibility = View.VISIBLE
+                membersViewModel.addCardMember(card.id, member.id)
+            }
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        rvBoardMembers.layoutManager = null
     }
 
 }

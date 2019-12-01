@@ -34,5 +34,13 @@
     <string name="history_actions">История изменений</string>
     <string name="card_members">Участники карточки</string>
     <string name="card_history">История карточки</string>
+    <string name="actions">Действия</string>
+    <string name="ready_btn">Готово</string>
+    <string name="filter_card_hint">Фильтровать карточки</string>
+    <string name="empty_card_name_toast">Пожалуйста, введите название карточки, чтобы ее сохранить</string>
+    <string name="empty_description_card_text">Нет описания карточки</string>
+    <string name="Attachments_text">Вложения</string>
+    <string name="success_adding_member_to_card_toast">Участник успешно добавлен к карточке</string>
+    <string name="success_removing_member_from_card_toast">Участник успешно удален из карточки</string>
 
 </resources>
