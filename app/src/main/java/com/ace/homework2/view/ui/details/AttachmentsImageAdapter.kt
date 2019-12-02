@@ -41,8 +41,7 @@ class AttachmentsImageAdapter : RecyclerView.Adapter<AttachmentsImageAdapter.Vie
             if (attachments.previews.isNotEmpty()) {
                 Glide
                     .with(itemView)
-                    .load(attachments.previews[1].url)
-                    .centerCrop()
+                    .load(attachments.previews[4].url)
                     .into(itemView.ivPreviewImage)
             }
         }

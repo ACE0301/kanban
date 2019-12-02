@@ -61,11 +61,7 @@ class AuthFragment : DaggerFragment() {
                             if (it == true) {
                                 (activity as? BoardsView)?.showBoards()
                             } else {
-                                Toast.makeText(
-                                    context,
-                                    getString(R.string.auth_error),
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                Toast.makeText(context, getString(R.string.auth_error), Toast.LENGTH_SHORT).show()
                             }
                         })
                     } else {

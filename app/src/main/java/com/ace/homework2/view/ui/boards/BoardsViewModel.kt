@@ -4,9 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ace.homework2.model.boards.Board
-import com.ace.homework2.model.boards.Category
 import com.ace.homework2.model.boards.BoardApiInterface
-import com.ace.homework2.model.network.TrelloHolder.REST_CONSUMER_KEY
+import com.ace.homework2.model.boards.Category
 import com.ace.homework2.model.prefs.AppPreferencesHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -55,7 +54,7 @@ class BoardsViewModel @Inject constructor(
     fun loadBoards() {
         disposableGetBoards?.dispose()
         disposableGetBoards =
-            boardApiHelper.getBoards(true, "id,name,organization", REST_CONSUMER_KEY, token.value ?: "")
+            boardApiHelper.getBoards(true, "id,name,organization")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { _loading.value = true }
@@ -66,9 +65,7 @@ class BoardsViewModel @Inject constructor(
                             if (it.organization == null) {
                                 it.organization =
                                     Category(
-                                        displayName = "Персональные доски",
-                                        name = "",
-                                        id = ""
+                                        displayName = "Персональные доски"
                                     )
                             }
                         }
@@ -87,9 +84,7 @@ class BoardsViewModel @Inject constructor(
             boardApiHelper.createBoard(
                 name,
                 organizationName,
-                true,
-                REST_CONSUMER_KEY,
-                token.value ?: ""
+                true
             )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

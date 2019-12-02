@@ -17,8 +17,6 @@ interface CardsApiInterface {
         @Query("cards") cards: String,
         @Query("card_fields") cardFields: String,
         @Query("lists") lists: String,
-        @Query("key") key: String,
-        @Query("token") token: String,
         @Query("members") members: String,
         @Query("list_fields") listFields: String,
         @Query("card_attachments") cardAttachments: Boolean,
@@ -34,9 +32,7 @@ interface CardsApiInterface {
     @POST("1/cards")
     fun createCard(
         @Query("name") name: String,
-        @Query("idList") idList: String,
-        @Query("key") key: String,
-        @Query("token") token: String
+        @Query("idList") idList: String
     ): Completable
 
     /**
@@ -47,8 +43,6 @@ interface CardsApiInterface {
     fun updateCard(
         @Path("id") cardId: String,
         @Query("pos") pos: String,
-        @Query("idList") idList: String,
-        @Query("key") key: String,
-        @Query("token") token: String
+        @Query("idList") idList: String
     ): Completable
 }

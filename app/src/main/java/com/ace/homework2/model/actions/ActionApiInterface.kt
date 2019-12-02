@@ -14,8 +14,6 @@ interface ActionApiInterface {
     @GET("1/cards/{id}/actions")
     fun getActions(
         @Path("id") cardId: String,
-        @Query("key") key: String,
-        @Query("token") token: String,
         @Query("filter") filter: String
     ): Single<List<Action>>
 }

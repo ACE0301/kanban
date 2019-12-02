@@ -11,7 +11,6 @@ import com.ace.homework2.model.actions.Action
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_action.view.*
 
-
 class ActionAdapter : RecyclerView.Adapter<ActionAdapter.ViewHolder>() {
 
     private val asyncListDiffer = AsyncListDiffer(

@@ -30,15 +30,13 @@ class ActionViewModel @Inject constructor(
         disposeLoadHistory?.dispose()
         disposeLoadHistory = actionApiInterface.getActions(
             cardId,
-            REST_CONSUMER_KEY,
-            token,
             "addMemberToCard,createCard,addAttachmentToCard,updateCard"
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { _loading.value = true }
             .doFinally { _loading.value = false }
-            .subscribe({
+            .subscribe({ it ->
                 _actions.value = it.filterNot {
                     it.type == "updateCard" && it.data.card.desc == null
                 }

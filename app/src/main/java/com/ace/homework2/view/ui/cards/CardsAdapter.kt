@@ -46,19 +46,20 @@ class CardsAdapter(
         fun bind(item: Pair<Long, Card>) {
             itemView.tvCardName.text = item.second.name
             if (item.second.attachments.isNotEmpty()) {
-                if (item.second.attachments[item.second.attachments.size - 1].previews.isNotEmpty()) {
-                    Glide.with(itemView)
-                        .load(
-                            item.second.attachments[item.second.attachments.size - 1].previews[1].url
-                        )
-                        .into(itemView.ivCardPreview)
-
+                val preview  = item.second.attachments.filter {
+                    it.previews.isNotEmpty()
                 }
+                    Glide
+                        .with(itemView)
+                        .load(preview[preview.size-1].previews[4].url)
+                        .override(600,400)
+                        .into(itemView.ivCardPreview)
                 itemView.ivCardIconClip.visibility = View.VISIBLE
                 itemView.tvAttachmentQuantity.visibility = View.VISIBLE
                 itemView.tvAttachmentQuantity.text = item.second.attachments.size.toString()
             } else {
-                Glide.with(itemView).clear(itemView.ivCardPreview)
+                Glide
+                    .with(itemView).clear(itemView.ivCardPreview)
                 itemView.ivCardIconClip.visibility = View.GONE
                 itemView.tvAttachmentQuantity.visibility = View.GONE
             }

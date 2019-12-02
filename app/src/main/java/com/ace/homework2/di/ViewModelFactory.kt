@@ -5,8 +5,6 @@ import androidx.lifecycle.ViewModelProvider
 import javax.inject.Inject
 import javax.inject.Provider
 
-//Ключ есть, создаем свою фабрику
-
 class ViewModelFactory @Inject constructor(private val viewModels: MutableMap<Class<out ViewModel>, Provider<ViewModel>>) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -14,5 +12,4 @@ class ViewModelFactory @Inject constructor(private val viewModels: MutableMap<Cl
             ?: throw IllegalArgumentException("model class $modelClass not found")
         return viewModelProvider.get() as T
     }
-
 }

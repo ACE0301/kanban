@@ -15,9 +15,9 @@ data class Board(
 ) : Item()
 
 data class Category(
-    val id: String,
+    val id: String = "",
     val displayName: String,
-    val name: String
+    val name: String = ""
 ) : Item()
 
 data class Lists(

@@ -5,8 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ace.homework2.model.members.CardMembersApiInterface
 import com.ace.homework2.model.members.Member
-import com.ace.homework2.model.network.TrelloHolder.REST_CONSUMER_KEY
-import com.ace.homework2.view.ui.boards.token
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -35,8 +33,7 @@ class MembersViewModel @Inject constructor(
     fun loadBoardMembers(boardId: String) {
         disposeGetBoardMembers?.dispose()
         disposeGetBoardMembers = cardMembersApiInterface.getBoardMembers(
-            boardId, REST_CONSUMER_KEY,
-            token, "id,avatarHash,initials,fullName,username"
+            boardId, "id,avatarHash,initials,fullName,username"
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -51,9 +48,7 @@ class MembersViewModel @Inject constructor(
         disposeAddCardMember?.dispose()
         disposeAddCardMember = cardMembersApiInterface.addCardMember(
             cardId,
-            memberId,
-            REST_CONSUMER_KEY,
-            token
+            memberId
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -70,9 +65,7 @@ class MembersViewModel @Inject constructor(
         disposeRemoveCardMember?.dispose()
         disposeRemoveCardMember = cardMembersApiInterface.removeCardMember(
             cardId,
-            memberId,
-            REST_CONSUMER_KEY,
-            token
+            memberId
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

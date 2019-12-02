@@ -25,7 +25,6 @@ import kotlinx.android.synthetic.main.column_header.view.*
 import kotlinx.android.synthetic.main.custom_toobar_search_user.*
 import kotlinx.android.synthetic.main.custom_toolbar_add_card.*
 import kotlinx.android.synthetic.main.members_layout.*
-import kotlinx.android.synthetic.main.nav_layout.*
 import javax.inject.Inject
 
 class CardsFragment : BaseFragment() {
@@ -49,8 +48,6 @@ class CardsFragment : BaseFragment() {
     lateinit var cardsViewModel: CardsViewModel
     private var cardCount = 0
     private lateinit var mBoardView: BoardView
-    lateinit var board: Board //объект доски
-    private val boardMembersNavDrawerAdapter = BoardMembersNavDrawerAdapter()
     private val cardMembersAdapter = CardMembersAdapter()
     private val boardId: String
         get() = arguments?.getString(ARGUMENT_BOARD_ID) ?: ""
@@ -96,17 +93,13 @@ class CardsFragment : BaseFragment() {
         if (cardsViewModel.board.value?.id.isNullOrEmpty()) {
             cardsViewModel.loadCards(true, boardId)
         }
-        cardsViewModel.loading.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            if (it == true) loading() else stopLoading()
+
+        cardsViewModel.board.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            loadData(it)
         })
 
-        cardsViewModel.board.observe(viewLifecycleOwner, androidx.lifecycle.Observer { it ->
-            board = it
-            rvListMembers?.layoutManager = LinearLayoutManager(context)
-            rvListMembers?.adapter = boardMembersNavDrawerAdapter
-            boardMembersNavDrawerAdapter.setData(it.members)
-            tvToolbarBoardName.text = it?.name
-            resetBoard()
+        cardsViewModel.loading.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            if (it == true) loading() else stopLoading()
         })
 
         cardsViewModel.errorMessage.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
@@ -114,12 +107,17 @@ class CardsFragment : BaseFragment() {
         })
 
         btnSearch.setOnClickListener {
-            (activity as? SearchCardView)?.openSearchCard(board.id)
+            cardsViewModel.board.value?.id?.let { id ->
+                (activity as? SearchCardView)?.openSearchCard(
+                    id
+                )
+            }
         }
     }
 
-    private fun resetBoard() {
+    private fun loadData(board: Board) {
         cardCount = 0
+        tvToolbarBoardName.text = board.name
         mBoardView.clearBoard()
         board.lists.forEach {
             addColumn(it.name, it.id)
@@ -128,23 +126,25 @@ class CardsFragment : BaseFragment() {
 
     private fun addColumn(name: String, idList: String) {
         val mCardArray = ArrayList<Pair<Long, Card>>()
-        board.cards.forEach {
+        cardsViewModel.board.value?.cards?.forEach {
             if (it.idList == idList) {
                 mCardArray.add(Pair(cardCount++.toLong(), it))
             }
         }
-        val cardsAdapter = CardsAdapter(
-            mCardArray,
-            R.layout.column_item,
-            R.id.item_layout
-        )
+        val cardsAdapter = CardsAdapter(mCardArray, R.layout.column_item, R.id.item_layout)
+
+        // Открывает экран деталей
         cardsAdapter.onItemClickListener = {
-            (activity as? DetailsView)?.openDetailsFragment(board.cards[it.toInt()].id)
+            cardsViewModel.board.value?.cards?.get(it.toInt())?.id?.let { id ->
+                (activity as? DetailsView)?.openDetailsFragment(
+                    id
+                )
+            }
         }
         val header = View.inflate(activity, R.layout.column_header, null)
-        val footer = View.inflate(activity, R.layout.column_footer, null)
         header.tvHeaderName.text = name
 
+        val footer = View.inflate(activity, R.layout.column_footer, null)
         footer.setOnClickListener {
             onAddCardClicked(it, header, idList)
         }
@@ -154,12 +154,12 @@ class CardsFragment : BaseFragment() {
 
         mBoardView.addColumn(cardsAdapter, header, null, false, LinearLayoutManager(context))
 
-        val parent =
+        val columnLinearLayout =
             mBoardView.getRecyclerView(mBoardView.getColumnOfHeader(header)).parent as LinearLayout
-        parent.setBackgroundColor(Color.LTGRAY)
-        parent.addView(footer)
+        columnLinearLayout.setBackgroundColor(Color.LTGRAY)
+        columnLinearLayout.addView(footer)
         val recyclerView = mBoardView.getRecyclerView(mBoardView.getColumnOfHeader(header))
-        val parentParams = parent.layoutParams as LinearLayout.LayoutParams
+        val parentParams = columnLinearLayout.layoutParams as LinearLayout.LayoutParams
         parentParams.apply {
             weight = LINEAR_LAYOUT_WEIGHT
             gravity = Gravity.CENTER_HORIZONTAL
@@ -198,29 +198,17 @@ class CardsFragment : BaseFragment() {
         footer.llAddNewCard.visibility = View.GONE
         val name = footer.etNewCardName?.text.toString()
         if (name.isEmpty()) {
-            Toast.makeText(
-                context,
-                getString(R.string.empty_card_name_toast),
-                Toast.LENGTH_SHORT
-            ).show()
+            Toast.makeText(context, getString(R.string.empty_card_name_toast), Toast.LENGTH_SHORT)
+                .show()
         } else {
-            val card = Pair(
-                cardCount++.toLong(),
-                Card(name = name)
-            )
             cardsViewModel.createCard(name, idList)
             mBoardView.addItem(
                 mBoardView.getColumnOfHeader(header),
                 mBoardView.getItemCount(mBoardView.getColumnOfHeader(header)),
-                card,
-                true
+                Pair(cardCount++.toLong(), Card(name = name)),
+                false
             )
+            footer.etNewCardName?.text?.clear()
         }
-        footer.etNewCardName?.text?.clear()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        rvListMembers?.adapter = null
     }
 }

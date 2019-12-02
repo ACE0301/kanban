@@ -14,21 +14,14 @@ import com.ace.homework2.model.cards.Card
 import com.ace.homework2.view.ui.action.ActionView
 import com.ace.homework2.view.ui.members.MembersView
 import kotlinx.android.synthetic.main.action_layout.*
-import kotlinx.android.synthetic.main.attachments_layout.*
 import kotlinx.android.synthetic.main.fragment_details.*
 import kotlinx.android.synthetic.main.members_layout.*
 import javax.inject.Inject
-
 
 class DetailsFragment : BaseFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    lateinit var detailsViewModel: DetailsViewModel
-    private val cardMembersAdapter = CardMembersAdapter()
-    private val attachmentsImageAdapter = AttachmentsImageAdapter()
-    private val attachmentsFileAdapter = AttachmentsFileAdapter()
 
     companion object {
         const val TAG = "DetailsFragment"
@@ -40,6 +33,10 @@ class DetailsFragment : BaseFragment() {
         }
     }
 
+    lateinit var detailsViewModel: DetailsViewModel
+    private val cardMembersAdapter = CardMembersAdapter()
+    private val attachmentsImageAdapter = AttachmentsImageAdapter()
+    private val attachmentsFileAdapter = AttachmentsFileAdapter()
     private val cardId: String
         get() = arguments?.getString(ARGUMENT_CARD_ID) ?: ""
 
@@ -103,16 +100,14 @@ class DetailsFragment : BaseFragment() {
             card_description.text = card.desc
         }
 
-        if (card.attachments.isNotEmpty()) vLineAttachments.visibility = View.VISIBLE
         rvImageAttachments.visibility = View.VISIBLE
         attachmentsImageAdapter.setData(card.attachments.filter {
             it.previews.isNotEmpty()
         })
         rvFileAttachments.visibility = View.VISIBLE
         attachmentsFileAdapter.setData(card.attachments.filter {
-            it.mimeType != "image/jpeg"
+            it.mimeType != "image/jpeg" && it.mimeType != "image/png"
         })
-
     }
 
     override fun onDestroyView() {
@@ -121,5 +116,4 @@ class DetailsFragment : BaseFragment() {
         rvImageAttachments.adapter = null
         rvFileAttachments.adapter = null
     }
-
 }

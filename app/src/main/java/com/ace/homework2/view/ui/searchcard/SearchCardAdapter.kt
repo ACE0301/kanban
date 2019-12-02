@@ -57,10 +57,13 @@ class SearchCardAdapter : RecyclerView.Adapter<SearchCardAdapter.ViewHolder>() {
             }
             if (card.desc.isNotEmpty()) {
                 itemView.ivCardHasDescriptionIcon.visibility = View.VISIBLE
-            } else itemView.ivCardHasDescriptionIcon.visibility = View.GONE
-
+            } else {
+                itemView.ivCardHasDescriptionIcon.visibility = View.GONE
+            }
             if (card.idMembers.isNotEmpty()) {
                 itemView.ivCardHasMembersIcon.visibility = View.VISIBLE
+            } else {
+                itemView.ivCardHasMembersIcon.visibility = View.GONE
             }
             itemView.setOnClickListener {
                 listener.invoke(card.id)

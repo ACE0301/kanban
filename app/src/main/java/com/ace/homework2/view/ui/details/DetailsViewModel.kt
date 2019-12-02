@@ -5,8 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ace.homework2.model.cards.Card
 import com.ace.homework2.model.detail.DetailsApiInterface
-import com.ace.homework2.model.network.TrelloHolder.REST_CONSUMER_KEY
-import com.ace.homework2.view.ui.boards.token
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -31,8 +29,6 @@ class DetailsViewModel @Inject constructor(
         disposeLoadDetails?.dispose()
         disposeLoadDetails = detailsApiInterface.getCardDetails(
             cardId,
-            REST_CONSUMER_KEY,
-            token,
             "name,desc",
             true,
             "name",

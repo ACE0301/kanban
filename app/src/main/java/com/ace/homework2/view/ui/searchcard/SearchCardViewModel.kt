@@ -5,8 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ace.homework2.model.cards.Card
 import com.ace.homework2.model.cards.CardsApiInterface
-import com.ace.homework2.model.network.TrelloHolder
-import com.ace.homework2.view.ui.boards.token
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -35,8 +33,6 @@ class SearchCardViewModel @Inject constructor(
                 "all",
                 "id,idList,name,pos,desc,idMembers",
                 "all",
-                TrelloHolder.REST_CONSUMER_KEY,
-                token,
                 "all",
                 "id,name",
                 true,
@@ -55,5 +51,4 @@ class SearchCardViewModel @Inject constructor(
                     _errorMessage.value = it.message
                 })
     }
-
 }

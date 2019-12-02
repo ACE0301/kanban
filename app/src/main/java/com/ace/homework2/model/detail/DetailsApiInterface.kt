@@ -15,8 +15,6 @@ interface DetailsApiInterface {
     @GET("1/cards/{id}")
     fun getCardDetails(
         @Path("id") cardId: String,
-        @Query("key") key: String,
-        @Query("token") token: String,
         @Query("fields") fields: String,
         @Query("board") board: Boolean,
         @Query("board_fields") board_fields: String,

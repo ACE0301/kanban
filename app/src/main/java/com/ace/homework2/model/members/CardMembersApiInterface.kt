@@ -13,9 +13,7 @@ interface CardMembersApiInterface {
     @POST("1/cards/{id}/idMembers")
     fun addCardMember(
         @Path("id") cardId: String,
-        @Query("value") value: String,
-        @Query("key") key: String,
-        @Query("token") token: String
+        @Query("value") value: String
     ): Completable
 
     /**
@@ -25,11 +23,7 @@ interface CardMembersApiInterface {
     @DELETE("1/cards/{id}/idMembers/{idMember}")
     fun removeCardMember(
         @Path("id") cardId: String,
-        @Path("idMember") idMember: String,
-        @Query("key") key: String,
-        @Query("token") token: String
-    ): Completable
-
+        @Path("idMember") idMember: String): Completable
 
     /**
      * Получаю участников доски
@@ -38,8 +32,6 @@ interface CardMembersApiInterface {
     @GET("1/boards/{id}/members")
     fun getBoardMembers(
         @Path("id") boardId: String,
-        @Query("key") key: String,
-        @Query("token") token: String,
         @Query("fields") fields: String
     ): Single<List<Member>>
 }

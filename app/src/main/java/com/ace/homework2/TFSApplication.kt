@@ -7,7 +7,6 @@ import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import okhttp3.OkHttpClient
 
-
 class TFSApplication : DaggerApplication() {
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
         return DaggerAppComponent.builder().application(this).build()

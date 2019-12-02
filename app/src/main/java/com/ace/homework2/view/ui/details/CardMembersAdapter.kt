@@ -37,7 +37,6 @@ class CardMembersAdapter : RecyclerView.Adapter<CardMembersAdapter.ViewHolder>()
         holder.bindData(asyncListDiffer.currentList[position])
     }
 
-
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindData(item: Member) {
             if (item.avatarHash == null) {

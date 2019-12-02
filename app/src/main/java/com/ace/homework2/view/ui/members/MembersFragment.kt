@@ -91,10 +91,6 @@ class MembersFragment : BaseFragment() {
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         rvBoardMembers.layoutManager = null

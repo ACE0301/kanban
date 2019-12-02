@@ -15,7 +15,6 @@ import com.ace.homework2.view.ui.details.DetailsView
 import kotlinx.android.synthetic.main.fragment_search_card.*
 import javax.inject.Inject
 
-
 class SearchCardFragment : BaseFragment() {
 
     @Inject

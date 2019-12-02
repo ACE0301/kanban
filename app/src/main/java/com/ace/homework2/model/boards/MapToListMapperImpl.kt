@@ -13,9 +13,7 @@ class MapToListMapperImpl : MapToListMapper {
                 if (i.key == null) {
                     add(
                         Category(
-                            displayName = "Персональные доски",
-                            name = "",
-                            id = ""
+                            displayName = "Персональные доски"
                         )
                     )
                 } else {

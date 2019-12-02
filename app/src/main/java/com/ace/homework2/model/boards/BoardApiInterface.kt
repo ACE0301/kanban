@@ -14,10 +14,7 @@ interface BoardApiInterface {
     @GET("1/members/me/boards")
     fun getBoards(
         @Query("organization") organization: Boolean,
-        @Query("fields") fields: String,
-        @Query("key") key: String,
-        @Query("token") token: String
-    ): Single<MutableList<Board>>
+        @Query("fields") fields: String): Single<MutableList<Board>>
 
     /**
      * Создание доски
@@ -27,9 +24,6 @@ interface BoardApiInterface {
     fun createBoard(
         @Query("name") name: String,
         @Query("idOrganization") idOrganization: String,
-        @Query("defaultLists") defaultLists: Boolean,
-        @Query("key") key: String,
-        @Query("token") token: String
-    ): Single<Board>
+        @Query("defaultLists") defaultLists: Boolean): Single<Board>
 }
 

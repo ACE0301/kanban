@@ -6,7 +6,6 @@ import com.github.scribejava.core.model.OAuthConstants.TOKEN
 import io.reactivex.Completable
 import io.reactivex.Single
 
-
 open class AppPreferencesHelper(
     private val context: Context
 ) : PreferencesHelper {
@@ -23,6 +22,5 @@ open class AppPreferencesHelper(
     override fun getToken(): Single<String> {
         return Single.just(preferences.getString(TOKEN, "") ?: "")
     }
-
 }
 

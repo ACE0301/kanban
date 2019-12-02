@@ -11,5 +11,4 @@ class AttachmentsDiffCallback : DiffUtil.ItemCallback<Attachments>() {
     override fun areContentsTheSame(oldItem: Attachments, newItem: Attachments): Boolean {
         return oldItem == newItem
     }
-
 }
