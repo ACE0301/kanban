@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ace.homework2.R
 import com.ace.homework2.base.BaseFragment
 import com.ace.homework2.model.boards.*
+import com.ace.homework2.view.ui.FragmentView
 import com.ace.homework2.view.ui.boards.dialog.NewBoardDialogFragment
-import com.ace.homework2.view.ui.cards.CardsView
 import com.osome.stickydecorator.ViewHolderStickyDecoration
 import kotlinx.android.synthetic.main.fragment_boards.*
 import javax.inject.Inject
@@ -93,7 +93,7 @@ class BoardsFragment : BaseFragment(), OnDialogResult {
         }
 
         boardsAdapter.onItemClickListener = {
-            (activity as? CardsView)?.openCardsFragment(it)
+            (activity as? FragmentView)?.openCardsFragment(it)
         }
 
         boardsViewModel.errorMessage.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
@@ -110,7 +110,7 @@ class BoardsFragment : BaseFragment(), OnDialogResult {
                 name, category.id
             )
             boardsViewModel.board.observe(this, Observer {
-                (activity as? CardsView)?.openCardsFragment(it.id)
+                (activity as? FragmentView)?.openCardsFragment(it.id)
             })
         }
     }

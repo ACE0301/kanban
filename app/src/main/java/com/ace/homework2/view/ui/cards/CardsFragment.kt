@@ -16,9 +16,8 @@ import com.ace.homework2.base.BaseFragment
 import com.ace.homework2.extentions.hideKeyboard
 import com.ace.homework2.model.boards.Board
 import com.ace.homework2.model.cards.Card
+import com.ace.homework2.view.ui.FragmentView
 import com.ace.homework2.view.ui.details.CardMembersAdapter
-import com.ace.homework2.view.ui.details.DetailsView
-import com.ace.homework2.view.ui.searchcard.SearchCardView
 import com.woxthebox.draglistview.BoardView
 import kotlinx.android.synthetic.main.column_footer.view.*
 import kotlinx.android.synthetic.main.column_header.view.*
@@ -108,7 +107,7 @@ class CardsFragment : BaseFragment() {
 
         btnSearch.setOnClickListener {
             cardsViewModel.board.value?.id?.let { id ->
-                (activity as? SearchCardView)?.openSearchCard(
+                (activity as? FragmentView)?.openSearchCardFragment(
                     id
                 )
             }
@@ -136,7 +135,7 @@ class CardsFragment : BaseFragment() {
         // Открывает экран деталей
         cardsAdapter.onItemClickListener = {
             cardsViewModel.board.value?.cards?.get(it.toInt())?.id?.let { id ->
-                (activity as? DetailsView)?.openDetailsFragment(
+                (activity as? FragmentView)?.openDetailsFragment(
                     id
                 )
             }

@@ -13,7 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.ace.homework2.R
 import com.ace.homework2.model.network.TrelloHolder
-import com.ace.homework2.view.ui.boards.BoardsView
+import com.ace.homework2.view.ui.FragmentView
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_login.*
 import javax.inject.Inject
@@ -59,7 +59,7 @@ class AuthFragment : DaggerFragment() {
                         authViewModel.authorization(url)
                         authViewModel.successAuthorization.observe(this@AuthFragment, Observer {
                             if (it == true) {
-                                (activity as? BoardsView)?.showBoards()
+                                (activity as? FragmentView)?.openBoardsFragment()
                             } else {
                                 Toast.makeText(context, getString(R.string.auth_error), Toast.LENGTH_SHORT).show()
                             }

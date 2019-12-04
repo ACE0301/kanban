@@ -4,22 +4,16 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.ace.homework2.model.cards.Card
 import com.ace.homework2.view.ui.action.ActionFragment
-import com.ace.homework2.view.ui.action.ActionView
+import com.ace.homework2.view.ui.FragmentView
 import com.ace.homework2.view.ui.auth.AuthFragment
 import com.ace.homework2.view.ui.boards.BoardsFragment
-import com.ace.homework2.view.ui.boards.BoardsView
 import com.ace.homework2.view.ui.cards.CardsFragment
-import com.ace.homework2.view.ui.cards.CardsView
 import com.ace.homework2.view.ui.details.DetailsFragment
-import com.ace.homework2.view.ui.details.DetailsView
 import com.ace.homework2.view.ui.members.MembersFragment
-import com.ace.homework2.view.ui.members.MembersView
 import com.ace.homework2.view.ui.searchcard.SearchCardFragment
-import com.ace.homework2.view.ui.searchcard.SearchCardView
 import com.github.scribejava.core.model.OAuthConstants.TOKEN
 
-class MainActivity : AppCompatActivity(), CardsView, BoardsView, DetailsView, MembersView,
-    ActionView, SearchCardView {
+class MainActivity : AppCompatActivity(), FragmentView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,19 +24,19 @@ class MainActivity : AppCompatActivity(), CardsView, BoardsView, DetailsView, Me
                     ""
                 ).isNullOrEmpty()
             ) {
-                showLoginFragment()
-            } else showBoards()
+                openLoginFragment()
+            } else openBoardsFragment()
 
         }
     }
 
-    private fun showLoginFragment() {
+    private fun openLoginFragment() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, AuthFragment.newInstance(), AuthFragment.TAG)
             .commit()
     }
 
-    override fun showBoards() {
+    override fun openBoardsFragment() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, BoardsFragment.newInstance(), BoardsFragment.TAG)
             .commit()
@@ -80,7 +74,7 @@ class MainActivity : AppCompatActivity(), CardsView, BoardsView, DetailsView, Me
             .commit()
     }
 
-    override fun openSearchCard(boardId: String) {
+    override fun openSearchCardFragment(boardId: String) {
         supportFragmentManager.beginTransaction()
             .replace(
                 R.id.container,

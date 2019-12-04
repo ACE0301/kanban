@@ -11,8 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ace.homework2.R
 import com.ace.homework2.base.BaseFragment
 import com.ace.homework2.model.cards.Card
-import com.ace.homework2.view.ui.action.ActionView
-import com.ace.homework2.view.ui.members.MembersView
+import com.ace.homework2.view.ui.FragmentView
 import kotlinx.android.synthetic.main.action_layout.*
 import kotlinx.android.synthetic.main.fragment_details.*
 import kotlinx.android.synthetic.main.members_layout.*
@@ -76,13 +75,13 @@ class DetailsFragment : BaseFragment() {
         })
 
         fabAddMember.setOnClickListener {
-            (activity as? MembersView)?.openMembersFragment(
+            (activity as? FragmentView)?.openMembersFragment(
                 detailsViewModel.card.value?.board?.id ?: "", detailsViewModel.card.value!!
             )
 
         }
         btnHistory.setOnClickListener {
-            (activity as? ActionView)?.openHistoryFragment(detailsViewModel.card.value?.id ?: "")
+            (activity as? FragmentView)?.openHistoryFragment(detailsViewModel.card.value?.id ?: "")
         }
     }
 

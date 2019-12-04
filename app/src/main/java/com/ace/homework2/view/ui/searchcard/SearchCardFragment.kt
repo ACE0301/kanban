@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ace.homework2.base.BaseFragment
 import com.ace.homework2.model.cards.Card
-import com.ace.homework2.view.ui.details.DetailsView
+import com.ace.homework2.view.ui.FragmentView
 import kotlinx.android.synthetic.main.fragment_search_card.*
 import javax.inject.Inject
 
@@ -75,7 +75,7 @@ class SearchCardFragment : BaseFragment() {
             }
         })
         searchCardAdapter.onItemClickListener = {
-            (activity as? DetailsView)?.openDetailsFragment(it)
+            (activity as? FragmentView)?.openDetailsFragment(it)
         }
     }
 
