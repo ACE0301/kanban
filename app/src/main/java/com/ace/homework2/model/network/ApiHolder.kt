@@ -1,6 +1,5 @@
 package com.ace.homework2.model.network
 
-import com.ace.homework2.model.network.TrelloHolder.REST_CONSUMER_KEY
 import com.ace.homework2.model.network.TrelloHolder.REST_URL
 import com.ace.homework2.view.ui.boards.token
 import io.reactivex.schedulers.Schedulers
@@ -19,7 +18,7 @@ object ApiHolder {
                 val original = chain.request()
                 val originalHttpUrl = original.url
                 val url = originalHttpUrl.newBuilder()
-                    .addQueryParameter("key", REST_CONSUMER_KEY)
+                    .addQueryParameter("key", TrelloHolder.REST_CONSUMER_KEY)
                     .addQueryParameter("token", token)
                     .build()
                 val requestBuilder = original.newBuilder()

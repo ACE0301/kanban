@@ -122,7 +122,7 @@ class CardsViewModel @Inject constructor(
             else if (toRow == 0) {
                 newCardPos = ((map[newListId]?.get(toRow)?.pos)?.toFloat())?.div(2)
                 //если перетаскиваем в конец колонки, то берем позицию последнего элемента и делим на 2
-            } else if (toRow + 1 == map[newListId]?.size!!) {
+            } else if (toRow + 1 == map[newListId]?.size) {
                 newCardPos = ((map[newListId]?.get(toRow)?.pos)?.toFloat())?.times(2)
                 //если кладем между 2-х элементов, берем сумму этих элементо и делим на 2(доп.проверка куда двигаем элемент вниз/вверх)
             } else {
@@ -131,14 +131,14 @@ class CardsViewModel @Inject constructor(
                     ((map[newListId]?.get(toRow - 1)?.pos)?.toFloat()?.plus(
                         map[newListId]?.get(
                             toRow
-                        )?.pos?.toFloat()!!
+                        )?.pos?.toFloat() ?: 0.0f
                     ))?.div(
                         2
                     )
                     //если переносим сверху вниз
                 } else {
                     ((map[newListId]?.get(toRow)?.pos)?.toFloat()?.plus(
-                        map[newListId]?.get(toRow + 1)?.pos?.toFloat()!!
+                        map[newListId]?.get(toRow + 1)?.pos?.toFloat() ?: 0.0f
                     ))?.div(2)
                 }
             }
@@ -151,12 +151,12 @@ class CardsViewModel @Inject constructor(
                 //перетаскиваем в новую колонку в начало
                 toRow == 0 -> newCardPos = ((map[newListId]?.get(toRow)?.pos)?.toFloat())?.div(2)
                 //перетаскиваем в новую колонку в конец
-                toRow == map[newListId]?.size!! -> newCardPos =
+                toRow == map[newListId]?.size -> newCardPos =
                     ((map[newListId]?.get(toRow - 1)?.pos)?.toFloat())?.times(2)
                 else -> //если переносим снизу вверх
                     newCardPos = if (fromColumn > toColumn) {
                         ((map[newListId]?.get(toRow - 1)?.pos)?.toFloat()?.plus(
-                            map[newListId]?.get(toRow)?.pos?.toFloat()!!
+                            map[newListId]?.get(toRow)?.pos?.toFloat() ?: 0.0f
                         ))?.div(
                             2
                         )
@@ -165,7 +165,7 @@ class CardsViewModel @Inject constructor(
                         ((map[newListId]?.get(toRow - 1)?.pos)?.toFloat()?.plus(
                             map[newListId]?.get(
                                 toRow
-                            )?.pos?.toFloat()!!
+                            )?.pos?.toFloat() ?: 0.0f
                         ))?.div(2)
                     }
             }
@@ -174,7 +174,6 @@ class CardsViewModel @Inject constructor(
         //айдишник элемента, который мы перетащили
         var cardId = map[oldListId]?.get(fromRow)?.id
 
-        //обновляем на серваке
         updateCard(cardId ?: "", "$newCardPos", newListId ?: "")
     }
 

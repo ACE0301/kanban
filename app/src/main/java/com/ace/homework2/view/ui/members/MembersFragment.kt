@@ -34,7 +34,7 @@ class MembersFragment : BaseFragment() {
     }
 
     private val boardId: String
-        get() = arguments?.getString(ARGUMENT_BOARD_ID) ?: ""
+        get() = arguments?.getString(ARGUMENT_BOARD_ID).orEmpty()
     private val card: Card
         get() = arguments?.getSerializable(ARGUMENT_CARD) as Card
     lateinit var members: List<Member>
@@ -63,19 +63,21 @@ class MembersFragment : BaseFragment() {
         membersViewModel.errorMessage.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             Toast.makeText(context, it, Toast.LENGTH_LONG).show()
         })
-        membersViewModel.memberAddedToCardEvent.observe(viewLifecycleOwner, Observer {
-            if (it == true) Toast.makeText(
+        membersViewModel.memberAddedToCardEvent.observe(viewLifecycleOwner, Observer { event ->
+            if (event == true) Toast.makeText(
                 context,
                 getString(R.string.success_adding_member_to_card_toast),
                 Toast.LENGTH_LONG
             ).show()
         })
-        membersViewModel.memberRemovedToCardEvent.observe(viewLifecycleOwner, Observer {
-            if (it == true) Toast.makeText(
-                context, getString(R.string.success_removing_member_from_card_toast),
+        membersViewModel.memberRemovedToCardEvent.observe(viewLifecycleOwner, Observer { event ->
+            if (event == true) Toast.makeText(
+                context,
+                getString(R.string.success_removing_member_from_card_toast),
                 Toast.LENGTH_LONG
             ).show()
         })
+
         btnOk.setOnClickListener {
             activity?.onBackPressed()
         }
@@ -90,10 +92,4 @@ class MembersFragment : BaseFragment() {
             }
         }
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        rvBoardMembers.layoutManager = null
-    }
-
 }

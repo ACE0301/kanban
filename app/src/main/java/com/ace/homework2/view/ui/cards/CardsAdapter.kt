@@ -8,7 +8,6 @@ import com.bumptech.glide.Glide
 import com.woxthebox.draglistview.DragItemAdapter
 import kotlinx.android.synthetic.main.column_item.view.*
 
-
 class CardsAdapter(
     cards: ArrayList<Pair<Long, Card>>,
     private val layoutId: Int,
@@ -27,10 +26,7 @@ class CardsAdapter(
         grabHandleId
     )
 
-
-    override fun getUniqueItemId(position: Int): Long {
-        return itemList[position].first
-    }
+    override fun getUniqueItemId(position: Int) = itemList[position].first
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
@@ -46,14 +42,14 @@ class CardsAdapter(
         fun bind(item: Pair<Long, Card>) {
             itemView.tvCardName.text = item.second.name
             if (item.second.attachments.isNotEmpty()) {
-                val preview  = item.second.attachments.filter {
+                val preview = item.second.attachments.filter {
                     it.previews.isNotEmpty()
                 }
-                    Glide
-                        .with(itemView)
-                        .load(preview[preview.size-1].previews[4].url)
-                        .override(600,400)
-                        .into(itemView.ivCardPreview)
+                Glide
+                    .with(itemView)
+                    .load(preview[preview.size - 1].previews[4].url)
+                    .override(600, 400)
+                    .into(itemView.ivCardPreview)
                 itemView.ivCardIconClip.visibility = View.VISIBLE
                 itemView.tvAttachmentQuantity.visibility = View.VISIBLE
                 itemView.tvAttachmentQuantity.text = item.second.attachments.size.toString()
@@ -74,5 +70,4 @@ class CardsAdapter(
             }
         }
     }
-
 }

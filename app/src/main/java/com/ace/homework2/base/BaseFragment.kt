@@ -10,7 +10,7 @@ abstract class BaseFragment : DaggerFragment() {
     private lateinit var inAnimation: AlphaAnimation
     private lateinit var outAnimation: AlphaAnimation
 
-    fun loading() {
+    fun showLoading() {
         inAnimation = AlphaAnimation(0f, 1f)
         inAnimation.duration = 200
         progress_overlay.animation = inAnimation

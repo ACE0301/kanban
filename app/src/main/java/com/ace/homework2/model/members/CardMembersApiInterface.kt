@@ -6,32 +6,21 @@ import retrofit2.http.*
 
 interface CardMembersApiInterface {
 
-    /**
-     * Добавление участника к карточке
-     */
-
-    @POST("1/cards/{id}/idMembers")
+    @POST("1/cards/{cardId}/idMembers")
     fun addCardMember(
-        @Path("id") cardId: String,
+        @Path("cardId") cardId: String,
         @Query("value") value: String
     ): Completable
 
-    /**
-     * Удаление участника из карточки
-     */
-
-    @DELETE("1/cards/{id}/idMembers/{idMember}")
+    @DELETE("1/cards/{cardId}/idMembers/{idMember}")
     fun removeCardMember(
-        @Path("id") cardId: String,
-        @Path("idMember") idMember: String): Completable
+        @Path("cardId") cardId: String,
+        @Path("idMember") idMember: String
+    ): Completable
 
-    /**
-     * Получаю участников доски
-     */
-
-    @GET("1/boards/{id}/members")
+    @GET("1/boards/{boardId}/members")
     fun getBoardMembers(
-        @Path("id") boardId: String,
+        @Path("boardId") boardId: String,
         @Query("fields") fields: String
     ): Single<List<Member>>
 }

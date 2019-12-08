@@ -1,4 +1,18 @@
 <resources>
+
+    <!--Rest Client Template-->
+    <string name="login_label">Log in</string>
+    <string name="intent_scheme">https</string>
+    <string name="intent_host">androidtfs</string>
+    <string name="auth_btn">Авторизация</string>
+
+    <!-- Snackbars -->
+    <string name="created_card">Карточка создана</string>
+    <string name="updated_card">Карточка изменена</string>
+    <string name="add_card">Добавить карточку</string>
+    <string name="add_card_text_toolbar">Добавить карточку…</string>
+    <string name="board_is_removed_snackbar">Доска удалена!</string>
+
     <string name="app_name">Доски</string>
     <string name="board_name">Название доски</string>
     <string name="create_board">Создать доску</string>
@@ -15,21 +29,8 @@
     <string name="work_boards">Work boards</string>
     <string name="other_boards">Other boards</string>
     <string name="auth_error">Ошибка авторизации</string>
-
-    <!--Rest Client Template-->
-    <string name="login_label">Log in</string>
-    <string name="intent_scheme">https</string>
-    <string name="intent_host">androidtfs</string>
-    <string name="auth_btn">Авторизация</string>
-
-    <!-- Snackbars -->
-    <string name="created_card">Карточка создана</string>
-    <string name="updated_card">Карточка изменена</string>
-    <string name="add_card">Добавить карточку</string>
-    <string name="add_card_text_toolbar">Добавить карточку...</string>
-    <string name="board_is_removed_snackbar">доска удалена!</string>
     <string name="members">Участники</string>
-    <string name="members_text">Участники...</string>
+    <string name="members_text">Участники…</string>
     <string name="in_list_text">В списке</string>
     <string name="history_actions">История изменений</string>
     <string name="card_members">Участники карточки</string>
@@ -39,8 +40,30 @@
     <string name="filter_card_hint">Фильтровать карточки</string>
     <string name="empty_card_name_toast">Пожалуйста, введите название карточки, чтобы ее сохранить</string>
     <string name="empty_description_card_text">Нет описания карточки</string>
-    <string name="Attachments_text">Вложения</string>
+    <string name="attachments_text">Вложения</string>
     <string name="success_adding_member_to_card_toast">Участник успешно добавлен к карточке</string>
     <string name="success_removing_member_from_card_toast">Участник успешно удален из карточки</string>
-
+    <string name="right_now">только что</string>
+    <string name="in_a_few_seconds">через несколько секунд</string>
+    <string name="in_a_minute">через минуту</string>
+    <string name="in_a_hour">через час</string>
+    <string name="some_time_ago">%1$d %2$s назад</string>
+    <string name="endTime">Дата окончания: %1$s</string>
+    <string name="fromPlace">Место вылета: %1$s</string>
+    <string name="toPlace">Место прилета: %1$s</string>
+    <string name="flightDate">Дата вылета: %1$s</string>
+    <string name="gate">Номер выхода: %1$s</string>
+    <string name="some_seconds_ago">несколько секунд назад</string>
+    <string name="minute_ago">минуту назад</string>
+    <string name="hour_ago">час назад</string>
+    <string name="day_ago">день назад</string>
+    <string name="min">мин.</string>
+    <string name="avatar">https://trello-avatars.s3.amazonaws.com/%1$s/170.png</string>
+    <string name="add_member_to_card_text">%1$s добавил(а) участника %2$s  к этой карточке</string>
+    <string name="create_card_text">%1$s добавил(а) эту карточку в список %2$s</string>
+    <string name="add_attachment_to_card_text">%1$s  прикрепил(а) вложение  %2$s к этой карточке</string>
+    <string name="update_card_add_description_text">%1$s добавил(а) описание карточки: %2$s</string>
+    <string name="update_card_change_description_text">%1$s добавил(а) изменил(а) описание карточки с %2$s на %3$s</string>
+    <string name="image_jpeg">image/jpeg</string>
+    <string name="image_png">image/png</string>
 </resources>

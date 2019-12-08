@@ -7,10 +7,6 @@ import retrofit2.http.Query
 
 interface ActionApiInterface {
 
-    /**
-     * Получаю историю действий по карточке
-     */
-
     @GET("1/cards/{id}/actions")
     fun getActions(
         @Path("id") cardId: String,

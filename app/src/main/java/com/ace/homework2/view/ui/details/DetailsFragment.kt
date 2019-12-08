@@ -12,15 +12,23 @@ import com.ace.homework2.R
 import com.ace.homework2.base.BaseFragment
 import com.ace.homework2.model.cards.Card
 import com.ace.homework2.view.ui.FragmentView
+import com.ace.homework2.view.ui.action.ActionFragment
+import com.ace.homework2.view.ui.members.MembersFragment
 import kotlinx.android.synthetic.main.action_layout.*
 import kotlinx.android.synthetic.main.fragment_details.*
 import kotlinx.android.synthetic.main.members_layout.*
 import javax.inject.Inject
 
+
 class DetailsFragment : BaseFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    lateinit var detailsViewModel: DetailsViewModel
+    private val cardMembersAdapter = CardMembersAdapter()
+    private val attachmentsImageAdapter = AttachmentsImageAdapter()
+    private val attachmentsFileAdapter = AttachmentsFileAdapter()
 
     companion object {
         const val TAG = "DetailsFragment"
@@ -32,10 +40,6 @@ class DetailsFragment : BaseFragment() {
         }
     }
 
-    lateinit var detailsViewModel: DetailsViewModel
-    private val cardMembersAdapter = CardMembersAdapter()
-    private val attachmentsImageAdapter = AttachmentsImageAdapter()
-    private val attachmentsFileAdapter = AttachmentsFileAdapter()
     private val cardId: String
         get() = arguments?.getString(ARGUMENT_CARD_ID) ?: ""
 
@@ -62,7 +66,7 @@ class DetailsFragment : BaseFragment() {
         detailsViewModel.loadDetails(cardId)
         detailsViewModel.loading.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             if (it == true) {
-                loading()
+                showLoading()
             } else {
                 stopLoading()
             }
@@ -75,13 +79,19 @@ class DetailsFragment : BaseFragment() {
         })
 
         fabAddMember.setOnClickListener {
-            (activity as? FragmentView)?.openMembersFragment(
-                detailsViewModel.card.value?.board?.id ?: "", detailsViewModel.card.value!!
+            (activity as? FragmentView)?.openFragmentWithBackstack(
+                MembersFragment.newInstance(
+                    detailsViewModel.card.value?.board?.id,
+                    (detailsViewModel.card.value) ?: Card()
+                ), MembersFragment.TAG
             )
 
         }
         btnHistory.setOnClickListener {
-            (activity as? FragmentView)?.openHistoryFragment(detailsViewModel.card.value?.id ?: "")
+            (activity as? FragmentView)?.openFragmentWithBackstack(
+                ActionFragment.newInstance(detailsViewModel.card.value?.id),
+                ActionFragment.TAG
+            )
         }
     }
 
@@ -105,8 +115,9 @@ class DetailsFragment : BaseFragment() {
         })
         rvFileAttachments.visibility = View.VISIBLE
         attachmentsFileAdapter.setData(card.attachments.filter {
-            it.mimeType != "image/jpeg" && it.mimeType != "image/png"
+            it.mimeType != getString(R.string.image_jpeg) && it.mimeType != getString(R.string.image_png)
         })
+
     }
 
     override fun onDestroyView() {

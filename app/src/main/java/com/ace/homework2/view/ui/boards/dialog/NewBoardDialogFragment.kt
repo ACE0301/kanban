@@ -25,15 +25,17 @@ class NewBoardDialogFragment : DialogFragment() {
             categories.add(it.key.displayName)
         }
 
-        val adapter = ArrayAdapter(
-            context!!, android.R.layout.simple_spinner_item, categories
-        )
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner!!.adapter = adapter
+        val adapter = context?.let { context ->
+            ArrayAdapter(
+                context, android.R.layout.simple_spinner_item, categories
+            )
+        }
+        adapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner?.adapter = adapter
         builder
             .setView(dialogView).setTitle(getString(R.string.create_board))
             .setPositiveButton(getString(R.string.create_btn)) { _, _ ->
-                val selected = spinner.selectedItem.toString()
+                val selected = spinner?.selectedItem.toString()
                 var category: Category? = null
                 hashMap.forEach {
                     if (it.key.displayName == selected) {
@@ -49,5 +51,4 @@ class NewBoardDialogFragment : DialogFragment() {
             .setNegativeButton(getString(R.string.cancel_btn)) { dialog, _ -> dialog.cancel() }
         return builder.create()
     }
-
 }

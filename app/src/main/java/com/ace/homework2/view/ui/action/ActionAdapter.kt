@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
+import com.ace.homework2.R
 import com.ace.homework2.extentions.humanizeDiff
 import com.ace.homework2.extentions.toDate
 import com.ace.homework2.model.actions.Action
@@ -22,23 +23,18 @@ class ActionAdapter : RecyclerView.Adapter<ActionAdapter.ViewHolder>() {
         asyncListDiffer.submitList(data)
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         ViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                com.ace.homework2.R.layout.item_action,
+                R.layout.item_action,
                 parent,
                 false
             )
         )
 
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
+    override fun getItemId(position: Int) = position.toLong()
 
-    override fun getItemViewType(position: Int): Int {
-        return position
-    }
+    override fun getItemViewType(position: Int) = position
 
     override fun getItemCount(): Int = asyncListDiffer.currentList.size
 
@@ -48,27 +44,35 @@ class ActionAdapter : RecyclerView.Adapter<ActionAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindData(action: Action) {
-            if (action.memberCreator.avatarHash == null) {
+            if (action.memberCreator.avatar.isNullOrEmpty()) {
                 itemView.civHistoryAvatar.setInitials(action.memberCreator.initials)
             } else {
                 Glide.with(itemView)
                     .load(
-                        "https://trello-avatars.s3.amazonaws.com/${action.memberCreator.avatarHash}/170.png"
+                        action.memberCreator.avatar
                     )
                     .into(itemView.civHistoryAvatar)
             }
             when (action.type) {
                 "addMemberToCard" -> {
-                    itemView.tvActionInfo?.text =
-                        "${action.memberCreator.fullName} добавил(а) участника ${action.member.fullName} к этой карточке"
-
+                    itemView.tvActionInfo?.text = itemView.context.getString(
+                        R.string.add_member_to_card_text,
+                        action.memberCreator.fullName,
+                        action.member.fullName
+                    )
                 }
                 "createCard" -> itemView.tvActionInfo?.text =
-                    "${action.memberCreator.fullName} добавил(а) эту карточку в список ${action.data.list.name}"
-
+                    itemView.context.getString(
+                        R.string.create_card_text,
+                        action.memberCreator.fullName,
+                        action.data.list.name
+                    )
                 "addAttachmentToCard" -> {
-                    itemView.tvActionInfo?.text =
-                        "${action.memberCreator.fullName} прикрепил(а) вложение ${action.data.attachment.name} к этой карточке "
+                    itemView.tvActionInfo?.text = itemView.context.getString(
+                        R.string.add_attachment_to_card_text,
+                        action.memberCreator.fullName,
+                        action.data.attachment.name
+                    )
                     Glide.with(itemView)
                         .load(
                             action.data.attachment.previewUrl
@@ -78,14 +82,22 @@ class ActionAdapter : RecyclerView.Adapter<ActionAdapter.ViewHolder>() {
                 "updateCard" -> {
                     itemView.tvActionInfo?.text =
                         when (action.data.old.desc) {
-                            "" -> "${action.memberCreator.fullName} добавил(а) описание карточки: ${action.data.card.desc}"
-                            else -> "${action.memberCreator.fullName} изменил(а) описание карточки с ${action.data.old.desc} на ${action.data.card.desc}"
+                            "" -> itemView.context.getString(
+                                R.string.update_card_add_description_text,
+                                action.memberCreator.fullName,
+                                action.data.card.desc
+                            )
+                            else -> itemView.context.getString(
+                                R.string.update_card_change_description_text,
+                                action.memberCreator.fullName,
+                                action.data.old.desc,
+                                action.data.card.desc
+                            )
                         }
                 }
-                else -> itemView
+                else -> itemView.tvActionInfo?.text = ""
             }
-            itemView.tvTimeUpdated?.text = action.date.toDate()?.humanizeDiff()
-
+            itemView.tvTimeUpdated?.text = action.date.toDate()?.humanizeDiff(itemView.context)
         }
     }
 }

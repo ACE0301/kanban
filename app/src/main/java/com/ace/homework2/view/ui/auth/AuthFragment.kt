@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.ace.homework2.R
 import com.ace.homework2.model.network.TrelloHolder
 import com.ace.homework2.view.ui.FragmentView
+import com.ace.homework2.view.ui.boards.BoardsFragment
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_login.*
 import javax.inject.Inject
@@ -54,14 +55,21 @@ class AuthFragment : DaggerFragment() {
             wv_auth.loadUrl(TrelloHolder.url)
             wv_auth.webViewClient = object : WebViewClient() {
                 @SuppressLint("FragmentLiveDataObserve")
-                override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-                    if (url!!.startsWith(TrelloHolder.REST_CALLBACK_URL)) {
+                override fun shouldOverrideUrlLoading(view: WebView?, url: String): Boolean {
+                    if (url.startsWith(TrelloHolder.REST_CALLBACK_URL)) {
                         authViewModel.authorization(url)
                         authViewModel.successAuthorization.observe(this@AuthFragment, Observer {
                             if (it == true) {
-                                (activity as? FragmentView)?.openBoardsFragment()
+                                (activity as? FragmentView)?.openFragment(
+                                    BoardsFragment(),
+                                    BoardsFragment.TAG
+                                )
                             } else {
-                                Toast.makeText(context, getString(R.string.auth_error), Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    context,
+                                    getString(R.string.auth_error),
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                         })
                     } else {

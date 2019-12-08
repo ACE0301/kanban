@@ -39,12 +39,12 @@ class CardMembersAdapter : RecyclerView.Adapter<CardMembersAdapter.ViewHolder>()
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindData(item: Member) {
-            if (item.avatarHash == null) {
+            if (item.avatar == null) {
                 itemView.civAvatar.setInitials(item.initials)
             } else {
                 Glide.with(itemView)
                     .load(
-                        "https://trello-avatars.s3.amazonaws.com/${item.avatarHash}/170.png"
+                        "https://trello-avatars.s3.amazonaws.com/${item.avatar}/170.png"
                     )
                     .into(itemView.civAvatar)
             }

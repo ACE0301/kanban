@@ -19,7 +19,6 @@ object TrelloHolder {
         .callback(REST_CALLBACK_URL)
         .httpClientConfig(OkHttpHttpClientConfig.defaultConfig())
         .build(TrelloApi.instance())
-
     var requestToken: Future<OAuth1RequestToken> = service.requestTokenAsync
     var authUrl: String = service.getAuthorizationUrl(requestToken.get())
     var url = "$authUrl&scope=read,write"

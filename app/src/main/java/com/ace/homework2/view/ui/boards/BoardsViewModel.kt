@@ -60,19 +60,19 @@ class BoardsViewModel @Inject constructor(
                 .doOnSubscribe { _loading.value = true }
                 .doFinally { _loading.value = false }
                 .subscribe(
-                    { it ->
-                        it.map {
-                            if (it.organization == null) {
-                                it.organization =
+                    { boards ->
+                        boards.map { board ->
+                            if (board.organization == null) {
+                                board.organization =
                                     Category(
                                         displayName = "Персональные доски"
                                     )
                             }
                         }
-                        it.sortBy {
-                            it.organization.name
+                        boards.sortBy { board ->
+                            board.organization.name
                         }
-                        _items.value = it
+                        _items.value = boards
                     }, {
                         _errorMessage.value = it.message
                     })

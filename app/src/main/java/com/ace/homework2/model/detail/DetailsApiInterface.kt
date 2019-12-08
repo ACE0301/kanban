@@ -8,10 +8,6 @@ import retrofit2.http.Query
 
 interface DetailsApiInterface {
 
-    /**
-     * Получаю детали карточки
-     */
-
     @GET("1/cards/{id}")
     fun getCardDetails(
         @Path("id") cardId: String,

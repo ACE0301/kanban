@@ -1,51 +1,52 @@
 package com.ace.homework2.extentions
 
+import android.content.Context
+import com.ace.homework2.R
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
 
+const val DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss"
+const val TIME_ZONE_HOURS = 10800
+val LOCALE = Locale("ru", "RU")
+
+enum class TimeUnits { SECOND, MINUTE, HOUR, DAY }
+
 fun String.toDate(): Date? {
-    val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale("ru", "RU"))
+    val format = SimpleDateFormat(DATE_FORMAT, LOCALE)
     return format.parse(this)
 }
 
-fun Date.humanizeDiff(date: Date = Date()): String {
+fun Date.humanizeDiff(context: Context, date: Date = Date()): String {
 
-    var diffDate = (((this.time - date.time) / 1000) + 10800).toInt()
+    var diffDate = (((this.time - date.time) / 1000) + TIME_ZONE_HOURS).toInt()
 
     return when (diffDate) {
-        in 1 downTo 0 -> "только что"
-        in 1..45 -> "через несколько секунд"
-        in 45..75 -> "через минуту"
-        in 75..(45 * 60) -> "через ${diffDate / 60} ${dateEnding(TimeUnits.MINUTE, diffDate / 60)}"
-        in (45 * 60)..(75 * 60) -> "через час"
-        in (75 * 60)..(22 * 60 * 60) -> "через ${diffDate / 60 / 60} ${dateEnding(
-            TimeUnits.HOUR,
-            diffDate / 60 / 60
-        )}"
-        in (22 * 60 * 60)..(26 * 60 * 60) -> "через день"
-        in (26 * 60 * 60)..(360 * 60 * 60) -> "через ${diffDate / 24 / 60 / 60} ${dateEnding(
-            TimeUnits.DAY,
-            diffDate / 24 / 60 / 60
-        )}"
-        in -1..0 -> "только что"
-        in (360 * 24 * 60 * 60)..Double.POSITIVE_INFINITY.toInt() -> "более чем через год"
-        in -1 downTo -45 -> "несколько секунд назад"
-        in -45 downTo -75 -> "минуту назад"
-        in -75 downTo -(45 * 60) -> "${abs(diffDate / 60)} ${dateEnding(
-            TimeUnits.MINUTE,
-            abs(diffDate / 60)
-        )} назад"
-        in -(45 * 60) downTo -(75 * 60) -> "час назад"
-        in -(75 * 60) downTo -(22 * 60 * 60) -> "${abs(diffDate / 60 / 60)} ${dateEnding(
-            TimeUnits.HOUR,
-            abs(diffDate / 60 / 60)
-        )} назад"
-        in -(22 * 60 * 60) downTo -(26 * 60 * 60) -> "день назад"
-        in -(26 * 60 * 60) downTo -(360 * 60 * 60) -> "${abs(diffDate / 24 / 60 / 60)} ${dateEnding(
-            TimeUnits.DAY,
-            abs(diffDate / 24 / 60 / 60)
-        )} назад"
+        in -1..0 -> context.getString(R.string.right_now)
+        in -1 downTo -45 -> context.getString(R.string.some_seconds_ago)
+        in -45 downTo -75 -> context.getString(R.string.minute_ago)
+        in -75 downTo -(45 * 60) -> context.getString(
+            R.string.some_time_ago,
+            abs(diffDate / 60), dateEnding(
+                TimeUnits.MINUTE, abs(diffDate / 60)
+            )
+        )
+        in -(45 * 60) downTo -(75 * 60) -> context.getString(R.string.hour_ago)
+        in -(75 * 60) downTo -(22 * 60 * 60) -> context.getString(
+            R.string.some_time_ago,
+            abs(diffDate / 60 / 60), dateEnding(
+                TimeUnits.HOUR,
+                abs(diffDate / 60 / 60)
+            )
+        )
+        in -(22 * 60 * 60) downTo -(26 * 60 * 60) -> context.getString(R.string.day_ago)
+        in -(26 * 60 * 60) downTo -(360 * 60 * 60) -> context.getString(
+            R.string.some_time_ago,
+            abs(diffDate / 24 / 60 / 60), dateEnding(
+                TimeUnits.DAY,
+                abs(diffDate / 24 / 60 / 60)
+            )
+        )
         else -> {
             this.toLocaleString()
         }
@@ -72,45 +73,6 @@ fun dateEnding(unit: TimeUnits, count: Int): String {
             1 -> "день"
             in 2..4 -> "дня"
             else -> "дня"
-        }
-    }
-}
-
-enum class TimeUnits {
-    SECOND,
-    MINUTE,
-    HOUR,
-    DAY;
-
-    fun plural(value: Long): String {
-        return Utils.plurals(value, timeunit = this)
-    }
-}
-
-object Utils {
-    fun plurals(i: Long, timeunit: TimeUnits): String {
-
-        val j = i % 10
-
-        return when (j) {
-            in 1..1 -> when (timeunit) {
-                TimeUnits.SECOND -> "$i секунду"
-                TimeUnits.MINUTE -> "$i минуту"
-                TimeUnits.HOUR -> "$i час"
-                TimeUnits.DAY -> "$i день"
-            }
-            in 2..4 -> when (timeunit) {
-                TimeUnits.SECOND -> "$i секунды"
-                TimeUnits.MINUTE -> "$i минуты"
-                TimeUnits.HOUR -> "$i часа"
-                TimeUnits.DAY -> "$i дня"
-            }
-            else -> when (timeunit) {
-                TimeUnits.SECOND -> "$i секунд"
-                TimeUnits.MINUTE -> "$i минут"
-                TimeUnits.HOUR -> "$i часов"
-                TimeUnits.DAY -> "$i дней"
-            }
         }
     }
 }

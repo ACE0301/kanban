@@ -18,12 +18,15 @@ import com.ace.homework2.model.boards.Board
 import com.ace.homework2.model.cards.Card
 import com.ace.homework2.view.ui.FragmentView
 import com.ace.homework2.view.ui.details.CardMembersAdapter
+import com.ace.homework2.view.ui.details.DetailsFragment
+import com.ace.homework2.view.ui.searchcard.SearchCardFragment
 import com.woxthebox.draglistview.BoardView
 import kotlinx.android.synthetic.main.column_footer.view.*
 import kotlinx.android.synthetic.main.column_header.view.*
 import kotlinx.android.synthetic.main.custom_toobar_search_user.*
 import kotlinx.android.synthetic.main.custom_toolbar_add_card.*
 import kotlinx.android.synthetic.main.members_layout.*
+import kotlinx.android.synthetic.main.nav_layout.*
 import javax.inject.Inject
 
 class CardsFragment : BaseFragment() {
@@ -47,6 +50,8 @@ class CardsFragment : BaseFragment() {
     lateinit var cardsViewModel: CardsViewModel
     private var cardCount = 0
     private lateinit var mBoardView: BoardView
+    lateinit var board: Board //объект доски
+    private val boardMembersNavDrawerAdapter = BoardMembersNavDrawerAdapter()
     private val cardMembersAdapter = CardMembersAdapter()
     private val boardId: String
         get() = arguments?.getString(ARGUMENT_BOARD_ID) ?: ""
@@ -92,13 +97,17 @@ class CardsFragment : BaseFragment() {
         if (cardsViewModel.board.value?.id.isNullOrEmpty()) {
             cardsViewModel.loadCards(true, boardId)
         }
-
-        cardsViewModel.board.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            loadData(it)
+        cardsViewModel.loading.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            if (it == true) showLoading() else stopLoading()
         })
 
-        cardsViewModel.loading.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            if (it == true) loading() else stopLoading()
+        cardsViewModel.board.observe(viewLifecycleOwner, androidx.lifecycle.Observer { it ->
+            board = it
+            rvListMembers?.layoutManager = LinearLayoutManager(context)
+            rvListMembers?.adapter = boardMembersNavDrawerAdapter
+            boardMembersNavDrawerAdapter.setData(it.members)
+            tvToolbarBoardName.text = it?.name
+            resetBoard()
         })
 
         cardsViewModel.errorMessage.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
@@ -106,17 +115,15 @@ class CardsFragment : BaseFragment() {
         })
 
         btnSearch.setOnClickListener {
-            cardsViewModel.board.value?.id?.let { id ->
-                (activity as? FragmentView)?.openSearchCardFragment(
-                    id
-                )
-            }
+            (activity as? FragmentView)?.openFragmentWithBackstack(
+                SearchCardFragment.newInstance(board.id),
+                SearchCardFragment.TAG
+            )
         }
     }
 
-    private fun loadData(board: Board) {
+    private fun resetBoard() {
         cardCount = 0
-        tvToolbarBoardName.text = board.name
         mBoardView.clearBoard()
         board.lists.forEach {
             addColumn(it.name, it.id)
@@ -125,25 +132,26 @@ class CardsFragment : BaseFragment() {
 
     private fun addColumn(name: String, idList: String) {
         val mCardArray = ArrayList<Pair<Long, Card>>()
-        cardsViewModel.board.value?.cards?.forEach {
+        board.cards.forEach {
             if (it.idList == idList) {
                 mCardArray.add(Pair(cardCount++.toLong(), it))
             }
         }
-        val cardsAdapter = CardsAdapter(mCardArray, R.layout.column_item, R.id.item_layout)
-
-        // Открывает экран деталей
+        val cardsAdapter = CardsAdapter(
+            mCardArray,
+            R.layout.column_item,
+            R.id.item_layout
+        )
         cardsAdapter.onItemClickListener = {
-            cardsViewModel.board.value?.cards?.get(it.toInt())?.id?.let { id ->
-                (activity as? FragmentView)?.openDetailsFragment(
-                    id
-                )
-            }
+            (activity as? FragmentView)?.openFragmentWithBackstack(
+                DetailsFragment.newInstance(board.cards[it.toInt()].id),
+                DetailsFragment.TAG
+            )
         }
         val header = View.inflate(activity, R.layout.column_header, null)
+        val footer = View.inflate(activity, R.layout.column_footer, null)
         header.tvHeaderName.text = name
 
-        val footer = View.inflate(activity, R.layout.column_footer, null)
         footer.setOnClickListener {
             onAddCardClicked(it, header, idList)
         }
@@ -153,12 +161,12 @@ class CardsFragment : BaseFragment() {
 
         mBoardView.addColumn(cardsAdapter, header, null, false, LinearLayoutManager(context))
 
-        val columnLinearLayout =
+        val parent =
             mBoardView.getRecyclerView(mBoardView.getColumnOfHeader(header)).parent as LinearLayout
-        columnLinearLayout.setBackgroundColor(Color.LTGRAY)
-        columnLinearLayout.addView(footer)
+        parent.setBackgroundColor(Color.LTGRAY)
+        parent.addView(footer)
         val recyclerView = mBoardView.getRecyclerView(mBoardView.getColumnOfHeader(header))
-        val parentParams = columnLinearLayout.layoutParams as LinearLayout.LayoutParams
+        val parentParams = parent.layoutParams as LinearLayout.LayoutParams
         parentParams.apply {
             weight = LINEAR_LAYOUT_WEIGHT
             gravity = Gravity.CENTER_HORIZONTAL
@@ -197,17 +205,29 @@ class CardsFragment : BaseFragment() {
         footer.llAddNewCard.visibility = View.GONE
         val name = footer.etNewCardName?.text.toString()
         if (name.isEmpty()) {
-            Toast.makeText(context, getString(R.string.empty_card_name_toast), Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(
+                context,
+                getString(R.string.empty_card_name_toast),
+                Toast.LENGTH_SHORT
+            ).show()
         } else {
+            val card = Pair(
+                cardCount++.toLong(),
+                Card(name = name)
+            )
             cardsViewModel.createCard(name, idList)
             mBoardView.addItem(
                 mBoardView.getColumnOfHeader(header),
                 mBoardView.getItemCount(mBoardView.getColumnOfHeader(header)),
-                Pair(cardCount++.toLong(), Card(name = name)),
-                false
+                card,
+                true
             )
-            footer.etNewCardName?.text?.clear()
         }
+        footer.etNewCardName?.text?.clear()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        rvListMembers?.adapter = null
     }
 }

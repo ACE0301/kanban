@@ -15,6 +15,7 @@ import com.ace.homework2.base.BaseFragment
 import com.ace.homework2.model.boards.*
 import com.ace.homework2.view.ui.FragmentView
 import com.ace.homework2.view.ui.boards.dialog.NewBoardDialogFragment
+import com.ace.homework2.view.ui.cards.CardsFragment
 import com.osome.stickydecorator.ViewHolderStickyDecoration
 import kotlinx.android.synthetic.main.fragment_boards.*
 import javax.inject.Inject
@@ -32,8 +33,8 @@ class BoardsFragment : BaseFragment(), OnDialogResult {
 
     private lateinit var boardsViewModel: BoardsViewModel
     private val boardsAdapter = BoardsAdapter()
-    private val mapper: MapToListMapper =
-        MapToListMapperImpl()
+    private val mapper: HashMapBoardToListItemsMapper =
+        HashMapBoardToListItemsMapperImpl()
     private var items: MutableList<Item> = mutableListOf()
 
     companion object {
@@ -73,7 +74,7 @@ class BoardsFragment : BaseFragment(), OnDialogResult {
         })
         boardsViewModel.loading.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             if (it == true) {
-                loading()
+                showLoading()
             } else {
                 stopLoading()
             }
@@ -93,7 +94,10 @@ class BoardsFragment : BaseFragment(), OnDialogResult {
         }
 
         boardsAdapter.onItemClickListener = {
-            (activity as? FragmentView)?.openCardsFragment(it)
+            (activity as? FragmentView)?.openFragmentWithBackstack(
+                CardsFragment.newInstance(it),
+                CardsFragment.TAG
+            )
         }
 
         boardsViewModel.errorMessage.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
@@ -110,7 +114,10 @@ class BoardsFragment : BaseFragment(), OnDialogResult {
                 name, category.id
             )
             boardsViewModel.board.observe(this, Observer {
-                (activity as? FragmentView)?.openCardsFragment(it.id)
+                (activity as? FragmentView)?.openFragmentWithBackstack(
+                    CardsFragment.newInstance(it.id),
+                    CardsFragment.TAG
+                )
             })
         }
     }
@@ -119,6 +126,5 @@ class BoardsFragment : BaseFragment(), OnDialogResult {
         super.onDestroyView()
         rvList.adapter = null
     }
-
 }
 

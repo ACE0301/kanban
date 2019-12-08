@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
+import com.ace.homework2.R
 import com.ace.homework2.model.boards.Board
 import com.ace.homework2.model.boards.Category
 import com.ace.homework2.model.boards.Item
@@ -29,13 +30,9 @@ class BoardsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
         asyncListDiffer.submitList(data)
     }
 
-    private fun getItem(position: Int): Item {
-        return asyncListDiffer.currentList[position]
-    }
+    private fun getItem(position: Int) = asyncListDiffer.currentList[position]
 
-    override fun isHeader(position: Int): Boolean {
-        return getItem(position) is Category
-    }
+    override fun isHeader(position: Int) = getItem(position) is Category
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
@@ -48,13 +45,13 @@ class BoardsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
         return when (viewType) {
             TYPE_HEADER -> {
                 val view = LayoutInflater.from(parent.context)
-                    .inflate(com.ace.homework2.R.layout.item_category, parent, false)
+                    .inflate(R.layout.item_category, parent, false)
                 HeaderViewHolder(view)
             }
             TYPE_BOARD -> {
                 val view =
                     LayoutInflater.from(parent.context)
-                        .inflate(com.ace.homework2.R.layout.item_board, parent, false)
+                        .inflate(R.layout.item_board, parent, false)
                 BoardViewHolder(view, onItemClickListener)
             }
             else -> throw IllegalArgumentException("Invalid view type")

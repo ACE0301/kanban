@@ -23,7 +23,7 @@ data class Data(
 )
 
 data class Old(
-    val desc: String
+    val desc: String? = ""
 )
 
 data class Attachment(

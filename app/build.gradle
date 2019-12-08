@@ -17,7 +17,9 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro', "-keep class com.woxthebox.draglistview.** { *; }"
+            proguardFiles getDefaultProguardFile(
+                    'proguard-android-optimize.txt'),
+                    'proguard-rules.pro'
         }
     }
     kotlinOptions {
@@ -84,7 +86,7 @@ dependencies {
     implementation "com.osome.decoration:sticky:$version_sticky"
 
     // debugImplementation because LeakCanary should only run in debug builds.
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:$version_leakcanary_android"
+    //debugImplementation "com.squareup.leakcanary:leakcanary-android:$version_leakcanary_android"
 
     androidTestImplementation "androidx.test:runner:$version_runner"
     androidTestImplementation "androidx.test.espresso:espresso-core:$version_espresso_core"

@@ -31,7 +31,7 @@ class ActionFragment : BaseFragment() {
     private val historyAdapter = ActionAdapter()
     lateinit var actionViewModel: ActionViewModel
     private val cardId: String
-        get() = arguments?.getString(ARGUMENT_CARD_ID) ?: ""
+        get() = arguments?.getString(ARGUMENT_CARD_ID).orEmpty()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,7 +56,7 @@ class ActionFragment : BaseFragment() {
         })
 
         actionViewModel.loading.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            if (it == true) loading() else stopLoading()
+            if (it == true) showLoading() else stopLoading()
         })
     }
 }

@@ -19,5 +19,4 @@ class TFSApplication : DaggerApplication() {
             .addNetworkInterceptor(StethoInterceptor())
             .build()
     }
-
 }

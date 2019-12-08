@@ -23,7 +23,8 @@ class Test {
 
     @Test
     fun mainActivityTest() {
-        val btnAuthId = rule.activity.resources.getIdentifier("btnAuth", "id", rule.activity.packageName)
+        val btnAuthId =
+            rule.activity.resources.getIdentifier("btnAuth", "id", rule.activity.packageName)
         Espresso.onView(ViewMatchers.withId(btnAuthId)).perform(ViewActions.click())
         Thread.sleep(5000)
         Web.onWebView()

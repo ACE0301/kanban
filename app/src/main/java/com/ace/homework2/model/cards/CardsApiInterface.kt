@@ -7,10 +7,6 @@ import retrofit2.http.*
 
 interface CardsApiInterface {
 
-    /**
-     * Получение деталей конкретной доски
-     */
-
     @GET("1/boards/{id}")
     fun getBoardDetails(
         @Path("id") boardId: String,
@@ -25,19 +21,11 @@ interface CardsApiInterface {
         @Query("card_member_fields") card_member_fields: String
     ): Single<Board>
 
-    /**
-     * Создать карточку
-     */
-
     @POST("1/cards")
     fun createCard(
         @Query("name") name: String,
         @Query("idList") idList: String
     ): Completable
-
-    /**
-     * Обновление доски
-     */
 
     @PUT("1/cards/{id}")
     fun updateCard(

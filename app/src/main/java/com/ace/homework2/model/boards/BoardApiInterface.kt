@@ -7,23 +7,17 @@ import retrofit2.http.Query
 
 interface BoardApiInterface {
 
-    /**
-     * Получение списка досок
-     */
-
     @GET("1/members/me/boards")
     fun getBoards(
         @Query("organization") organization: Boolean,
-        @Query("fields") fields: String): Single<MutableList<Board>>
-
-    /**
-     * Создание доски
-     */
+        @Query("fields") fields: String
+    ): Single<MutableList<Board>>
 
     @POST("1/boards/")
     fun createBoard(
         @Query("name") name: String,
         @Query("idOrganization") idOrganization: String,
-        @Query("defaultLists") defaultLists: Boolean): Single<Board>
+        @Query("defaultLists") defaultLists: Boolean
+    ): Single<Board>
 }
 

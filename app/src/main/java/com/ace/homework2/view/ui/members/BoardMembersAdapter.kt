@@ -28,23 +28,21 @@ class BoardMembersAdapter : RecyclerView.Adapter<BoardMembersAdapter.ViewHolder>
             ), onItemClickListener
         )
 
-
     override fun getItemCount() = data.first.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindData(data.first[position], data.second)
     }
 
-
     class ViewHolder(itemView: View, private val listener: ((View, Member) -> Unit)) :
         RecyclerView.ViewHolder(itemView) {
         fun bindData(boardMember: Member, cardMembers: List<Member>) {
-            if (boardMember.avatarHash == null) {
+            if (boardMember.avatar == null) {
                 itemView.ivAvatar.setInitials(boardMember.initials)
             } else {
                 Glide.with(itemView)
                     .load(
-                        "https://trello-avatars.s3.amazonaws.com/${boardMember.avatarHash}/170.png"
+                        "https://trello-avatars.s3.amazonaws.com/${boardMember.avatar}/170.png"
                     )
                     .into(itemView.ivAvatar)
             }
@@ -55,7 +53,6 @@ class BoardMembersAdapter : RecyclerView.Adapter<BoardMembersAdapter.ViewHolder>
                     itemView.ivCheckCardMember.visibility = View.VISIBLE
                 }
             }
-
             itemView.setOnClickListener {
                 listener.invoke(itemView, boardMember)
             }

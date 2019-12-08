@@ -11,7 +11,7 @@ data class Card(
     val board: Board? = null,
     val idList: String = "",
     val list: Lists? = null,
-    val name: String,
+    val name: String = "",
     val members: List<Member> = emptyList(),
     val idMembers: List<String> = emptyList(),
     val pos: String = "",
