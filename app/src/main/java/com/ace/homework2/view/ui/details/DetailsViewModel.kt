@@ -1,8 +1,9 @@
 package com.ace.homework2.view.ui.details
 
-import androidx.lifecycle.LiveData
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.ace.homework2.R
 import com.ace.homework2.model.cards.Card
 import com.ace.homework2.model.detail.DetailsApiInterface
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -11,19 +12,15 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class DetailsViewModel @Inject constructor(
-    val detailsApiInterface: DetailsApiInterface
+    val detailsApiInterface: DetailsApiInterface,
+    val context: Context
 ) : ViewModel() {
 
     private var disposeLoadDetails: Disposable? = null
 
-    private val _loading = MutableLiveData<Boolean>()
-    val loading: LiveData<Boolean> = _loading
-
-    private val _errorMessage = MutableLiveData<String>()
-    val errorMessage: LiveData<String> = _errorMessage
-
-    private val _card = MutableLiveData<Card>()
-    val card: LiveData<Card> = _card
+    val loading = MutableLiveData<Boolean>()
+    val errorMessage = MutableLiveData<String>()
+    val card = MutableLiveData<Card>()
 
     fun loadDetails(cardId: String) {
         disposeLoadDetails?.dispose()
@@ -40,13 +37,19 @@ class DetailsViewModel @Inject constructor(
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { _loading.value = true }
-            .doFinally { _loading.value = false }
+            .doOnSubscribe { loading.value = true }
+            .doFinally { loading.value = false }
             .subscribe(
-                {
-                    _card.value = it
+                { card ->
+                    card.members.forEach { member ->
+                        if (member.avatar != null) {
+                            member.avatar = context.getString(R.string.avatar, member.avatar)
+                        }
+                    }
+                    this.card.value = card
+
                 }, {
-                    _errorMessage.value = it.message
+                    errorMessage.value = it.message
                 }
             )
     }

@@ -1,6 +1,6 @@
 package com.ace.homework2.view.ui.cards
 
-import androidx.lifecycle.LiveData
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ace.homework2.model.boards.Board
@@ -12,7 +12,8 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class CardsViewModel @Inject constructor(
-    val cardsApiInterface: CardsApiInterface
+    val cardsApiInterface: CardsApiInterface,
+    val context: Context
 ) : ViewModel() {
 
     var map: MutableMap<String, List<Card>?> =
@@ -23,17 +24,9 @@ class CardsViewModel @Inject constructor(
     private var disposableCreateCard: Disposable? = null
     private var disposableUpdateCard: Disposable? = null
 
-    private val _board = MutableLiveData<Board>()
-    val board: LiveData<Board> = _board
-
-    private val _loading = MutableLiveData<Boolean>()
-    val loading: LiveData<Boolean> = _loading
-
-    private val _errorMessage = MutableLiveData<String>()
-    val errorMessage: LiveData<String> = _errorMessage
-
-    private val _successMessage = MutableLiveData<String>()
-    val successMessage: LiveData<String> = _successMessage
+    val board = MutableLiveData<Board>()
+    val loading = MutableLiveData<Boolean>()
+    val errorMessage = MutableLiveData<String>()
 
     fun loadCards(isShowLoading: Boolean, boardId: String) {
         disposableLoadCards?.dispose()
@@ -53,8 +46,8 @@ class CardsViewModel @Inject constructor(
             )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { if (isShowLoading) _loading.value = true }
-                .doFinally { if (isShowLoading) _loading.value = false }
+                .doOnSubscribe { if (isShowLoading) loading.value = true }
+                .doFinally { if (isShowLoading) loading.value = false }
                 .subscribe({
                     it.lists.forEach { map[it.id] = null }
                     val map2 = it.cards.groupBy { it.idList }
@@ -65,9 +58,9 @@ class CardsViewModel @Inject constructor(
                             }
                         }
                     }
-                    _board.value = it
+                    board.value = it
                 }, {
-                    _errorMessage.value = it.message
+                    errorMessage.value = it.message
                 })
     }
 
@@ -78,10 +71,9 @@ class CardsViewModel @Inject constructor(
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    _successMessage.value = "Карточка создана"
                     board.value?.id?.let { loadCards(false, it) }
                 }, {
-                    _errorMessage.value = it.message
+                    errorMessage.value = it.message
                 })
     }
 
@@ -92,10 +84,9 @@ class CardsViewModel @Inject constructor(
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    _successMessage.value = "Карточка обновлена"
                     board.value?.id?.let { loadCards(false, it) }
                 }, {
-                    _errorMessage.value = it.message
+                    errorMessage.value = it.message
                 }
                 )
     }
@@ -107,8 +98,8 @@ class CardsViewModel @Inject constructor(
         toRow: Int
     ) {
 
-        val oldListId = _board.value?.lists?.get(fromColumn)?.id
-        val newListId = _board.value?.lists?.get(toColumn)?.id
+        val oldListId = board.value?.lists?.get(fromColumn)?.id
+        val newListId = board.value?.lists?.get(toColumn)?.id
 
         var newCardPos: Float?
         //если колонка не изменилась

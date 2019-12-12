@@ -12,15 +12,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ace.homework2.R
 import com.ace.homework2.base.BaseFragment
-import com.ace.homework2.model.boards.*
+import com.ace.homework2.model.boards.Board
+import com.ace.homework2.model.boards.Category
+import com.ace.homework2.model.boards.Item
+import com.ace.homework2.model.network.token
 import com.ace.homework2.view.ui.FragmentView
 import com.ace.homework2.view.ui.boards.dialog.NewBoardDialogFragment
 import com.ace.homework2.view.ui.cards.CardsFragment
 import com.osome.stickydecorator.ViewHolderStickyDecoration
 import kotlinx.android.synthetic.main.fragment_boards.*
 import javax.inject.Inject
-
-var token = ""
 
 interface OnDialogResult {
     fun onNewBoardAdded(name: String, category: Category)
@@ -33,8 +34,6 @@ class BoardsFragment : BaseFragment(), OnDialogResult {
 
     private lateinit var boardsViewModel: BoardsViewModel
     private val boardsAdapter = BoardsAdapter()
-    private val mapper: HashMapBoardToListItemsMapper =
-        HashMapBoardToListItemsMapperImpl()
     private var items: MutableList<Item> = mutableListOf()
 
     companion object {
@@ -73,7 +72,7 @@ class BoardsFragment : BaseFragment(), OnDialogResult {
             }
         })
         boardsViewModel.loading.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            if (it == true) {
+            if (it) {
                 showLoading()
             } else {
                 stopLoading()
@@ -83,7 +82,11 @@ class BoardsFragment : BaseFragment(), OnDialogResult {
             hashMap = it.groupBy {
                 it.organization
             }.toMutableMap()
-            items = mapper.map(hashMap)
+
+            hashMap.forEach {
+                items.add(it.key)
+                items.addAll(it.value)
+            }
             boardsAdapter.setData(items)
         })
 

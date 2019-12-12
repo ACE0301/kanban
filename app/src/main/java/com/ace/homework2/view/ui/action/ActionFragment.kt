@@ -56,7 +56,7 @@ class ActionFragment : BaseFragment() {
         })
 
         actionViewModel.loading.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            if (it == true) showLoading() else stopLoading()
+            if (it) showLoading() else stopLoading()
         })
     }
 }

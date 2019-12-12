@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.woxthebox.draglistview.DragItemAdapter
 import kotlinx.android.synthetic.main.column_item.view.*
 
+
 class CardsAdapter(
     cards: ArrayList<Pair<Long, Card>>,
     private val layoutId: Int,

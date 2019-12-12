@@ -70,5 +70,4 @@ class SearchCardAdapter : RecyclerView.Adapter<SearchCardAdapter.ViewHolder>() {
             }
         }
     }
-
 }

@@ -44,6 +44,7 @@ class SearchCardFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View = inflater.inflate(R.layout.fragment_search_card, container, false)
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         searchCardViewModel =
@@ -57,7 +58,7 @@ class SearchCardFragment : BaseFragment() {
             checkIfEditTextHasText()
         })
         searchCardViewModel.loading.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            if (it == true) showLoading() else stopLoading()
+            if (it) showLoading() else stopLoading()
         })
 
         etSearchCardName.addTextChangedListener(object : TextWatcher {

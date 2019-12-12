@@ -42,7 +42,7 @@ class BoardMembersAdapter : RecyclerView.Adapter<BoardMembersAdapter.ViewHolder>
             } else {
                 Glide.with(itemView)
                     .load(
-                        "https://trello-avatars.s3.amazonaws.com/${boardMember.avatar}/170.png"
+                        boardMember.avatar
                     )
                     .into(itemView.ivAvatar)
             }
@@ -53,6 +53,7 @@ class BoardMembersAdapter : RecyclerView.Adapter<BoardMembersAdapter.ViewHolder>
                     itemView.ivCheckCardMember.visibility = View.VISIBLE
                 }
             }
+
             itemView.setOnClickListener {
                 listener.invoke(itemView, boardMember)
             }

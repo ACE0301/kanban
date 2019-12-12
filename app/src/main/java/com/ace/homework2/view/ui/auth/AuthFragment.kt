@@ -59,7 +59,7 @@ class AuthFragment : DaggerFragment() {
                     if (url.startsWith(TrelloHolder.REST_CALLBACK_URL)) {
                         authViewModel.authorization(url)
                         authViewModel.successAuthorization.observe(this@AuthFragment, Observer {
-                            if (it == true) {
+                            if (it) {
                                 (activity as? FragmentView)?.openFragment(
                                     BoardsFragment(),
                                     BoardsFragment.TAG

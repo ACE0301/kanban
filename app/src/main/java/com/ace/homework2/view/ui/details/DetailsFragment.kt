@@ -65,7 +65,7 @@ class DetailsFragment : BaseFragment() {
 
         detailsViewModel.loadDetails(cardId)
         detailsViewModel.loading.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            if (it == true) {
+            if (it) {
                 showLoading()
             } else {
                 stopLoading()

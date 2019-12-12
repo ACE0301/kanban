@@ -1,6 +1,5 @@
 package com.ace.homework2.view.ui.boards
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ace.homework2.model.boards.Board
@@ -17,20 +16,11 @@ class BoardsViewModel @Inject constructor(
     val appPreferencesHelper: AppPreferencesHelper
 ) : ViewModel() {
 
-    private var _token = MutableLiveData<String>()
-    val token: LiveData<String> = _token
-
-    private val _items = MutableLiveData<MutableList<Board>>()
-    val items: LiveData<MutableList<Board>> = _items
-
-    private val _board = MutableLiveData<Board>()
-    val board: LiveData<Board> = _board
-
-    private val _loading = MutableLiveData<Boolean>()
-    val loading: LiveData<Boolean> = _loading
-
-    private val _errorMessage = MutableLiveData<String>()
-    val errorMessage: LiveData<String> = _errorMessage
+    var token = MutableLiveData<String>()
+    val items = MutableLiveData<MutableList<Board>>()
+    val board = MutableLiveData<Board>()
+    val loading = MutableLiveData<Boolean>()
+    val errorMessage = MutableLiveData<String>()
 
     private var disposableGetToken: Disposable? = null
     private var disposableGetBoards: Disposable? = null
@@ -44,9 +34,9 @@ class BoardsViewModel @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    _token.value = it
+                    token.value = it
                 }, {
-                    _errorMessage.value = it.message
+                    errorMessage.value = it.message
                 }
             )
     }
@@ -57,8 +47,8 @@ class BoardsViewModel @Inject constructor(
             boardApiHelper.getBoards(true, "id,name,organization")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { _loading.value = true }
-                .doFinally { _loading.value = false }
+                .doOnSubscribe { loading.value = true }
+                .doFinally { loading.value = false }
                 .subscribe(
                     { boards ->
                         boards.map { board ->
@@ -72,9 +62,9 @@ class BoardsViewModel @Inject constructor(
                         boards.sortBy { board ->
                             board.organization.name
                         }
-                        _items.value = boards
+                        items.value = boards
                     }, {
-                        _errorMessage.value = it.message
+                        errorMessage.value = it.message
                     })
     }
 
@@ -90,9 +80,9 @@ class BoardsViewModel @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {
-                        _board.value = it
+                        board.value = it
                     }, {
-                        _errorMessage.value = it.message
+                        errorMessage.value = it.message
                     }
                 )
     }

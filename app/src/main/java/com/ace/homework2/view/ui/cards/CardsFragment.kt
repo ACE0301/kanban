@@ -26,7 +26,6 @@ import kotlinx.android.synthetic.main.column_header.view.*
 import kotlinx.android.synthetic.main.custom_toobar_search_user.*
 import kotlinx.android.synthetic.main.custom_toolbar_add_card.*
 import kotlinx.android.synthetic.main.members_layout.*
-import kotlinx.android.synthetic.main.nav_layout.*
 import javax.inject.Inject
 
 class CardsFragment : BaseFragment() {
@@ -51,7 +50,6 @@ class CardsFragment : BaseFragment() {
     private var cardCount = 0
     private lateinit var mBoardView: BoardView
     lateinit var board: Board //объект доски
-    private val boardMembersNavDrawerAdapter = BoardMembersNavDrawerAdapter()
     private val cardMembersAdapter = CardMembersAdapter()
     private val boardId: String
         get() = arguments?.getString(ARGUMENT_BOARD_ID) ?: ""
@@ -98,14 +96,11 @@ class CardsFragment : BaseFragment() {
             cardsViewModel.loadCards(true, boardId)
         }
         cardsViewModel.loading.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            if (it == true) showLoading() else stopLoading()
+            if (it) showLoading() else stopLoading()
         })
 
         cardsViewModel.board.observe(viewLifecycleOwner, androidx.lifecycle.Observer { it ->
             board = it
-            rvListMembers?.layoutManager = LinearLayoutManager(context)
-            rvListMembers?.adapter = boardMembersNavDrawerAdapter
-            boardMembersNavDrawerAdapter.setData(it.members)
             tvToolbarBoardName.text = it?.name
             resetBoard()
         })
@@ -224,10 +219,5 @@ class CardsFragment : BaseFragment() {
             )
         }
         footer.etNewCardName?.text?.clear()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        rvListMembers?.adapter = null
     }
 }

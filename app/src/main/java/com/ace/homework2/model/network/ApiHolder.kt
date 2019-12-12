@@ -1,7 +1,6 @@
 package com.ace.homework2.model.network
 
 import com.ace.homework2.model.network.TrelloHolder.REST_URL
-import com.ace.homework2.view.ui.boards.token
 import io.reactivex.schedulers.Schedulers
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -9,6 +8,8 @@ import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+
+var token = ""
 
 object ApiHolder {
 

@@ -1,6 +1,5 @@
 package com.ace.homework2.view.ui.searchcard
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ace.homework2.model.cards.Card
@@ -16,14 +15,9 @@ class SearchCardViewModel @Inject constructor(
 
     private var disposableLoadCards: Disposable? = null
 
-    private val _loading = MutableLiveData<Boolean>()
-    val loading: LiveData<Boolean> = _loading
-
-    private val _errorMessage = MutableLiveData<String>()
-    val errorMessage: LiveData<String> = _errorMessage
-
-    private val _cards = MutableLiveData<List<Card>>()
-    val cards: LiveData<List<Card>> = _cards
+    val loading = MutableLiveData<Boolean>()
+    val errorMessage = MutableLiveData<String>()
+    val cards = MutableLiveData<List<Card>>()
 
     fun loadCards(boardId: String) {
         disposableLoadCards?.dispose()
@@ -43,12 +37,13 @@ class SearchCardViewModel @Inject constructor(
             )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { _loading.value = true }
-                .doFinally { _loading.value = false }
+                .doOnSubscribe { loading.value = true }
+                .doFinally { loading.value = false }
                 .subscribe({
-                    _cards.value = it.cards
+                    cards.value = it.cards
                 }, {
-                    _errorMessage.value = it.message
+                    errorMessage.value = it.message
                 })
     }
+
 }

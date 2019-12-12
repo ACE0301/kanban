@@ -66,4 +66,8 @@
     <string name="update_card_change_description_text">%1$s добавил(а) изменил(а) описание карточки с %2$s на %3$s</string>
     <string name="image_jpeg">image/jpeg</string>
     <string name="image_png">image/png</string>
+    <string name="card_is_created">Карточка создана</string>
+    <string name="card_is_updated">Карточка обновлена</string>
+    <string name="hour">ч.</string>
+    <string name="day">д.</string>
 </resources>

@@ -1,8 +1,9 @@
 package com.ace.homework2.view.ui.members
 
-import androidx.lifecycle.LiveData
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.ace.homework2.R
 import com.ace.homework2.model.members.CardMembersApiInterface
 import com.ace.homework2.model.members.Member
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -11,24 +12,18 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class MembersViewModel @Inject constructor(
-    val cardMembersApiInterface: CardMembersApiInterface
+    val cardMembersApiInterface: CardMembersApiInterface,
+    val context: Context
 ) : ViewModel() {
 
     private var disposeGetBoardMembers: Disposable? = null
     private var disposeAddCardMember: Disposable? = null
     private var disposeRemoveCardMember: Disposable? = null
 
-    private val _boardMembers = MutableLiveData<List<Member>>()
-    val boardMembers: LiveData<List<Member>> = _boardMembers
-
-    private val _errorMessage = MutableLiveData<String>()
-    val errorMessage: LiveData<String> = _errorMessage
-
-    private val _memberAddedToCardEvent = MutableLiveData<Boolean>()
-    val memberAddedToCardEvent = _memberAddedToCardEvent
-
-    private val _memberRemovedToCardEvent = MutableLiveData<Boolean>()
-    val memberRemovedToCardEvent = _memberRemovedToCardEvent
+    val boardMembers = MutableLiveData<List<Member>>()
+    val errorMessage = MutableLiveData<String>()
+    val memberAddedToCardEvent = MutableLiveData<Boolean>()
+    val memberRemovedToCardEvent = MutableLiveData<Boolean>()
 
     fun loadBoardMembers(boardId: String) {
         disposeGetBoardMembers?.dispose()
@@ -37,10 +32,17 @@ class MembersViewModel @Inject constructor(
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                _boardMembers.value = it
+            .subscribe({ members ->
+                members.forEach { member ->
+                    if (member.avatar != null) {
+                        member.avatar = context.getString(
+                            R.string.avatar, member.avatar
+                        )
+                    }
+                }
+                boardMembers.value = members
             }, {
-                _errorMessage.value = it.message
+                errorMessage.value = it.message
             })
     }
 
@@ -54,9 +56,9 @@ class MembersViewModel @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    _memberAddedToCardEvent.value = true
+                    memberAddedToCardEvent.value = true
                 }, {
-                    _errorMessage.value = it.message
+                    errorMessage.value = it.message
                 }
             )
     }
@@ -70,9 +72,9 @@ class MembersViewModel @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                _memberRemovedToCardEvent.value = true
+                memberRemovedToCardEvent.value = true
             }, {
-                _errorMessage.value = it.message
+                errorMessage.value = it.message
             })
     }
 

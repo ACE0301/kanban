@@ -37,14 +37,17 @@ class CardMembersAdapter : RecyclerView.Adapter<CardMembersAdapter.ViewHolder>()
         holder.bindData(asyncListDiffer.currentList[position])
     }
 
+
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindData(item: Member) {
             if (item.avatar == null) {
-                itemView.civAvatar.setInitials(item.initials)
+                itemView.civAvatar.setInitials(item.initials).let {
+
+                }
             } else {
                 Glide.with(itemView)
                     .load(
-                        "https://trello-avatars.s3.amazonaws.com/${item.avatar}/170.png"
+                        item.avatar
                     )
                     .into(itemView.civAvatar)
             }

@@ -6,9 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.ace.homework2.R
-import com.ace.homework2.extentions.humanizeDiff
-import com.ace.homework2.extentions.toDate
 import com.ace.homework2.model.actions.Action
+import com.ace.homework2.utils.DateUtil
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_action.view.*
 
@@ -97,7 +96,8 @@ class ActionAdapter : RecyclerView.Adapter<ActionAdapter.ViewHolder>() {
                 }
                 else -> itemView.tvActionInfo?.text = ""
             }
-            itemView.tvTimeUpdated?.text = action.date.toDate()?.humanizeDiff(itemView.context)
+
+            itemView.tvTimeUpdated?.text = DateUtil(itemView.context).humanizeDiff(action.date)
         }
     }
 }

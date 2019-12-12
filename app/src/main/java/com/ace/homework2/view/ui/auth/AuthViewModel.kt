@@ -1,7 +1,6 @@
 package com.ace.homework2.view.ui.auth
 
 import android.net.Uri
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ace.homework2.model.network.TrelloHolder
@@ -17,8 +16,7 @@ class AuthViewModel @Inject constructor(
 
     private var disposableSaveToken: Disposable? = null
 
-    private val _successAuthorization = MutableLiveData<Boolean>()
-    val successAuthorization: LiveData<Boolean> = _successAuthorization
+    val successAuthorization = MutableLiveData<Boolean>()
 
     fun authorization(url: String) {
         val uri = Uri.parse(url)
@@ -32,9 +30,9 @@ class AuthViewModel @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    _successAuthorization.value = true
+                    successAuthorization.value = true
                 }, {
-                    _successAuthorization.value = false
+                    successAuthorization.value = false
                 }
             )
     }
