@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ace.homework2.R
-import com.ace.homework2.model.members.CardMembersApiInterface
-import com.ace.homework2.model.members.Member
+import com.ace.homework2.model.members.sources.cloud.CardMembersApiInterface
+import com.ace.homework2.model.members.data.Member
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers

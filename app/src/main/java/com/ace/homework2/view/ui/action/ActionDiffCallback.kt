@@ -1,14 +1,14 @@
 package com.ace.homework2.view.ui.action
 
 import androidx.recyclerview.widget.DiffUtil
-import com.ace.homework2.model.actions.Action
+import com.ace.homework2.model.actions.data.ActionsPresModel
 
-class ActionDiffCallback : DiffUtil.ItemCallback<Action>() {
-    override fun areItemsTheSame(oldItem: Action, newItem: Action): Boolean {
+class ActionDiffCallback : DiffUtil.ItemCallback<ActionsPresModel>() {
+    override fun areItemsTheSame(oldItem: ActionsPresModel, newItem: ActionsPresModel): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: Action, newItem: Action): Boolean {
+    override fun areContentsTheSame(oldItem: ActionsPresModel, newItem: ActionsPresModel): Boolean {
         return oldItem == newItem
     }
 }

@@ -12,9 +12,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ace.homework2.R
 import com.ace.homework2.base.BaseFragment
-import com.ace.homework2.model.boards.Board
-import com.ace.homework2.model.boards.Category
-import com.ace.homework2.model.boards.Item
+import com.ace.homework2.model.boards.data.Board
+import com.ace.homework2.model.boards.data.Category
+import com.ace.homework2.model.boards.data.Item
 import com.ace.homework2.model.network.token
 import com.ace.homework2.view.ui.FragmentView
 import com.ace.homework2.view.ui.boards.dialog.NewBoardDialogFragment
@@ -80,7 +80,7 @@ class BoardsFragment : BaseFragment(), OnDialogResult {
         })
         boardsViewModel.items.observe(viewLifecycleOwner, Observer { it ->
             hashMap = it.groupBy {
-                it.organization
+                it.organization ?: Category()
             }.toMutableMap()
 
             hashMap.forEach {

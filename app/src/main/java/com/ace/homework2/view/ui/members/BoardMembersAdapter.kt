@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ace.homework2.R
-import com.ace.homework2.model.members.Member
+import com.ace.homework2.model.members.data.Member
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_board_member.view.*
 
@@ -55,7 +55,7 @@ class BoardMembersAdapter : RecyclerView.Adapter<BoardMembersAdapter.ViewHolder>
             }
 
             itemView.setOnClickListener {
-                listener.invoke(itemView, boardMember)
+                listener(itemView, boardMember)
             }
         }
     }

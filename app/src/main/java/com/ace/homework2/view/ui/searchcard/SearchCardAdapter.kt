@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.ace.homework2.R
-import com.ace.homework2.model.cards.Card
+import com.ace.homework2.model.cards.data.Card
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.column_item.view.*
 
@@ -66,7 +66,7 @@ class SearchCardAdapter : RecyclerView.Adapter<SearchCardAdapter.ViewHolder>() {
                 itemView.ivCardHasMembersIcon.visibility = View.GONE
             }
             itemView.setOnClickListener {
-                listener.invoke(card.id)
+                listener(card.id)
             }
         }
     }

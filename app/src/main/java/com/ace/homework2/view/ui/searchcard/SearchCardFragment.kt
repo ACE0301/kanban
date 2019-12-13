@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ace.homework2.R
 import com.ace.homework2.base.BaseFragment
-import com.ace.homework2.model.cards.Card
+import com.ace.homework2.model.cards.data.Card
 import com.ace.homework2.view.ui.FragmentView
 import com.ace.homework2.view.ui.details.DetailsFragment
 import kotlinx.android.synthetic.main.fragment_search_card.*
@@ -34,8 +34,8 @@ class SearchCardFragment : BaseFragment() {
 
     private val boardId: String
         get() = arguments?.getString(ARGUMENT_BOARD_ID) ?: ""
-    private lateinit var searchCardViewModel: SearchCardViewModel
-    var cards: List<Card>? = null
+    lateinit var searchCardViewModel: SearchCardViewModel
+    lateinit var cards: List<Card>
     private val searchCardAdapter = SearchCardAdapter()
 
     override fun onCreateView(
@@ -58,30 +58,30 @@ class SearchCardFragment : BaseFragment() {
             checkIfEditTextHasText()
         })
         searchCardViewModel.loading.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            if (it) showLoading() else stopLoading()
+            if (it == true) showLoading() else stopLoading()
         })
 
         etSearchCardName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable) {
-                cards?.filter { card ->
+                searchCardAdapter.setData(cards.filter { card ->
                     card.name.contains(s.toString())
-                }?.let { searchCardAdapter.setData(it) }
+                })
             }
         })
-        searchCardAdapter.onItemClickListener = {
+        searchCardAdapter.onItemClickListener = { cardId ->
             (activity as? FragmentView)?.openFragmentWithBackstack(
-                DetailsFragment.newInstance(it),
+                DetailsFragment.newInstance(cardId),
                 DetailsFragment.TAG
             )
         }
     }
 
     private fun checkIfEditTextHasText() {
-        cards?.filter { card ->
-            card.name.contains(etSearchCardName.text)
-        }?.let { searchCardAdapter.setData(it) }
+        searchCardAdapter.setData(cards.filter {
+            it.name.contains(etSearchCardName.text)
+        })
     }
 
     override fun onDestroyView() {

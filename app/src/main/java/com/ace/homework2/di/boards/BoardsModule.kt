@@ -2,7 +2,7 @@ package com.ace.homework2.di.boards
 
 import android.content.Context
 import com.ace.homework2.model.network.ApiHolder
-import com.ace.homework2.model.boards.BoardApiInterface
+import com.ace.homework2.model.boards.sources.cloud.BoardApiInterface
 import com.ace.homework2.model.prefs.AppPreferencesHelper
 import dagger.Module
 import dagger.Provides

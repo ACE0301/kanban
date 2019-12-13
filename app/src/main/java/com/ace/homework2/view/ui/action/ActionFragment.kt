@@ -30,8 +30,9 @@ class ActionFragment : BaseFragment() {
 
     private val historyAdapter = ActionAdapter()
     lateinit var actionViewModel: ActionViewModel
-    private val cardId: String
-        get() = arguments?.getString(ARGUMENT_CARD_ID).orEmpty()
+    private val cardId: String by lazy {
+        arguments?.getString(ARGUMENT_CARD_ID).orEmpty()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

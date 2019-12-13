@@ -3,7 +3,7 @@ package com.ace.homework2.view.ui.cards
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.ace.homework2.model.cards.Card
+import com.ace.homework2.model.cards.data.Card
 import com.bumptech.glide.Glide
 import com.woxthebox.draglistview.DragItemAdapter
 import kotlinx.android.synthetic.main.column_item.view.*
@@ -26,6 +26,8 @@ class CardsAdapter(
         onItemClickListener,
         grabHandleId
     )
+
+    override fun getItemViewType(position: Int) = position
 
     override fun getUniqueItemId(position: Int) = itemList[position].first
 
@@ -67,7 +69,7 @@ class CardsAdapter(
                 itemView.ivCardHasMembersIcon.visibility = View.VISIBLE
             }
             itemView.setOnClickListener {
-                listener.invoke(item.first)
+                listener(item.first)
             }
         }
     }

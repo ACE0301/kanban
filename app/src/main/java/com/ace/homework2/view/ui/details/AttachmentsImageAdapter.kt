@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.ace.homework2.R
-import com.ace.homework2.model.cards.Attachments
+import com.ace.homework2.model.cards.data.Attachments
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_preview_image.view.*
 

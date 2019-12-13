@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.ace.homework2.R
-import com.ace.homework2.model.members.Member
+import com.ace.homework2.model.members.data.Member
 import com.ace.homework2.view.ui.cards.MemberDiffCallback
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_card_member.view.*

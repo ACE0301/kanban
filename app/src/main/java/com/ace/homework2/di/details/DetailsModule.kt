@@ -1,7 +1,7 @@
 package com.ace.homework2.di.details
 
 import com.ace.homework2.model.network.ApiHolder
-import com.ace.homework2.model.detail.DetailsApiInterface
+import com.ace.homework2.model.detail.sources.cloud.DetailsApiInterface
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

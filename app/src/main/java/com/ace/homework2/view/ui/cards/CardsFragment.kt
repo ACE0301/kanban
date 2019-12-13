@@ -14,10 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ace.homework2.R
 import com.ace.homework2.base.BaseFragment
 import com.ace.homework2.extentions.hideKeyboard
-import com.ace.homework2.model.boards.Board
-import com.ace.homework2.model.cards.Card
+import com.ace.homework2.model.boards.data.Board
+import com.ace.homework2.model.cards.data.Card
 import com.ace.homework2.view.ui.FragmentView
-import com.ace.homework2.view.ui.details.CardMembersAdapter
 import com.ace.homework2.view.ui.details.DetailsFragment
 import com.ace.homework2.view.ui.searchcard.SearchCardFragment
 import com.woxthebox.draglistview.BoardView
@@ -25,7 +24,6 @@ import kotlinx.android.synthetic.main.column_footer.view.*
 import kotlinx.android.synthetic.main.column_header.view.*
 import kotlinx.android.synthetic.main.custom_toobar_search_user.*
 import kotlinx.android.synthetic.main.custom_toolbar_add_card.*
-import kotlinx.android.synthetic.main.members_layout.*
 import javax.inject.Inject
 
 class CardsFragment : BaseFragment() {
@@ -50,9 +48,9 @@ class CardsFragment : BaseFragment() {
     private var cardCount = 0
     private lateinit var mBoardView: BoardView
     lateinit var board: Board //объект доски
-    private val cardMembersAdapter = CardMembersAdapter()
-    private val boardId: String
-        get() = arguments?.getString(ARGUMENT_BOARD_ID) ?: ""
+    private val boardId: String by lazy {
+        arguments?.getString(ARGUMENT_BOARD_ID).orEmpty()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,14 +64,7 @@ class CardsFragment : BaseFragment() {
             override fun onItemChangedColumn(oldColumn: Int, newColumn: Int) {}
             override fun onFocusedColumnChanged(oldColumn: Int, newColumn: Int) {}
             override fun onColumnDragStarted(position: Int) {}
-            override fun onItemChangedPosition(
-                oldColumn: Int,
-                oldRow: Int,
-                newColumn: Int,
-                newRow: Int
-            ) {
-            }
-
+            override fun onItemChangedPosition(oldColumn: Int, oldRow: Int, newColumn: Int, newRow: Int) {}
             override fun onColumnDragChangedPosition(oldPosition: Int, newPosition: Int) {}
             override fun onColumnDragEnded(position: Int) {}
             override fun onItemDragStarted(column: Int, row: Int) {}
@@ -87,10 +78,6 @@ class CardsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         cardsViewModel = ViewModelProvider(this, viewModelFactory)[CardsViewModel::class.java]
-
-        rvCardMembers?.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, true)
-        rvCardMembers?.adapter = cardMembersAdapter
 
         if (cardsViewModel.board.value?.id.isNullOrEmpty()) {
             cardsViewModel.loadCards(true, boardId)
@@ -127,9 +114,9 @@ class CardsFragment : BaseFragment() {
 
     private fun addColumn(name: String, idList: String) {
         val mCardArray = ArrayList<Pair<Long, Card>>()
-        board.cards.forEach {
-            if (it.idList == idList) {
-                mCardArray.add(Pair(cardCount++.toLong(), it))
+        board.cards.forEach { card ->
+            if (card.idList == idList) {
+                mCardArray.add(Pair(cardCount++.toLong(), card))
             }
         }
         val cardsAdapter = CardsAdapter(
@@ -176,6 +163,7 @@ class CardsFragment : BaseFragment() {
         boardToolbar.visibility = View.GONE
         llCustomToolBarAddCard.visibility = View.VISIBLE
         footer.llAddNewCard.visibility = View.VISIBLE
+
         btnCancel.setOnClickListener {
             cancelAdding(footer)
         }

@@ -10,8 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ace.homework2.R
 import com.ace.homework2.base.BaseFragment
-import com.ace.homework2.model.cards.Card
-import com.ace.homework2.model.members.Member
+import com.ace.homework2.model.cards.data.Card
+import com.ace.homework2.model.members.data.Member
 import kotlinx.android.synthetic.main.fragment_members.*
 import kotlinx.android.synthetic.main.item_board_member.view.*
 import javax.inject.Inject
@@ -33,11 +33,12 @@ class MembersFragment : BaseFragment() {
         }
     }
 
-    private val boardId: String
-        get() = arguments?.getString(ARGUMENT_BOARD_ID).orEmpty()
-    private val card: Card
-        get() = arguments?.getSerializable(ARGUMENT_CARD) as Card
-    lateinit var members: List<Member>
+    val boardId: String by lazy {
+        arguments?.getString(ARGUMENT_BOARD_ID).orEmpty()
+    }
+    private val card: Card by lazy {
+        arguments?.getSerializable(ARGUMENT_CARD) as Card
+    }
     lateinit var membersViewModel: MembersViewModel
     private val membersAdapter = BoardMembersAdapter()
 

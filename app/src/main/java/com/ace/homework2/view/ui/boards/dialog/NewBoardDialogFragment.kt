@@ -8,7 +8,7 @@ import android.widget.EditText
 import android.widget.Spinner
 import androidx.fragment.app.DialogFragment
 import com.ace.homework2.R
-import com.ace.homework2.model.boards.Category
+import com.ace.homework2.model.boards.data.Category
 import com.ace.homework2.view.ui.boards.BoardsFragment.Companion.hashMap
 import com.ace.homework2.view.ui.boards.OnDialogResult
 

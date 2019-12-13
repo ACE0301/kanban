@@ -1,16 +1,18 @@
 package com.ace.homework2.view.ui.searchcard
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.ace.homework2.model.cards.Card
-import com.ace.homework2.model.cards.CardsApiInterface
+import com.ace.homework2.model.cards.data.Card
+import com.ace.homework2.model.cards.sources.cloud.CardsApiInterface
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class SearchCardViewModel @Inject constructor(
-    val cardsApiInterface: CardsApiInterface
+    val cardsApiInterface: CardsApiInterface,
+    val context: Context
 ) : ViewModel() {
 
     private var disposableLoadCards: Disposable? = null

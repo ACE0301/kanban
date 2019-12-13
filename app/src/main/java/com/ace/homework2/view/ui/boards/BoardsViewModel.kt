@@ -2,9 +2,8 @@ package com.ace.homework2.view.ui.boards
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.ace.homework2.model.boards.Board
-import com.ace.homework2.model.boards.BoardApiInterface
-import com.ace.homework2.model.boards.Category
+import com.ace.homework2.model.boards.data.Board
+import com.ace.homework2.model.boards.sources.cloud.BoardApiInterface
 import com.ace.homework2.model.prefs.AppPreferencesHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -51,16 +50,8 @@ class BoardsViewModel @Inject constructor(
                 .doFinally { loading.value = false }
                 .subscribe(
                     { boards ->
-                        boards.map { board ->
-                            if (board.organization == null) {
-                                board.organization =
-                                    Category(
-                                        displayName = "Персональные доски"
-                                    )
-                            }
-                        }
                         boards.sortBy { board ->
-                            board.organization.name
+                            board.organization?.name
                         }
                         items.value = boards
                     }, {

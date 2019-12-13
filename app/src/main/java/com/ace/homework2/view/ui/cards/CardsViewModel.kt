@@ -3,16 +3,17 @@ package com.ace.homework2.view.ui.cards
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.ace.homework2.model.boards.Board
-import com.ace.homework2.model.cards.Card
-import com.ace.homework2.model.cards.CardsApiInterface
+import com.ace.homework2.model.boards.data.Board
+import com.ace.homework2.model.cards.data.Card
+import com.ace.homework2.model.cards.repository.CardRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class CardsViewModel @Inject constructor(
-    val cardsApiInterface: CardsApiInterface,
+    //val cardsApiInterface: CardsApiInterface,
+    val repository: CardRepository,
     val context: Context
 ) : ViewModel() {
 
@@ -30,65 +31,50 @@ class CardsViewModel @Inject constructor(
 
     fun loadCards(isShowLoading: Boolean, boardId: String) {
         disposableLoadCards?.dispose()
-        disposableLoadCards =
-            cardsApiInterface.getBoardDetails(
-                boardId,
-                "all",
-                "id,idList,name,pos,desc,idMembers",
-                "all",
-                "all",
-                "id,name",
-                true,
-                "previews",
-                true,
-                "all"
-
-            )
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { if (isShowLoading) loading.value = true }
-                .doFinally { if (isShowLoading) loading.value = false }
-                .subscribe({
-                    it.lists.forEach { map[it.id] = null }
-                    val map2 = it.cards.groupBy { it.idList }
-                    map.entries.forEach { map ->
-                        map2.entries.forEach { map2 ->
-                            if (map.key == map2.key) {
-                                map.setValue(map2.value)
-                            }
+        disposableLoadCards = repository.getBoardDetails(boardId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { if (isShowLoading) loading.value = true }
+            .doFinally { if (isShowLoading) loading.value = false }
+            .subscribe({
+                it.lists.forEach { map[it.id] = null }
+                val map2 = it.cards.groupBy { it.idList }
+                map.entries.forEach { map ->
+                    map2.entries.forEach { map2 ->
+                        if (map.key == map2.key) {
+                            map.setValue(map2.value)
                         }
                     }
-                    board.value = it
-                }, {
-                    errorMessage.value = it.message
-                })
+                }
+                board.value = it
+            }, {
+                errorMessage.value = it.message
+            })
     }
 
     fun createCard(name: String, idList: String) {
         disposableCreateCard?.dispose()
-        disposableCreateCard =
-            cardsApiInterface.createCard(name, idList)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    board.value?.id?.let { loadCards(false, it) }
-                }, {
-                    errorMessage.value = it.message
-                })
+        disposableCreateCard = repository.createCard(name, idList)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                board.value?.id?.let { loadCards(false, it) }
+            }, {
+                errorMessage.value = it.message
+            })
     }
 
     fun updateCard(cardId: String, pos: String, idList: String) {
         disposableUpdateCard?.dispose()
-        disposableUpdateCard =
-            cardsApiInterface.updateCard(cardId, pos, idList)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    board.value?.id?.let { loadCards(false, it) }
-                }, {
-                    errorMessage.value = it.message
-                }
-                )
+        disposableUpdateCard = repository.updateCard(cardId, pos, idList)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                board.value?.id?.let { loadCards(false, it) }
+            }, {
+                errorMessage.value = it.message
+            }
+            )
     }
 
     fun onChangePosition(

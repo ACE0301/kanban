@@ -1,7 +1,7 @@
 package com.ace.homework2.di.members
 
 import com.ace.homework2.model.network.ApiHolder
-import com.ace.homework2.model.members.CardMembersApiInterface
+import com.ace.homework2.model.members.sources.cloud.CardMembersApiInterface
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

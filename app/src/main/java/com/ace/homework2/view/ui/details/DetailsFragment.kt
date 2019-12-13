@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ace.homework2.R
 import com.ace.homework2.base.BaseFragment
-import com.ace.homework2.model.cards.Card
+import com.ace.homework2.model.cards.data.Card
 import com.ace.homework2.view.ui.FragmentView
 import com.ace.homework2.view.ui.action.ActionFragment
 import com.ace.homework2.view.ui.members.MembersFragment
@@ -40,8 +40,9 @@ class DetailsFragment : BaseFragment() {
         }
     }
 
-    private val cardId: String
-        get() = arguments?.getString(ARGUMENT_CARD_ID) ?: ""
+    private val cardId: String by lazy {
+        arguments?.getString(ARGUMENT_CARD_ID).orEmpty()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

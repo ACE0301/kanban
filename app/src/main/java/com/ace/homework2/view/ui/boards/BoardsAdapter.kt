@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.ace.homework2.R
-import com.ace.homework2.model.boards.Board
-import com.ace.homework2.model.boards.Category
-import com.ace.homework2.model.boards.Item
+import com.ace.homework2.model.boards.data.Board
+import com.ace.homework2.model.boards.data.Category
+import com.ace.homework2.model.boards.data.Item
 import com.osome.stickydecorator.ViewHolderStickyDecoration
 import kotlinx.android.synthetic.main.item_board.view.*
 import kotlinx.android.synthetic.main.item_category.view.*
@@ -79,7 +79,7 @@ class BoardsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
         fun bindData(item: Board) {
             itemView.tvBoard.text = item.name
             itemView.setOnClickListener {
-                listener.invoke(item.id)
+                listener(item.id)
             }
         }
     }
