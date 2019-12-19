@@ -208,4 +208,5 @@ class CardsFragment : BaseFragment() {
         }
         footer.etNewCardName?.text?.clear()
     }
+
 }
